@@ -1,23 +1,36 @@
 <template>
-  <div>
+  <li class="menu-button">
     <button>{{ label }}</button>
-  </div>
+    <div class="divider"></div>
+    <ul v-if="submenu" class="sub-menu">
+      <sub-menu-button v-for="item in submenu" v-bind:key="item.label" v-bind:label="item.label"/>
+    </ul>
+  </li>
 </template>
 
 <script>
+import SubMenuButton from './SubMenuButton.vue'
 export default {
   name: 'NavBarButton',
+  components: {
+    'sub-menu-button': SubMenuButton
+  },
   props: {
     label: {
       type: String,
       default: ''
+    },
+    submenu: {
+      type: Array,
+      default: null
     }
   }
 }
 </script>
 
-<style scoped>
+<style scoped >
   button{
+    padding: 0;
     background-color: transparent;
     border: none;
     font-size: 14px;
@@ -25,5 +38,38 @@ export default {
     font-weight: normal !important;
     letter-spacing: -.2px;
     cursor: pointer;
+  }
+  button:hover + .divider{
+    background-size:  100% 100%;
+  }
+  button:hover ~ .sub-menu{
+    display: block;
+  }
+  .menu-button{
+    position: relative;
+    list-style-type: none;
+  }
+  .sub-menu{
+    display: grid;
+    position: absolute;
+    top: 45px;
+    display: none;
+    min-width: 240px;
+    height: auto;
+    border-radius: 8px;
+    margin: 0;
+    padding-inline: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: #fff;
+    box-shadow: 0 8px 20px hsla(0,0%,71%,.3);
+    text-align: left;
+  }
+  .divider{
+    margin-top: 10px;
+    height: 2px;
+    background: linear-gradient(to left, red, red) no-repeat 0 0;
+    background-size:  0% 100%;
+    transition: .5s;
   }
 </style>
