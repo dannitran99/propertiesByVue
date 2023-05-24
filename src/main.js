@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+import store from './store'
 import commonComponents from './plugins/common-components'
 
 Vue.config.productionTip = false
@@ -14,6 +14,7 @@ Vue.use(commonComponents)
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

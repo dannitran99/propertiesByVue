@@ -39,10 +39,10 @@ export default {
     letter-spacing: -.2px;
     cursor: pointer;
   }
-  button:hover + .divider{
+  .menu-button:hover .divider{
     background-size:  100% 100%;
   }
-  button:hover ~ .sub-menu{
+  .menu-button:hover .sub-menu{
     display: block;
   }
   .menu-button{
@@ -52,7 +52,6 @@ export default {
   .sub-menu{
     display: grid;
     position: absolute;
-    top: 45px;
     display: none;
     min-width: 240px;
     height: auto;

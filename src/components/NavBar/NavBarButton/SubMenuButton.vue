@@ -23,5 +23,9 @@ export default {
     font-size: 14px;
     line-height: 20px;
     text-decoration: none;
+    cursor: pointer;
+  }
+  li:hover{
+    background: #F2F2F2;
   }
 </style>

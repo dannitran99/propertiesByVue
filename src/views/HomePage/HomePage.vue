@@ -4,7 +4,10 @@
 
 <script>
 export default {
-  name: 'HomePage'
+  name: 'HomePage',
+  async created () {
+    await this.$store.dispatch('news/getNewsList')
+  }
 }
 </script>
 
