@@ -1,7 +1,9 @@
 import NavBar from '@/components/NavBar'
+import NewsHomePage from '@/components/NewsHomePage'
 
 const commonElements = {
-  NavBar
+  NavBar,
+  NewsHomePage
 }
 
 export default {

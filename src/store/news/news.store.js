@@ -5,6 +5,11 @@ export default {
   state: {
     newsList: []
   },
+  getters: {
+    newsList (state) {
+      return state.newsList
+    }
+  },
   mutations: {
     GET_NEWS_LIST (state, data) {
       state.newsList = data
@@ -20,14 +25,4 @@ export default {
       }
     }
   }
-  //   getters: {
-  //     isBannerHide(state) {
-  //       return state.isBannerHide;
-  //     },
-  //     bannerList(state) {
-  //       return state.bannerList;
-  //     }
-  //   }
-  // modules: {
-  // },
 }

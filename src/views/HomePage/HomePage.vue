@@ -1,16 +1,19 @@
 <template>
-  <div>ádasdsd</div>
+  <div class="body">
+    <news-home-page/>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'HomePage',
-  async created () {
-    await this.$store.dispatch('news/getNewsList')
-  }
+  name: 'HomePage'
 }
 </script>
 
 <style>
-
+  .body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 </style>
