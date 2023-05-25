@@ -4,7 +4,8 @@ export default {
   namespaced: true,
   state: {
     newsList: [],
-    previewNewsItem: {}
+    previewNewsItem: {},
+    currentTab: 0
   },
   getters: {
     newsList (state) {
@@ -12,6 +13,9 @@ export default {
     },
     previewNewsItem (state) {
       return state.previewNewsItem
+    },
+    currentTab (state) {
+      return state.currentTab
     }
   },
   mutations: {
@@ -20,6 +24,9 @@ export default {
     },
     SET_PREVIEW_NEW (state, data) {
       state.previewNewsItem = data
+    },
+    SET_CURRENT_TAB (state, data) {
+      state.currentTab = data
     }
   },
   actions: {
@@ -33,7 +40,10 @@ export default {
       }
     },
     setPreviewNews ({ commit }, data) {
-      data && commit('SET_PREVIEW_NEW', data.data)
+      commit('SET_PREVIEW_NEW', data.data)
+    },
+    setCurrentMenuTab ({ commit }, data) {
+      commit('SET_CURRENT_TAB', data.data)
     }
   }
 }

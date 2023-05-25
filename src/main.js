@@ -5,10 +5,12 @@ import App from './App'
 import router from './router'
 import store from './store'
 import commonComponents from './plugins/common-components'
+import iconPackage from './plugins/icon-package'
 
 Vue.config.productionTip = false
 
 Vue.use(commonComponents)
+Vue.use(iconPackage)
 
 /* eslint-disable no-new */
 new Vue({

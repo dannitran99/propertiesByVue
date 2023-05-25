@@ -1,20 +1,25 @@
 <template>
-  <div class="wrapper">
-    <news-preview v-for="item in news" v-bind:key="item.id" v-bind:data="item"/>
-    <ul>
-        <news-item v-for="item in news" v-bind:key="item.id" v-bind:data="item"/>
-    </ul>
+  <div>
+    <news-tab-header class="tab-header"/>
+    <div class="wrapper">
+      <news-preview v-for="item in news" v-bind:key="item.id" v-bind:data="item"/>
+      <ul>
+          <news-item v-for="item in news" v-bind:key="item.id" v-bind:data="item"/>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 import NewsItem from './NewsItem.vue'
 import NewsPreview from './NewsPreview.vue'
+import NewsTabHeader from './NewsTabHeader.vue'
 export default {
   name: 'NewsHomePage',
   components: {
     'news-item': NewsItem,
-    'news-preview': NewsPreview
+    'news-preview': NewsPreview,
+    'news-tab-header': NewsTabHeader
   },
   computed: {
     news: {
@@ -30,6 +35,11 @@ export default {
 </script>
 
 <style scoped>
+  .tab-header{
+    margin-bottom: 24px;
+    border-bottom: 1px solid #F2F2F2;
+    width: 848px;
+  }
   .wrapper{
     display: flex;
     width: 1140px;

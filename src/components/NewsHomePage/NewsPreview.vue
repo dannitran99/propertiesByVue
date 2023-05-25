@@ -39,6 +39,7 @@ export default {
     opacity: 0;
   }
   img{
+    border-radius: 4px;
     width: 458px;
     height: 257px;
     margin-bottom: 16px;
