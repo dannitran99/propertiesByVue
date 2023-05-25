@@ -1,13 +1,17 @@
 <template>
-  <li>{{ name }}</li>
+  <li v-on:mouseenter="hoverPreviewNews">{{ data.name }}</li>
 </template>
 
 <script>
 export default {
   props: {
-    name: {
-      type: String,
-      default: ''
+    data: {
+      type: Object
+    }
+  },
+  methods: {
+    hoverPreviewNews () {
+      this.$store.dispatch('news/setPreviewNews', {data: this.data})
     }
   }
 }

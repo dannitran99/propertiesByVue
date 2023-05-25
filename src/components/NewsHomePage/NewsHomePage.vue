@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">
-    <news-preview/>
+    <news-preview v-for="item in news" v-bind:key="item.id" v-bind:data="item"/>
     <ul>
-        <news-item v-for="item in news" v-bind:key="item.id" v-bind:name="item.name"/>
+        <news-item v-for="item in news" v-bind:key="item.id" v-bind:data="item"/>
     </ul>
   </div>
 </template>
@@ -32,11 +32,13 @@ export default {
 <style scoped>
   .wrapper{
     display: flex;
-    gap: 30px;
     width: 1140px;
   }
   ul{
     width: 360px;
+    margin: 0;
+    margin-left: 30px;
+    padding: 0;
   }
   ul > li:first-of-type{
     padding-top: 0;
