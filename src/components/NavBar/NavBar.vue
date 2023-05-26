@@ -1,6 +1,6 @@
 <template>
   <ul class="menu-list">
-    <nav-bar-button v-for="item in menu" v-bind:key="item.label" v-bind:label="item.label" v-bind:submenu="item.sub"/>
+    <nav-bar-button v-for="item in menu" v-bind:key="item.label" v-bind:label="item.label" v-bind:href="item.href" v-bind:submenu="item.sub"/>
   </ul>
 </template>
 
@@ -62,7 +62,9 @@ export default {
             { label: 'Dự án khác' }
           ]
         },
-        { label: 'Tin tức' },
+        { label: 'Tin tức',
+          href: 'News'
+        },
         {
           label: 'Wiki BĐS',
           sub: [

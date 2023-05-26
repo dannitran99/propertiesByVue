@@ -1,5 +1,9 @@
 <template>
-  <li v-on:mouseenter="hoverPreviewNews">{{ data.name }}</li>
+  <li v-on:mouseenter="hoverPreviewNews">
+    <router-link :to="{name: 'NewsDetail',params: {newsId: data._id,}}" class="route-link">
+      {{ data.name }}
+    </router-link>
+  </li>
 </template>
 
 <script>
@@ -18,6 +22,13 @@ export default {
 </script>
 
 <style scoped>
+  a{
+    text-decoration: none;
+    color: #2C2C2C;
+  }
+  a:hover{
+    color: #999;
+  }
   li{
     list-style-type: none;
     text-align: left;
@@ -27,12 +38,9 @@ export default {
     font-size: 16px;
     line-height: 26px;
     font-weight: normal !important;
-    color: #2C2C2C;
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
   }
-  li:hover{
-    color: #999;
-  }
+
 </style>

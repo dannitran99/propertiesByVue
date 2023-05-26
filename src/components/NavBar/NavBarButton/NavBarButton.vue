@@ -1,6 +1,8 @@
 <template>
   <li class="menu-button">
-    <button>{{ label }}</button>
+     <router-link :to="{name: href}" class="route-link">
+      {{ label }}
+    </router-link>
     <div class="divider"></div>
     <ul v-if="submenu" class="sub-menu">
       <sub-menu-button v-for="item in submenu" v-bind:key="item.label" v-bind:label="item.label"/>
@@ -23,13 +25,19 @@ export default {
     submenu: {
       type: Array,
       default: null
+    },
+    href: {
+      type: String,
+      default: null
     }
   }
 }
 </script>
 
 <style scoped >
-  button{
+  .route-link{
+    text-decoration: none;
+    color: #000;
     padding: 0;
     background-color: transparent;
     border: none;

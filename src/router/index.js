@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 
 Vue.use(Router)
 
@@ -12,9 +11,16 @@ export default new Router({
       component: () => import('@/views/HomePage')
     },
     {
-      path: '/about',
-      name: 'HelloWorld',
-      component: HelloWorld
+      path: '/tin-tuc',
+      name: 'News',
+      component: () => import('@/views/News'),
+      children: [
+        {
+          path: '/:newsId',
+          name: 'NewsDetail',
+          component: () => import('@/views/NewsContent')
+        }
+      ]
     }
   ]
 })
