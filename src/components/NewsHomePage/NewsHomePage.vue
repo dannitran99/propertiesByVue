@@ -38,14 +38,14 @@ export default {
   .tab-header{
     margin-bottom: 24px;
     border-bottom: 1px solid #F2F2F2;
-    width: 848px;
+    max-width: 848px;
   }
   .wrapper{
     display: flex;
-    width: 1140px;
+    max-width: 1140px;
   }
   ul{
-    width: 360px;
+    max-width: 360px;
     margin: 0;
     margin-left: 30px;
     padding: 0;

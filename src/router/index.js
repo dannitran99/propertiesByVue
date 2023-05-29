@@ -13,14 +13,12 @@ export default new Router({
     {
       path: '/tin-tuc',
       name: 'News',
-      component: () => import('@/views/News'),
-      children: [
-        {
-          path: '/:newsId',
-          name: 'NewsDetail',
-          component: () => import('@/views/NewsContent')
-        }
-      ]
+      component: () => import('@/views/News')
+    },
+    {
+      path: '/tin-tuc/:newsId',
+      name: 'NewsDetail',
+      component: () => import('@/views/News/NewsContent')
     }
   ]
 })
