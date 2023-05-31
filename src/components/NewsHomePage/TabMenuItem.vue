@@ -27,6 +27,7 @@ export default {
 
 <style scoped>
   li{
+    flex-shrink: 0;
     list-style-type: none;
     padding: 12px 16px;
     font-size: 24px;

@@ -9,6 +9,15 @@ export const getNewsList = async () => {
   }
 }
 
+export const getNewById = async (newId) => {
+  try {
+    const { data } = await HTTP.get(`/api/news/${newId}`)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
 export default {
   getNewsList
 }

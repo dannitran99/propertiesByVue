@@ -18,7 +18,7 @@ export default {
       get () {
         const current = this.$store.getters['news/previewNewsItem']
         if (current) {
-          return current._id === this.data._id
+          return current.ID && current.ID === this.data.ID
         }
         return false
       }

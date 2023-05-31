@@ -65,6 +65,7 @@ export default {
   }
   .menu-tab{
     display: flex;
+    flex-wrap: wrap;
   }
   .anchor-button{
     display: flex;

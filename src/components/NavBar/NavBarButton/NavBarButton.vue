@@ -56,6 +56,7 @@ export default {
   .menu-button{
     position: relative;
     list-style-type: none;
+    flex-shrink: 0;
   }
   .sub-menu{
     display: grid;
