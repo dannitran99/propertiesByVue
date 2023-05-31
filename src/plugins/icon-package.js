@@ -1,7 +1,13 @@
 import RightArrow from '@/components/icons/RightArrow.vue'
+import Home from '@/components/icons/Home.vue'
+import RightTriangle from '@/components/icons/RightTriangle.vue'
+import Search from '@/components/icons/Search.vue'
 
 const iconElements = {
-  RightArrow
+  RightArrow,
+  Home,
+  RightTriangle,
+  Search
 }
 
 export default {

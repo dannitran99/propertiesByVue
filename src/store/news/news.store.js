@@ -23,6 +23,9 @@ export default {
     }
   },
   mutations: {
+    INIT_STATE (state) {
+      state.newContent = {}
+    },
     GET_NEWS_LIST (state, data) {
       state.newsList = data
     },
@@ -59,6 +62,9 @@ export default {
     },
     setCurrentMenuTab ({ commit }, data) {
       commit('SET_CURRENT_TAB', data.data)
+    },
+    returnInitData ({ commit }) {
+      commit('INIT_STATE')
     }
   }
 }
