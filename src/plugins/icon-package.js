@@ -2,12 +2,14 @@ import RightArrow from '@/components/icons/RightArrow.vue'
 import Home from '@/components/icons/Home.vue'
 import RightTriangle from '@/components/icons/RightTriangle.vue'
 import Search from '@/components/icons/Search.vue'
+import Close from '@/components/icons/Close.vue'
 
 const iconElements = {
   RightArrow,
   Home,
   RightTriangle,
-  Search
+  Search,
+  Close
 }
 
 export default {

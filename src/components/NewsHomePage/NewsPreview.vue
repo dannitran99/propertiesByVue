@@ -1,9 +1,9 @@
 <template>
-  <div class="wrapper"
+  <router-link :to="{name: 'NewsDetail',params: {newsId: data.ID,}}" class="wrapper"
       :class="[{'show' : isDisplay}]">
     <img v-bind:src="data.thumbnail">
     <p><b>{{ data.name }}</b></p>
-  </div>
+  </router-link>
 </template>
 
 <script>
@@ -43,6 +43,10 @@ export default {
     width: 458px;
     height: 257px;
     margin-bottom: 16px;
+  }
+  a{
+    text-decoration: none;
+    color: #2C2C2C;
   }
   p{
     text-align: left;
