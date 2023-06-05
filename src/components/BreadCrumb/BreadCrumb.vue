@@ -4,7 +4,7 @@
       <div class="search-input">
         <icon-search/>
         <input type="text" placeholder="Nhập từ khóa và nhấn Enter để tìm kiếm"  v-model="keyword" >
-        <button v-on:click="clearInputSearch">
+        <button v-on:click="clearInputSearch" class="clear-btn">
           <icon-close :class="[{'hide' : clearHide}]"/>
         </button>
       </div>
@@ -73,6 +73,9 @@ export default {
   button{
     background-color: #fff;
     border: none;
+  }
+  .clear-btn{
+    display: flex;
   }
   .cancel-button{
     border-left: 1px solid #ccc;

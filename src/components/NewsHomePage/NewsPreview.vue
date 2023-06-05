@@ -2,11 +2,18 @@
   <router-link :to="{name: 'NewsDetail',params: {newsId: data.ID,}}" class="wrapper"
       :class="[{'show' : isDisplay}]">
     <img v-bind:src="data.thumbnail">
-    <p><b>{{ data.name }}</b></p>
+    <p class="title"><b>{{ data.name }}</b></p>
+    <div class="time">
+      <icon-clock/>
+      <p class="time">{{ moment() }}</p>
+    </div>
   </router-link>
 </template>
 
 <script>
+import moment from 'moment'
+moment.locale('vi')
+
 export default {
   props: {
     data: {
@@ -22,6 +29,11 @@ export default {
         }
         return false
       }
+    }
+  },
+  methods: {
+    moment: function () {
+      return moment(this.data.createdAt).fromNow()
     }
   }
 }
@@ -48,7 +60,7 @@ export default {
     text-decoration: none;
     color: #2C2C2C;
   }
-  p{
+  .title{
     text-align: left;
     font-size: 24px;
     line-height: 32px;
@@ -58,6 +70,17 @@ export default {
     margin-bottom: 8px;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  .time{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .time p{
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0;
+    color: #999
   }
   p:hover{
     color: #999;
