@@ -47,6 +47,7 @@ export default {
     cursor: pointer;
     transition: opacity .222s ease-in-out;
     width: 0;
+    height: 0;
     overflow: hidden;
     opacity: 0;
   }
@@ -87,6 +88,7 @@ export default {
   }
   .show{
     width: 458px;
+    height: auto;
     opacity: 1;
   }
 </style>
