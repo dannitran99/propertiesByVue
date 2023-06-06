@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav-bar/>
+    <nav-bar class="nav-bar"/>
     <router-view/>
   </div>
 </template>
@@ -19,5 +19,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.nav-bar{
+  z-index: 99;
 }
 </style>

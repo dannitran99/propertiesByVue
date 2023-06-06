@@ -8,12 +8,21 @@
             <p class="clickable-text">Tin nhà đất cho thuê mới nhất</p>
         </div>
     </div>
-    {{ properties }}
+    <div>
+        <property-item v-for="item in properties" v-bind:key="item.ID" v-bind:data="item"/>
+    </div>
+    <div class="foot-btn">
+      <button>Mở rộng</button>
+    </div>
   </div>
 </template>
 
 <script>
+import PropertyItem from './PropertyItem.vue'
 export default {
+  components: {
+    'property-item': PropertyItem
+  },
   computed: {
     properties: {
       get () {
@@ -44,6 +53,7 @@ export default {
     font-weight: normal !important;
   }
   .title{
+    height: 32px;
     display: flex;
     justify-content: space-between;
     margin: 0 0 24px 0;
@@ -55,5 +65,25 @@ export default {
   .clickable-text:hover {
     cursor: pointer;
     color: #999
+  }
+  .foot-btn{
+    height: 48px;
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+  }
+  .foot-btn button{
+    width: 160px;
+    color: #2C2C2C;
+    background: #fff;
+    border: solid 1px #ccc;
+    padding: 13px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .foot-btn button:hover{
+    color: #2C2C2C;
+    background: #FAFAFA;
+    border: solid 1px #ccc;
   }
 </style>

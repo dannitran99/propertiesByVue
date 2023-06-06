@@ -11,9 +11,7 @@
 </template>
 
 <script>
-import moment from 'moment'
-moment.locale('vi')
-
+import {formatTimeHumanize} from '@/helpers/formater'
 export default {
   props: {
     data: {
@@ -33,7 +31,7 @@ export default {
   },
   methods: {
     moment: function () {
-      return moment(this.data.createdAt).fromNow()
+      return formatTimeHumanize(this.data.createdAt)
     }
   }
 }
