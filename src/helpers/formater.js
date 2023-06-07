@@ -17,8 +17,8 @@ export const formatTimeCalendar = (input) => {
     lastDay: '[hôm qua]',
     sameDay: '[hôm nay]',
     nextDay: '[ngày mai]',
-    lastWeek: '[last] dddd',
+    lastWeek: 'dddd [tuần trước]',
     nextWeek: 'dddd',
-    sameElse: 'L'
+    sameElse: '[vào] L'
   })
 }

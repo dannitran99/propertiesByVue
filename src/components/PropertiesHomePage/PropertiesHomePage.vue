@@ -8,7 +8,7 @@
             <p class="clickable-text">Tin nhà đất cho thuê mới nhất</p>
         </div>
     </div>
-    <div>
+    <div class="item-list">
         <property-item v-for="item in properties" v-bind:key="item.ID" v-bind:data="item"/>
     </div>
     <div class="foot-btn">
@@ -71,6 +71,11 @@ export default {
     margin-top: 24px;
     display: flex;
     justify-content: center;
+  }
+  .item-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
   }
   .foot-btn button{
     width: 160px;

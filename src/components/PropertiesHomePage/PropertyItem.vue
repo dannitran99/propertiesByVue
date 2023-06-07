@@ -1,6 +1,6 @@
 <template>
-  <div class="wrapper">
-    <div class="thumbnail">
+  <router-link :to="{name: 'PropertiesDetail',params: {propertiesId: data.ID,}}" class="wrapper">
+      <div class="thumbnail">
         <img v-bind:src="data.picture[0]"/>
         <div class="img-holder">
           <icon-photo/>
@@ -25,7 +25,7 @@
         </div>
       </div>
     </div>
-  </div>
+    </router-link>
 </template>
 
 <script>
@@ -52,6 +52,7 @@ export default {
 
 <style scoped>
   .wrapper{
+    text-decoration: none;
     text-align: left;
     width: 262px;
     height: 318px;
@@ -96,6 +97,11 @@ export default {
     margin: 12px 16px 12px 12px;
   }
   .card-content h3{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     font-size: 14px;
     line-height: 20px;
     font-weight: 600;

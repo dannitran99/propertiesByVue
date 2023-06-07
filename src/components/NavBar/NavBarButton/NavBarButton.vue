@@ -3,7 +3,7 @@
      <router-link :to="{name: href}" class="route-link">
       {{ label }}
     </router-link>
-    <div class="divider"></div>
+    <div class="divider" :class="[{'active' : isActive}]"></div>
     <ul v-if="submenu" class="sub-menu">
       <sub-menu-button v-for="item in submenu" v-bind:key="item.label" v-bind:label="item.label"/>
     </ul>
@@ -14,6 +14,11 @@
 import SubMenuButton from './SubMenuButton.vue'
 export default {
   name: 'NavBarButton',
+  data () {
+    return {
+      isActive: false
+    }
+  },
   components: {
     'sub-menu-button': SubMenuButton
   },
@@ -29,6 +34,15 @@ export default {
     href: {
       type: String,
       default: null
+    },
+    path: {
+      type: String,
+      default: ''
+    }
+  },
+  watch: {
+    '$route' () {
+      this.isActive = !!(this.path && this.$route.path.includes(this.path))
     }
   }
 }
@@ -49,6 +63,9 @@ export default {
   }
   .menu-button:hover .divider{
     background-size:  100% 100%;
+  }
+  .active{
+    background-size:  100% 100% !important;
   }
   .menu-button:hover .sub-menu{
     display: block;

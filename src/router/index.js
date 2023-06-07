@@ -20,6 +20,21 @@ export default new Router({
       path: '/tin-tuc/:newsId',
       name: 'NewsDetail',
       component: () => import('@/views/News/NewsContent')
+    },
+    {
+      path: '/nha-dat-ban',
+      name: 'PropertiesForSale',
+      component: () => import('@/views/Properties')
+    },
+    {
+      path: '/nha-dat-ban/:propertiesId',
+      name: 'PropertiesDetail',
+      component: () => import('@/views/Properties/PropertiesContent')
+    },
+    {
+      path: '/nha-dat-cho-thue',
+      name: 'PropertiesForRent',
+      component: () => import('@/views/Properties')
     }
   ]
 })
