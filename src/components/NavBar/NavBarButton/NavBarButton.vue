@@ -5,7 +5,7 @@
     </router-link>
     <div class="divider" :class="[{'active' : isActive}]"></div>
     <ul v-if="submenu" class="sub-menu">
-      <sub-menu-button v-for="item in submenu" v-bind:key="item.label" v-bind:label="item.label"/>
+      <sub-menu-button v-for="item in submenu" v-bind:key="item.label" v-bind:label="item.label" v-bind:navLink="href" v-bind:query="item.path" v-bind:path="path"/>
     </ul>
   </li>
 </template>

@@ -9,6 +9,8 @@ import Photo from '@/components/icons/Photo.vue'
 import MapPoint from '@/components/icons/MapPoint.vue'
 import Heart from '@/components/icons/Heart.vue'
 import Magnify from '@/components/icons/Magnify.vue'
+import Tune from '@/components/icons/Tune.vue'
+import Cached from '@/components/icons/Cached.vue'
 
 const iconElements = {
   RightArrow,
@@ -21,7 +23,9 @@ const iconElements = {
   MapPoint,
   Heart,
   Magnify,
-  DownTriangle
+  DownTriangle,
+  Tune,
+  Cached
 }
 
 export default {

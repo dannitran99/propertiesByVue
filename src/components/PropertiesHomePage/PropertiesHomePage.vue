@@ -3,9 +3,13 @@
     <div class="title">
         <h2><b>Bất động sản dành cho bạn</b></h2>
         <div class="redirect-title">
-            <p class="clickable-text">Tin nhà đất bán mới nhất</p>
+            <router-link :to="{name: 'PropertiesForSale'}">
+              <p class="clickable-text">Tin nhà đất bán mới nhất</p>
+            </router-link>
             <p>|</p>
-            <p class="clickable-text">Tin nhà đất cho thuê mới nhất</p>
+            <router-link :to="{name: 'PropertiesForRent'}">
+              <p class="clickable-text">Tin nhà đất cho thuê mới nhất</p>
+            </router-link>
         </div>
     </div>
     <div class="item-list">

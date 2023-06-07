@@ -17,48 +17,59 @@
         <input/>
       </div>
       <div class="divider"></div>
+      <div class="wide">
+        <filter-category/>
+      </div>
+      <div class="divider"></div>
       <div class="filter wide">
         <div class="title-dv">
-          <p>Loại nhà đất</p>
+          <p>Khu vực & dự án</p>
+          <icon-downtriangle/>
+        </div>
+        <p>Toàn quốc</p>
+      </div>
+      <div class="divider"></div>
+      <div class="filter normal">
+        <div class="title-dv">
+          <p>Mức giá</p>
           <icon-downtriangle/>
         </div>
         <p>Tất cả</p>
       </div>
       <div class="divider"></div>
-      <div class="filter wide">
-        <div class="title-dv">
-          <p>Khu vực & dự án</p>
-          <icon-downtriangle/>
-        </div>
-        <p>Toàn quốc</p>
-      </div>
-      <div class="divider"></div>
       <div class="filter normal">
         <div class="title-dv">
-          <p>Khu vực & dự án</p>
+          <p>Diện tích</p>
           <icon-downtriangle/>
         </div>
-        <p>Toàn quốc</p>
+        <p>Tất cả</p>
       </div>
       <div class="divider"></div>
-      <div class="filter normal">
+      <div class="filter">
         <div class="title-dv">
-          <p>Khu vực & dự án</p>
-          <icon-downtriangle/>
+          <icon-tune/>
+          <p>Lọc thêm</p>
         </div>
-        <p>Toàn quốc</p>
       </div>
       <div class="divider"></div>
+      <div class="filter">
+        <div class="title-dv">
+          <icon-cached/>
+          <p>Đặt lại</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import NavBarButton from './NavBarButton'
+import FilterCategory from './NavBarFilter/FilterCategory.vue'
 export default {
   name: 'NavBar',
   components: {
-    'nav-bar-button': NavBarButton
+    'nav-bar-button': NavBarButton,
+    'filter-category': FilterCategory
   },
   data () {
     return {
@@ -70,17 +81,28 @@ export default {
           href: 'PropertiesForSale',
           path: 'nha-dat-ban',
           sub: [
-            { label: 'Bán căn hộ chung cư' },
-            { label: 'Bán nhà riêng' },
-            { label: 'Bán nhà biệt thự, liền kề' },
-            { label: 'Bán nhà mặt phố' },
-            { label: 'Bán shophouse, nhà phố thương mại' },
-            { label: 'Bán đất nền dự án' },
-            { label: 'Bán đất' },
-            { label: 'Bán trang trại, khu nghỉ dưỡng' },
-            { label: 'Bán condotel' },
-            { label: 'Bán kho, nhà xưởng' },
-            { label: 'Bán loại bất động sản khác' }
+            { label: 'Bán căn hộ chung cư',
+              path: 'can-ho-chung-cu' },
+            { label: 'Bán nhà riêng',
+              path: 'nha-rieng' },
+            { label: 'Bán nhà biệt thự, liền kề',
+              path: 'nha-biet-thu-lien-ke' },
+            { label: 'Bán nhà mặt phố',
+              path: 'nha-mat-pho' },
+            { label: 'Bán shophouse, nhà phố thương mại',
+              path: 'shophouse-nha-pho-thuong-mai' },
+            { label: 'Bán đất nền dự án',
+              path: '-dat-nen-du-an' },
+            { label: 'Bán đất',
+              path: 'dat' },
+            { label: 'Bán trang trại, khu nghỉ dưỡng',
+              path: 'trang-trai-khu-nghi-duong' },
+            { label: 'Bán condotel',
+              path: 'condotel'},
+            { label: 'Bán kho, nhà xưởng',
+              path: 'kho-nha-xuong'},
+            { label: 'Bán loại bất động sản khác',
+              path: 'bat-dong-san-khac' }
           ]
         },
         {
@@ -244,6 +266,9 @@ export default {
   .filter{
     padding: 8px 16px;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   .wide{
     width: calc((100% - 108px - 108px - 16px - 159px - 16px - 16px - 16px) * 0.2) !important;
@@ -257,14 +282,14 @@ export default {
   .filter p{
     margin: 0;
   }
-  .filter :first-child{
+  .filter >:first-child{
     font-size: 12px;
     line-height: 16px;
     color: #2C2C2C;
     margin-bottom: 4px;
     flex-shrink:0
   }
-  .filter :last-child{
+  .filter >:last-child{
     font-size: 14px;
     line-height: 20px;
     line-height: 20px;
