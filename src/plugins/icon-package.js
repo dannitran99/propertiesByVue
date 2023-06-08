@@ -11,6 +11,13 @@ import Heart from '@/components/icons/Heart.vue'
 import Magnify from '@/components/icons/Magnify.vue'
 import Tune from '@/components/icons/Tune.vue'
 import Cached from '@/components/icons/Cached.vue'
+import Condotel from '@/components/icons/Condotel.vue'
+import Building from '@/components/icons/Building.vue'
+import House from '@/components/icons/House.vue'
+import HomeAccount from '@/components/icons/HomeAccount.vue'
+import Warehouse from '@/components/icons/Warehouse.vue'
+import PinMap from '@/components/icons/PinMap.vue'
+import HouseGroup from '@/components/icons/HouseGroup.vue'
 
 const iconElements = {
   RightArrow,
@@ -25,7 +32,14 @@ const iconElements = {
   Magnify,
   DownTriangle,
   Tune,
-  Cached
+  Cached,
+  Building,
+  Condotel,
+  HomeAccount,
+  House,
+  HouseGroup,
+  PinMap,
+  Warehouse
 }
 
 export default {

@@ -1,8 +1,19 @@
 <template>
-  <li>
-    {{ data.label }}
+  <li class="li-parent">
+    <div class="li-item">
+      <div class="label-icon" >
+        <component :is="data.icon" />
+        <span>{{ data.label }}</span>
+      </div>
+      <input type="checkbox" v-model="checkedNames" :value="data.label" />
+    </div>
     <ul v-if="data.subItem">
-        <li v-for="item in data.subItem" v-bind:key="item.label">{{ item.label }}</li>
+        <li v-for="item in data.subItem" v-bind:key="item.label">
+          <div class="li-item align-left">
+            <span>{{ item.label }}</span>
+            <input type="checkbox" v-model="item.value" />
+          </div>
+        </li>
     </ul>
   </li>
 </template>
@@ -12,6 +23,9 @@ export default {
   props: {
     data: {
       type: Object
+    },
+    checkedNames: {
+      type: Array
     }
   }
 }
@@ -21,10 +35,40 @@ export default {
     li{
         padding: 6px 0;
         list-style-type: none;
-        border-bottom: 1px solid #F2F2F2;
         margin-bottom: 4px;
-        font-size: 14px;
+        font-size: 13px;
         line-height: 20px;
         color: #2C2C2C;
+    }
+    li:last-of-type{
+      border-bottom: 0
+    }
+    ul{
+      padding: 8px 0 0 0;
+    }
+    input{
+      cursor: pointer;
+      accent-color: #961b12
+    }
+    .li-item{
+      height: 100%;
+      padding: 0 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .li-item:hover {
+      background: #F2F2F2;
+    }
+    .li-parent{
+      border-bottom: 1px solid #F2F2F2;
+    }
+    .label-icon{
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .align-left{
+      padding-left: 45px;
     }
 </style>
