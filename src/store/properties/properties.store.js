@@ -3,11 +3,15 @@ import { getPropertiesList } from '@/api/properties.api'
 export default {
   namespaced: true,
   state: {
-    propertiesList: []
+    propertiesList: [],
+    categoryFilter: ['Tất cả nhà đất']
   },
   getters: {
     propertiesList (state) {
       return state.propertiesList
+    },
+    categoryFilter (state) {
+      return state.categoryFilter
     }
   },
   mutations: {
@@ -23,6 +27,9 @@ export default {
       } else {
         console.error(error)
       }
+    },
+    setFilterCategory (context, payload) {
+      console.log(payload)
     }
   }
 }

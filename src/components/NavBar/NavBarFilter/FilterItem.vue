@@ -5,13 +5,13 @@
         <component :is="data.icon" />
         <span>{{ data.label }}</span>
       </div>
-      <input type="checkbox" v-model="checkedNames" :value="data.label" />
+      <input type="checkbox" v-model="categoryFilter" :value="data.label" @change="handleChange"/>
     </div>
     <ul v-if="data.subItem">
         <li v-for="item in data.subItem" v-bind:key="item.label">
           <div class="li-item align-left">
             <span>{{ item.label }}</span>
-            <input type="checkbox" v-model="item.value" />
+            <input type="checkbox" v-model="categoryFilter" :value="item.label" />
           </div>
         </li>
     </ul>
@@ -26,6 +26,20 @@ export default {
     },
     checkedNames: {
       type: Array
+    }
+  },
+  computed: {
+    categoryFilter: {
+      get () {
+        return this.$store.getters['properties/categoryFilter']
+      },
+      set () {
+      }
+    }
+  },
+  methods: {
+    handleChange: function ($event) {
+      console.log($event.target)
     }
   }
 }

@@ -7,7 +7,7 @@
         <p class="result-text" v-on:click.self="onClickPopup">Tất cả</p>
         <div v-if="isActive" class="popup-modal" >
           <ul>
-            <filter-item v-for="item in selectOption" v-bind:key="item.label" v-bind:data="item" v-bind:checkedNames="checkedNames"/>
+            <filter-item v-for="item in selectOption" v-bind:key="item.label" v-bind:data="item" />
           </ul>
           <div class="filter-footer">
             <button>
@@ -31,7 +31,6 @@ export default {
   },
   data () {
     return {
-      checkedNames: [],
       isActive: false,
       selectOption: [
         { label: 'Tất cả nhà đất', icon: 'icon-house', value: false },
@@ -87,11 +86,6 @@ export default {
   methods: {
     onClickPopup () {
       this.isActive = !this.isActive
-    }
-  },
-  watch: {
-    checkedNames () {
-      console.log(this.checkedNames)
     }
   }
 }
