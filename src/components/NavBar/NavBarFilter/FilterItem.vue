@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     handleChange: function ($event) {
-      console.log($event.target)
+      this.$store.dispatch('properties/filterChange', {value: $event.target.value})
     }
   }
 }

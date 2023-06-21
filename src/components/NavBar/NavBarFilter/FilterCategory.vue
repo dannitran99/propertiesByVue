@@ -4,7 +4,7 @@
           <p v-on:click.self="onClickPopup">Loại nhà đất</p>
           <icon-downtriangle v-on:click.self="onClickPopup"/>
         </div>
-        <p class="result-text" v-on:click.self="onClickPopup">Tất cả</p>
+        <p class="result-text" v-on:click.self="onClickPopup">{{ categoryFilter.join(', ') }}</p>
         <div v-if="isActive" class="popup-modal" >
           <ul>
             <filter-item v-for="item in selectOption" v-bind:key="item.label" v-bind:data="item" />
@@ -33,54 +33,58 @@ export default {
     return {
       isActive: false,
       selectOption: [
-        { label: 'Tất cả nhà đất', icon: 'icon-house', value: false },
-        { label: 'Căn hộ chung cư', icon: 'icon-building', value: false },
+        { label: 'Tất cả nhà đất', icon: 'icon-house' },
+        { label: 'Căn hộ chung cư', icon: 'icon-building' },
         {
           label: 'Các loại nhà bán',
           icon: 'icon-homeaccount',
-          value: false,
           subItem: [
             {
-              label: 'Nhà riêng', value: false
+              label: 'Nhà riêng'
             },
             {
-              label: 'Nhà biệt thự, liền kề', value: false
+              label: 'Nhà biệt thự, liền kề'
             },
             {
-              label: 'Nhà mặt phố', value: false
+              label: 'Nhà mặt phố'
             },
             {
-              label: 'Shophouse, nhà phố thương mại', value: false
+              label: 'Shophouse, nhà phố thương mại'
             }
           ]
         },
         {
           label: 'Các loại đất bán',
           icon: 'icon-pinmap',
-          value: false,
           subItem: [
             {
-              label: 'Đất nền dự án', value: false
+              label: 'Đất nền dự án'
             },
             {
-              label: 'Bán đất', value: false
+              label: 'Bán đất'
             }
           ]
         },
         {
           label: 'Trang trại, khu nghỉ dưỡng',
           icon: 'icon-condotel',
-          value: false,
           subItem: [
             {
-              label: 'Condotel', value: false
+              label: 'Condotel'
             }
           ]
         },
-        { label: 'Kho, nhà xưởng', icon: 'icon-warehouse', value: false },
-        { label: 'Bất động sản khác', icon: 'icon-housegroup', value: false }
+        { label: 'Kho, nhà xưởng', icon: 'icon-warehouse' },
+        { label: 'Bất động sản khác', icon: 'icon-housegroup' }
       ]
 
+    }
+  },
+  computed: {
+    categoryFilter: {
+      get () {
+        return this.$store.getters['properties/categoryFilter']
+      }
     }
   },
   methods: {

@@ -1,10 +1,11 @@
 import { getPropertiesList } from '@/api/properties.api'
+import { removeElFromArr } from '@/helpers/arrayHandler'
 
 export default {
   namespaced: true,
   state: {
     propertiesList: [],
-    categoryFilter: ['Tất cả nhà đất']
+    categoryFilter: []
   },
   getters: {
     propertiesList (state) {
@@ -17,6 +18,9 @@ export default {
   mutations: {
     GET_PROPERTIES_LIST (state, data) {
       state.propertiesList = data
+    },
+    CHANGE_FILTER (state, data) {
+      state.categoryFilter.some((e) => e === data) ? removeElFromArr(state.categoryFilter, data) : state.categoryFilter.push(data)
     }
   },
   actions: {
@@ -28,8 +32,8 @@ export default {
         console.error(error)
       }
     },
-    setFilterCategory (context, payload) {
-      console.log(payload)
+    filterChange (context, payload) {
+      context.commit('CHANGE_FILTER', payload.value)
     }
   }
 }
