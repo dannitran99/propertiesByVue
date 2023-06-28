@@ -1,5 +1,4 @@
 import { getPropertiesList } from '@/api/properties.api'
-import { removeElFromArr } from '@/helpers/arrayHandler'
 
 export default {
   namespaced: true,
@@ -20,7 +19,7 @@ export default {
       state.propertiesList = data
     },
     CHANGE_FILTER (state, data) {
-      state.categoryFilter.some((e) => e === data) ? removeElFromArr(state.categoryFilter, data) : state.categoryFilter.push(data)
+      state.categoryFilter = data
     }
   },
   actions: {
@@ -33,7 +32,7 @@ export default {
       }
     },
     filterChange (context, payload) {
-      context.commit('CHANGE_FILTER', payload.value)
+      context.commit('CHANGE_FILTER', payload.data)
     }
   }
 }

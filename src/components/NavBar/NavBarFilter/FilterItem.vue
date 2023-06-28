@@ -11,7 +11,7 @@
         <li v-for="item in data.subItem" v-bind:key="item.label">
           <div class="li-item align-left">
             <span>{{ item.label }}</span>
-            <input type="checkbox" v-model="categoryFilter" :value="item.label" />
+            <input type="checkbox" v-model="categoryFilter" :value="item.label" @change="handleChangeSub" />
           </div>
         </li>
     </ul>
@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import { removeElFromArr, checkArrHasElArr, cloneDeep } from '@/helpers/arrayHandler'
+import {FILTER_LABEL} from '@/consts/label.js'
 export default {
   props: {
     data: {
@@ -39,7 +41,35 @@ export default {
   },
   methods: {
     handleChange: function ($event) {
-      this.$store.dispatch('properties/filterChange', {value: $event.target.value})
+      let tmp = this.categoryFilter
+      if (this.data.label === 'Tất cả nhà đất') {
+        if (tmp.some((e) => e === 'Tất cả nhà đất')) {
+          tmp = []
+        } else {
+          tmp = cloneDeep(FILTER_LABEL)
+        }
+      } else {
+        if (tmp.some((e) => e === $event.target.value)) {
+          removeElFromArr(tmp, $event.target.value)
+          this.data.subItem && this.data.subItem.map(el => {
+            tmp.some((item) => item === el.label) && removeElFromArr(tmp, el.label)
+          })
+        } else {
+          tmp.push($event.target.value)
+          this.data.subItem && this.data.subItem.map(el => {
+            !tmp.some((item) => item === el.label) && tmp.push(el.label)
+          })
+        }
+        tmp.length === FILTER_LABEL.length - 1 && !tmp.some((e) => e === 'Tất cả nhà đất') ? tmp.push('Tất cả nhà đất') : removeElFromArr(tmp, 'Tất cả nhà đất')
+      }
+      this.$store.dispatch('properties/filterChange', {data: tmp})
+    },
+    handleChangeSub: function ($event) {
+      const tmp = this.categoryFilter
+      tmp.some((e) => e === $event.target.value) ? removeElFromArr(tmp, $event.target.value) : tmp.push($event.target.value)
+      checkArrHasElArr(this.data.subItem && this.data.subItem.map(el => el.label), this.categoryFilter) ? tmp.push(this.data.label) : removeElFromArr(tmp, this.data.label)
+      tmp.length === FILTER_LABEL.length - 1 && !tmp.some((e) => e === 'Tất cả nhà đất') ? tmp.push('Tất cả nhà đất') : removeElFromArr(tmp, 'Tất cả nhà đất')
+      this.$store.dispatch('properties/filterChange', {data: tmp})
     }
   }
 }
