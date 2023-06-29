@@ -26,6 +26,7 @@
 
 <script>
 import FilterItem from './FilterItem.vue'
+import { removeElFromArr, cloneDeep } from '@/helpers/arrayHandler'
 import {FILTER_OPTION} from '@/consts/label.js'
 export default {
   components: {
@@ -40,7 +41,13 @@ export default {
   computed: {
     categoryFilter: {
       get () {
-        return this.$store.getters['properties/categoryFilter']
+        let tmp = cloneDeep(this.$store.getters['properties/categoryFilter'])
+        tmp.map(el => {
+          el === 'Tất cả nhà đất' ? removeElFromArr(tmp, 'Tất cả nhà đất') : FILTER_OPTION.map(item => {
+            item.label === el && item.subItem && item.subItem.map(subEl => removeElFromArr(tmp, subEl.label))
+          })
+        })
+        return tmp
       }
     }
   },

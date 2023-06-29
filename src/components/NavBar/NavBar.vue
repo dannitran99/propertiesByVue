@@ -17,9 +17,7 @@
         <input/>
       </div>
       <div class="divider"></div>
-      <div class="wide">
-        <filter-category/>
-      </div>
+      <filter-category class="wide"/>
       <div class="divider"></div>
       <div class="filter wide">
         <div class="title-dv">
