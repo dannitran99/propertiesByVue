@@ -2,12 +2,14 @@ import NavBar from '@/components/NavBar'
 import NewsHomePage from '@/components/NewsHomePage'
 import PropertiesHomePage from '@/components/PropertiesHomePage'
 import BreadCrumb from '@/components/BreadCrumb'
+import Properties from '@/components/Properties'
 
 const commonElements = {
   NavBar,
   NewsHomePage,
   PropertiesHomePage,
-  BreadCrumb
+  BreadCrumb,
+  Properties
 }
 
 export default {
