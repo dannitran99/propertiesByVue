@@ -1,8 +1,11 @@
 <template>
   <div class="nav-wrapper">
-    <ul class="menu-list">
-      <nav-bar-button v-for="item in menu" v-bind:key="item.label" v-bind:label="item.label" v-bind:href="item.href" v-bind:submenu="item.sub" v-bind:path="item.path"/>
-    </ul>
+    <div class="nav-header" data-app>
+      <ul class="menu-list">
+        <nav-bar-button v-for="item in menu" v-bind:key="item.label" v-bind:label="item.label" v-bind:href="item.href" v-bind:submenu="item.sub" v-bind:path="item.path"/>
+      </ul>
+      <login-button/>
+    </div>
     <div v-if="isSale || isRent" class="search-nav">
       <div class="btn-tab">
         <router-link :to="{name: 'PropertiesForSale'}" :class="[{'active' : isSale}]">
@@ -95,13 +98,17 @@ export default {
     padding: 17px 15px;
 
     background-color: #fff;
-    margin: 0 auto;
+    margin: 0;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
   }
   .nav-wrapper{
     box-shadow: 0 4px 10px hsla(0,0%,71%,.18);
+  }
+  .nav-header{
+    display: flex;
+    justify-content: space-between;
   }
   .search-nav{
     border-top: 1px solid #F2F2F2;

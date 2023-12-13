@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 import commonComponents from './plugins/common-components'
 import iconPackage from './plugins/icon-package'
+import vuetify from './plugins/vuetify'
 
 Vue.config.productionTip = false
 
@@ -17,6 +18,7 @@ new Vue({
   el: '#app',
   router,
   store,
+  vuetify,
   components: { App },
   template: '<App/>'
 })

@@ -22,3 +22,7 @@ export const formatTimeCalendar = (input) => {
     sameElse: '[vào] L'
   })
 }
+
+export const formatDateTime = (input) => {
+  return moment(input).format('DD/MM/YYYY HH:mm')
+}

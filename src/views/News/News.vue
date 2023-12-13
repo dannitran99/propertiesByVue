@@ -1,165 +1,71 @@
 <template>
-  <div>
+  <div >
     <bread-crumb v-bind:items="breadCrumb"/>
-    <div  ref="keybox" class="ww">
-      <h1>testtttt</h1>
+    <div class="content-wrapper">
+      <div class="content-header">
+        <h1>Tin tức bất động sản mới nhất</h1>
+        <p>Thông tin mới, đầy đủ, hấp dẫn về thị trường bất động sản Việt Nam thông qua dữ liệu lớn về giá,<br/> giao dịch, nguồn cung - cầu và khảo sát thực tế của đội ngũ phóng viên, biên tập</p>
+      </div>
+      <div class="content-main">
+        <news-card-skeleton v-if="isLoading"/>
+        <news-card v-else v-for="item in news" :key="item.id" :data="item"/>
+      </div>
     </div>
-    <div  ref="keybox1" class="ww">
-      <h1>testtttt</h1>
-    </div>
-    <div  ref="keybox2" class="ww">
-      <h1>testtttt</h1>
-    </div>
-    <div  ref="keybox3" class="ww">
-      <h1>testtttt</h1>
-    </div>
-    <div  ref="keybox4" class="ww">
-      <h1>testtttt</h1>
-    </div>
-    <div  ref="keybox5" class="ww">
-      <h1>testtttt</h1>
-    </div>
-    <div  ref="keybox6" class="ww">
-      <h1>testtttt</h1>
-    </div>
-    <div  ref="keybox7" class="ww">
-      <h1>testtttt</h1>
-    </div>
-    <div  ref="keybox8" class="ww">
-      <h1>testtttt</h1>
-    </div>
-    <div  ref="keybox9" class="ww">
-      <h1>testtttt</h1>
-    </div>
-    <div  ref="keybox10" class="ww">
-      <h1>testtttt</h1>
-    </div>
-    <div  ref="keybox11" class="ww">
-      <h1>testtttt</h1>
-    </div>
+
   </div>
 </template>
 
 <script>
-import {ref, onMounted} from 'vue'
-import { gsap } from 'gsap'
-
+import NewsCard from '../../components/News/NewsCard/NewsCard.vue'
+import NewsCardSkeleton from '../../components/News/NewsCard/NewsCardSkeleton.vue'
 export default {
-  setup () {
-    const keybox = ref()
-    const keybox1 = ref()
-    const keybox2 = ref()
-    const keybox3 = ref()
-    const keybox4 = ref()
-    const keybox5 = ref()
-    const keybox6 = ref()
-    const keybox7 = ref()
-    const keybox8 = ref()
-    const keybox9 = ref()
-    const keybox10 = ref()
-    const keybox11 = ref()
-    onMounted(() => {
-      gsap.from(keybox.value, {
-        delay: 0.5,
-        duration: 1,
-        y: '+100',
-        autoAlpha: 0,
-        ease: 'black.out(1.7)'
-      })
-      gsap.from(keybox1.value, {
-        delay: 0.5,
-        duration: 1,
-        y: '+100',
-        autoAlpha: 0,
-        ease: 'black.out(1.7)'
-      })
-      gsap.from(keybox2.value, {
-        delay: 0.5,
-        duration: 1,
-        y: '+100',
-        autoAlpha: 0,
-        ease: 'black.out(1.7)'
-      })
-      gsap.from(keybox3.value, {
-        delay: 0.5,
-        duration: 1,
-        y: '+100',
-        autoAlpha: 0,
-        ease: 'black.out(1.7)'
-      })
-      gsap.from(keybox4.value, {
-        delay: 0.5,
-        duration: 1,
-        y: '+100',
-        autoAlpha: 0,
-        ease: 'black.out(1.7)'
-      })
-      gsap.from(keybox5.value, {
-        delay: 0.5,
-        duration: 1,
-        y: '+100',
-        autoAlpha: 0,
-        ease: 'black.out(1.7)'
-      })
-      gsap.from(keybox6.value, {
-        delay: 0.5,
-        duration: 1,
-        y: '+100',
-        autoAlpha: 0,
-        ease: 'black.out(1.7)'
-      })
-      gsap.from(keybox7.value, {
-        delay: 0.5,
-        duration: 1,
-        y: '+100',
-        autoAlpha: 0,
-        ease: 'black.out(1.7)'
-      })
-      gsap.from(keybox8.value, {
-        delay: 0.5,
-        duration: 1,
-        y: '+100',
-        autoAlpha: 0,
-        ease: 'black.out(1.7)'
-      })
-      gsap.from(keybox9.value, {
-        delay: 0.5,
-        duration: 1,
-        y: '+100',
-        autoAlpha: 0,
-        ease: 'black.out(1.7)'
-      })
-      gsap.from(keybox10.value, {
-        delay: 0.5,
-        duration: 1,
-        y: '+100',
-        autoAlpha: 0,
-        ease: 'black.out(1.7)'
-      })
-      gsap.from(keybox11.value, {
-        delay: 0.5,
-        duration: 1,
-        y: '+100',
-        autoAlpha: 0,
-        ease: 'black.out(1.7)'
-      })
-    })
-    return {
-      keybox, keybox1, keybox2, keybox3, keybox4, keybox5, keybox6, keybox7, keybox8, keybox9, keybox10, keybox11
-    }
-  },
+  components: { NewsCard, NewsCardSkeleton },
   data () {
     return {
       breadCrumb: [
         'Tin tức'
       ]
     }
+  },
+  computed: {
+    isLoading: {
+      get () {
+        return this.$store.getters['news/loading']
+      }
+    },
+    news: {
+      get () {
+        return this.$store.getters['news/newsList']
+      }
+    }
+  },
+  async created () {
+    await this.$store.dispatch('news/getNewsList')
   }
 }
 </script>
 
 <style scoped>
-  .ww{
-    height: 200px;
-  }
+h1{
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 64px;
+  margin: 0;
+}
+.content-wrapper{
+  max-width: 1140px;
+  padding: 0 12px;
+  margin: auto;
+}
+.content-header{
+height: 224px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+.content-main{
+  width: calc(2 / 3 * 100%);
+}
+
 </style>

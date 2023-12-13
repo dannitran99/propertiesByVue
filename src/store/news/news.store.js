@@ -3,12 +3,16 @@ import { getNewsList, getNewById } from '@/api/news.api'
 export default {
   namespaced: true,
   state: {
+    isLoading: false,
     newsList: [],
     previewNewsItem: {},
     currentTab: 0,
     newContent: {}
   },
   getters: {
+    loading (state) {
+      return state.isLoading
+    },
     newsList (state) {
       return state.newsList
     },
@@ -26,7 +30,11 @@ export default {
     INIT_STATE (state) {
       state.newContent = {}
     },
-    GET_NEWS_LIST (state, data) {
+    GET_NEWS_LIST_PENDING (state) {
+      state.isLoading = true
+    },
+    GET_NEWS_LIST_FULFILL (state, data) {
+      state.isLoading = false
       state.newsList = data
     },
     GET_NEW_DATA (state, data) {
@@ -41,9 +49,10 @@ export default {
   },
   actions: {
     async getNewsList (context) {
+      context.commit('GET_NEWS_LIST_PENDING')
       const [error, response] = await getNewsList()
       if (!error && response) {
-        context.commit('GET_NEWS_LIST', response)
+        context.commit('GET_NEWS_LIST_FULFILL', response)
         response[0] && context.commit('SET_PREVIEW_NEW', response[0])
       } else {
         console.error(error)
