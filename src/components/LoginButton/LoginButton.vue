@@ -28,7 +28,8 @@
               label="Mật khẩu"
               type="password" id="password" v-model="password"
             ></v-text-field>
-            <button type="submit">Submit</button>
+            <button type="submit" class="btn-submit">Đăng nhập</button>
+            <p>{{ err }}</p>
           </form>
         </v-card-text>
       </v-card>
@@ -47,11 +48,13 @@ export default {
     return {
       dialog: false,
       username: '',
-      password: ''
+      password: '',
+      err: ''
     }
   },
   methods: {
     handleSubmit () {
+      this.err = ''
       const schema = Yup.object().shape({
         username: Yup.string().required(),
         password: Yup.string().min(8).required()
@@ -60,8 +63,14 @@ export default {
       schema.validate({ username: this.username, password: this.password })
         .then(() => {
           // Handle successful form submission
+          this.$store.dispatch('user/postLoginInfo', {
+            username: this.username,
+            password: this.password
+          })
         })
-        .catch()
+        .catch(() => {
+          this.err = 'Sai thông tin đăng nhập'
+        })
     }
   }
 }
@@ -71,6 +80,14 @@ export default {
   .btn-login{
     border: none;
     background-color: white;
+    cursor: pointer;
+  }
+  .btn-submit{
+    width: 100%;
+    background-color: red;
+    color: white;
+    padding: 1em;
+    border-radius: 10px;
     cursor: pointer;
   }
 </style>
