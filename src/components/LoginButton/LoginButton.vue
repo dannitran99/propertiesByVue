@@ -12,7 +12,7 @@
         </button>
       </template>
 
-      <v-card>
+      <v-card v-if="loginDialog">
         <v-card-title class="text-h5 grey lighten-2">
           Đăng nhập để tiếp tục
         </v-card-title>
@@ -29,8 +29,18 @@
               type="password" id="password" v-model="password"
             ></v-text-field>
             <button type="submit" class="btn-submit">Đăng nhập</button>
-            <p>{{ err }}</p>
+            <p class="txt-message-login">{{ err }}</p>
           </form>
+          <p class="alt-text">Chưa là thành viên? <span @click="changeDialog">Đăng ký</span> tại đây</p>
+        </v-card-text>
+      </v-card>
+      <v-card v-else>
+        <v-card-title class="text-h5 grey lighten-2">
+          Đăng ký tài khoản mới
+        </v-card-title>
+
+        <v-card-text>
+          <p class="alt-text">Bạn đã có tài khoản? <span @click="changeDialog">Đăng nhập</span> tại đây</p>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -46,15 +56,22 @@ export default {
   },
   data () {
     return {
+      loginDialog: true,
       dialog: false,
       username: '',
-      password: '',
-      err: ''
+      password: ''
+    }
+  },
+  computed: {
+    err: {
+      get () {
+        return this.$store.getters['user/err']
+      }
     }
   },
   methods: {
     handleSubmit () {
-      this.err = ''
+      this.$store.dispatch('user/setErrMessage', {message: ''})
       const schema = Yup.object().shape({
         username: Yup.string().required(),
         password: Yup.string().min(8).required()
@@ -67,10 +84,16 @@ export default {
             username: this.username,
             password: this.password
           })
+            .then(() => {
+              if (this.err === '') location.reload()
+            })
         })
         .catch(() => {
-          this.err = 'Sai thông tin đăng nhập'
+          this.$store.dispatch('user/setErrMessage', {message: 'Sai thông tin đăng nhập'})
         })
+    },
+    changeDialog () {
+      this.loginDialog = !this.loginDialog
     }
   }
 }
@@ -89,5 +112,22 @@ export default {
     padding: 1em;
     border-radius: 10px;
     cursor: pointer;
+  }
+  .txt-message-login{
+    margin-top: 10px;
+    color: red;
+    text-align: right;
+  }
+  .alt-text{
+    margin-top: 10px;
+    text-align: center;
+  }
+  .alt-text span{
+    font-weight: 700;
+    color: red;
+  }
+  .alt-text :hover{
+    cursor: pointer;
+    text-decoration: underline;
   }
 </style>

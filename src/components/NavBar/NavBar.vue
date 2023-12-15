@@ -4,7 +4,8 @@
       <ul class="menu-list">
         <nav-bar-button v-for="item in menu" v-bind:key="item.label" v-bind:label="item.label" v-bind:href="item.href" v-bind:submenu="item.sub" v-bind:path="item.path"/>
       </ul>
-      <login-button/>
+      <button v-if="login" @click="logout"><icon-logout/></button>
+      <login-button v-else/>
     </div>
     <div v-if="isSale || isRent" class="search-nav">
       <div class="btn-tab">
@@ -77,13 +78,23 @@ export default {
     return {
       isSale: false,
       isRent: false,
-      menu: MENU_ITEM
+      menu: MENU_ITEM,
+      login: false
     }
+  },
+  created () {
+    this.login = !!localStorage.getItem('token')
   },
   watch: {
     '$route' () {
       this.isSale = this.$route.path.includes('nha-dat-ban')
       this.isRent = this.$route.path.includes('nha-dat-cho-thue')
+    }
+  },
+  methods: {
+    logout: () => {
+      localStorage.removeItem('token')
+      location.reload()
     }
   }
 }
@@ -95,7 +106,7 @@ export default {
     align-items: center;
     gap: 1rem;
     height: 62px;
-    padding: 17px 15px;
+    padding: 17px 15px 7px 15px;
 
     background-color: #fff;
     margin: 0;
@@ -107,6 +118,7 @@ export default {
     box-shadow: 0 4px 10px hsla(0,0%,71%,.18);
   }
   .nav-header{
+    padding: 5px 15px;
     display: flex;
     justify-content: space-between;
   }
