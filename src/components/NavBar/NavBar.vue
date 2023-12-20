@@ -216,7 +216,6 @@ export default {
   .filter >:last-child{
     font-size: 14px;
     line-height: 20px;
-    line-height: 20px;
     color: #2C2C2C;
     white-space: nowrap;
     overflow: hidden;

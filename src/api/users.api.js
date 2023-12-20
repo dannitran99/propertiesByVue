@@ -9,6 +9,15 @@ export const postLoginInfo = async (dataPost) => {
   }
 }
 
+export const postRegister = async (dataPost) => {
+  try {
+    const { data } = await HTTP.post('/api/register', dataPost)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
 export default {
   postLoginInfo
 }
