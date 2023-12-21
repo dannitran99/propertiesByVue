@@ -2,6 +2,7 @@
     <v-dialog
       v-model="dialog"
       width="500"
+      @click:outside="closeDialog"
     >
       <template v-slot:activator="{ on, attrs }">
         <button class="btn-login"
@@ -12,7 +13,7 @@
         </button>
       </template>
 
-      <v-card v-if="loginDialog" class="card-wrapper">
+      <v-card v-if="loginDialog" :class="['card-wrapper', {'card-loading': isLoading}]">
         <v-card-title class="text-h5 grey lighten-2">
           Đăng nhập để tiếp tục
         </v-card-title>
@@ -33,9 +34,9 @@
           </form>
           <p class="alt-text">Chưa là thành viên? <span @click="changeDialog">Đăng ký</span> tại đây</p>
         </v-card-text>
-        <v-progress-circular indeterminate class="loading" ></v-progress-circular>
+        <v-progress-circular indeterminate class="loading" v-if="isLoading"></v-progress-circular>
       </v-card>
-      <v-card v-else class="card-wrapper">
+      <v-card v-else :class="['card-wrapper', {'card-loading': isLoading}]">
         <v-card-title class="text-h5 grey lighten-2">
           Đăng ký tài khoản mới
         </v-card-title>
@@ -106,15 +107,17 @@ export default {
       }
     }
   },
-  // created () {
-  //   this.username = ''
-  //   this.password = ''
-  //   this.newUsername = ''
-  //   this.newPassword = ''
-  //   this.confirmPassword = ''
-  //   this.email = ''
-  // },
   methods: {
+    closeDialog () {
+      this.username = ''
+      this.password = ''
+      this.newUsername = ''
+      this.newPassword = ''
+      this.confirmPassword = ''
+      this.email = ''
+      this.$store.dispatch('user/setErrMessageRegister', {message: ''})
+      this.$store.dispatch('user/setErrMessage', {message: ''})
+    },
     handleSubmit () {
       this.$store.dispatch('user/setErrMessage', {message: ''})
       const schema = Yup.object().shape({
@@ -202,6 +205,9 @@ export default {
   }
   .card-wrapper{
     position: relative;
+  }
+  .card-loading{
+    filter: brightness(.5);
   }
   .loading{
     position: absolute;
