@@ -4,7 +4,12 @@
       <ul class="menu-list">
         <nav-bar-button v-for="item in menu" v-bind:key="item.label" v-bind:label="item.label" v-bind:href="item.href" v-bind:submenu="item.sub" v-bind:path="item.path"/>
       </ul>
-      <button v-if="login" @click="logout"><icon-logout/></button>
+      <div v-if="login" class="account-info">
+        <router-link :to="{name: 'PostProperty'}" >
+          Đăng tin
+        </router-link>
+        <button  @click="logout"><icon-logout/></button>
+      </div>
       <login-button v-else/>
     </div>
     <div v-if="isSale || isRent" class="search-nav">
@@ -94,6 +99,7 @@ export default {
   methods: {
     logout: () => {
       localStorage.removeItem('token')
+      localStorage.removeItem('username')
       location.reload()
     }
   }
@@ -224,5 +230,10 @@ export default {
   .title-dv{
     display: flex;
     gap: 5px;
+  }
+  .account-info{
+    display: flex;
+    align-items: center;
+    gap: 20px;
   }
 </style>

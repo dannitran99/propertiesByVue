@@ -50,7 +50,8 @@ export default {
       context.commit('LOADING_STATE', true)
       const [error, response] = await postLoginInfo(payload)
       if (!error && response) {
-        localStorage.setItem('token', response)
+        localStorage.setItem('token', response.token)
+        localStorage.setItem('username', response.username)
         context.commit('LOGIN_SUCCESS')
       } else {
         context.commit('LOGIN_POST_ERROR', error)

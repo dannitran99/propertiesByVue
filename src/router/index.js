@@ -12,6 +12,16 @@ export default new Router({
       component: () => import('@/views/HomePage')
     },
     {
+      path: '/dang-tin',
+      name: 'PostProperty',
+      component: () => import('@/views/PostProperty')
+    },
+    {
+      path: '/danh-sach',
+      name: 'UserPropertyManager',
+      component: () => import('@/views/UserPropertyManager')
+    },
+    {
       path: '/tin-tuc',
       name: 'News',
       component: () => import('@/views/News')

@@ -19,7 +19,7 @@ import Warehouse from '@/components/icons/Warehouse.vue'
 import PinMap from '@/components/icons/PinMap.vue'
 import HouseGroup from '@/components/icons/HouseGroup.vue'
 import Logout from '@/components/icons/Logout.vue'
-
+import LeftArrow from '@/components/icons/LeftArrow.vue'
 const iconElements = {
   RightArrow,
   Home,
@@ -41,7 +41,8 @@ const iconElements = {
   HouseGroup,
   PinMap,
   Warehouse,
-  Logout
+  Logout,
+  LeftArrow
 }
 
 export default {
