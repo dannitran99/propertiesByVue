@@ -31,7 +31,9 @@
               placeholder="Chọn"
               dense
               outlined
+              :items="cityItem.map(item => item.name)"
               v-model="city"
+              @change="onChangeCity"
             ></v-combobox>
           </v-col>
           <v-col
@@ -44,11 +46,13 @@
               placeholder="Chọn"
               dense
               outlined
+              :items="districtItem.map(item => item.name)"
               v-model="district"
+              @change="onChangeDistrict"
             ></v-combobox>
           </v-col>
         </v-row>
-        <v-row >
+        <v-row class="row-pos">
           <v-col
             class="col-form"
             cols="12"
@@ -59,6 +63,7 @@
               placeholder="Chọn"
               dense
               outlined
+              :items="wardItem.map(item => item.name)"
               v-model="ward"
             ></v-combobox>
           </v-col>
@@ -76,6 +81,88 @@
             ></v-combobox>
           </v-col>
         </v-row>
+        <p class="txt-label">Dự án</p>
+        <v-combobox
+          placeholder="Chọn"
+          dense
+          outlined
+          v-model="project"
+        ></v-combobox>
+        <p class="txt-label">Địa chỉ hiển thị trên tin đăng <span>*</span></p>
+        <v-text-field
+          placeholder="Bạn có thể bổ sung hẻm, ngách, ngõ..."
+          dense
+          outlined
+          v-model="moreInfo"
+        ></v-text-field>
+      </div>
+      <div class="paper">
+        <h2>Thông tin bài viết</h2>
+        <p class="txt-label mt-4">Tiêu đề <span>*</span></p>
+        <v-textarea
+          placeholder="VD: Bán nhà riêng 50m2 chính chủ tại Cầu Giấy"
+          dense
+          outlined
+          rows="2"
+          no-resize
+          v-model="title"
+        ></v-textarea>
+        <p class="txt-description">Tối thiểu 30 ký tự, tối đa 99 ký tự</p>
+        <p class="txt-label">Mô tả <span>*</span></p>
+        <v-textarea
+          placeholder="Nhập mô tả chung về bất động sản của bạn. Ví dụ: Khu nhà có vị trí thuận lợi, gần công viên, gần trường học ... "
+          dense
+          outlined
+          rows="6"
+          no-resize
+          v-model="description"
+        ></v-textarea>
+        <p class="txt-description">Tối thiểu 30 ký tự, tối đa 3.000 ký tự</p>
+      </div>
+      <div class="paper">
+        <h2>Thông tin bất động sản</h2>
+        <p class="txt-label mt-4">Diện tích <span>*</span></p>
+        <v-text-field
+          placeholder="Nhập diện tích, VD 80"
+          dense
+          outlined
+          type="number"
+          v-model="area"
+          hide-spin-buttons
+        ></v-text-field>
+        <v-row class="row-pos">
+          <v-col
+            class="col-form"
+            cols="12"
+            sm="8"
+          >
+            <p class="txt-label">Mức giá <span>*</span></p>
+            <v-text-field
+              placeholder="Nhập giá, VD 12000000"
+              dense
+              outlined
+              type="number"
+              v-model="price"
+              hide-spin-buttons
+            ></v-text-field>
+          </v-col>
+          <v-col
+            class="col-form"
+            cols="12"
+            sm="4"
+          >
+            <p class="txt-label">Đơn vị</p>
+            <v-select
+              dense
+              outlined
+              :items="priceTypeItem"
+              v-model="priceType"
+            ></v-select>
+          </v-col>
+        </v-row>
+      </div>
+      <div class="paper">
+        <h2>Hình ảnh & Video</h2>
       </div>
     </div>
   </div>
@@ -93,6 +180,13 @@ export default {
       district: '',
       ward: '',
       street: '',
+      project: '',
+      moreInfo: '',
+      title: '',
+      description: '',
+      area: '',
+      price: '',
+      priceType: 'VND',
       saleItem: [
         'Bán căn hộ chung cư',
         'Bán nhà riêng',
@@ -105,12 +199,50 @@ export default {
         'Bán condotel',
         'Bán kho, nhà xưởng',
         'Bán loại bất động sản khác'
+      ],
+      priceTypeItem: [
+        'VND',
+        'Giá / m²',
+        'Thỏa thuận'
       ]
     }
+  },
+  computed: {
+    cityItem: {
+      get () {
+        return this.$store.getters['common/city']
+      }
+    },
+    districtItem: {
+      get () {
+        return this.$store.getters['common/district']
+      }
+    },
+    wardItem: {
+      get () {
+        return this.$store.getters['common/ward']
+      }
+    }
+  },
+  async created () {
+    await this.$store.dispatch('common/getCity')
   },
   methods: {
     onChangeType (typechange) {
       this.type = typechange
+    },
+    async onChangeCity (input) {
+      this.district = ''
+      this.ward = ''
+      this.street = ''
+      const code = this.cityItem.find(item => item.name === input).code
+      await this.$store.dispatch('common/getDistrict', code)
+    },
+    async onChangeDistrict (input) {
+      this.ward = ''
+      this.street = ''
+      const code = this.districtItem.find(item => item.name === input).code
+      await this.$store.dispatch('common/getWard', code)
     }
   }
 }
@@ -121,11 +253,15 @@ export default {
   display: flex;
 }
 .main-area{
+  overflow: auto;
+  height: calc(100vh - 72px) ;
   background-color: rgb(249, 249, 249);
   width: 100%;
   padding-top: 24px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 .paper{
   width: 696px;
@@ -178,10 +314,20 @@ export default {
     line-height: 20px;
     font-weight: 600;
   }
+  .txt-description{
+    margin-top: -10px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    color: rgb(80, 80, 80);
+  }
   .txt-label span{
     color: red;
   }
   .col-form{
     padding: 0 12px;
+  }
+  .row-pos{
+    margin-top: 0;
   }
 </style>
