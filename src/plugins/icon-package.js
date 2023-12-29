@@ -20,6 +20,10 @@ import PinMap from '@/components/icons/PinMap.vue'
 import HouseGroup from '@/components/icons/HouseGroup.vue'
 import Logout from '@/components/icons/Logout.vue'
 import LeftArrow from '@/components/icons/LeftArrow.vue'
+import ImageUploader from '@/components/icons/ImageUploader.vue'
+import CloseWB from '@/components/icons/CloseWB.vue'
+import RightArrowWC from '@/components/icons/RightArrowWC.vue'
+import MediaPlay from '@/components/icons/MediaPlay.vue'
 const iconElements = {
   RightArrow,
   Home,
@@ -42,7 +46,11 @@ const iconElements = {
   PinMap,
   Warehouse,
   Logout,
-  LeftArrow
+  LeftArrow,
+  ImageUploader,
+  CloseWB,
+  RightArrowWC,
+  MediaPlay
 }
 
 export default {

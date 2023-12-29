@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <side-bar/>
-    <div class="main-area">
+    <form @submit.prevent="handleSubmit" class="main-area">
       <div class="paper">
         <h2>Thông tin cơ bản</h2>
         <div class="btn-tab">
@@ -17,7 +17,7 @@
           placeholder="VD: Nhà riêng"
           dense
           outlined
-          :items="saleItem"
+          :items="type === 'sale' ?saleItem:rentItem"
           v-model="propertyType"
         ></v-select>
         <v-row >
@@ -163,15 +163,114 @@
       </div>
       <div class="paper">
         <h2>Hình ảnh & Video</h2>
+        <input accept="image/*,.heic" multiple="" type="file" autocomplete="off" tabindex="-1" style="display: none;" ref="fileInput" @change="onFileSelected">
+        <div class="img-upload-place" @click="selectFiles" @dragover.prevent="onDragOver" @dragleave.prevent="onDragLeave" @drop.prevent="onDrop">
+          <icon-imageuploader/>
+          <p class="txt-upload-primary">Bấm để chọn ảnh cần tải lên</p>
+          <p class="txt-upload-secondary">hoặc kéo thả ảnh vào đây</p>
+        </div>
+        <div v-if="images.length" class="img-preview">
+          <div class="image-item" v-for="(image, index) in images" :key="index">
+            <div class="img-holder">
+              <img :src="image.url" :alt="image.name"/>
+              <div class="close-btn" @click="deleteImg(index)">
+                <icon-closewb/>
+              </div>
+            </div>
+            <v-text-field
+              placeholder="Thêm mô tả"
+              hide-details="true"
+              dense
+              outlined
+              class="mt-2"
+              v-model="image.description"
+            ></v-text-field>
+          </div>
+        </div>
+        <v-expansion-panels class="mt-2">
+          <v-expansion-panel>
+            <v-expansion-panel-header >
+              <div class="collapse-header">
+                <icon-mediaplay/>
+                Thêm video từ Youtube hoặc Tiktok
+              </div>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-text-field
+                placeholder="Dán đường dẫn Youtube hoặc Tiktok"
+                hide-details="true"
+                dense
+                outlined
+                v-model="url"
+              ></v-text-field>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </div>
-    </div>
+      <div class="paper">
+        <h2>Thông tin liên hệ</h2>
+        <v-row class="row-pos">
+          <v-col
+            class="col-form"
+            cols="12"
+            sm="6"
+          >
+            <p class="txt-label mt-4">Tên liên hệ <span>*</span></p>
+            <v-text-field
+              placeholder="Nhập tên"
+              dense
+              outlined
+              v-model="name"
+            ></v-text-field>
+          </v-col>
+          <v-col
+            class="col-form"
+            cols="12"
+            sm="6"
+          >
+            <p class="txt-label mt-4">Số điện thoại <span>*</span></p>
+            <v-text-field
+              placeholder="Nhập số điện thoại"
+              dense
+              outlined
+              type="number"
+              v-model="phoneNumber"
+              hide-spin-buttons
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row class="row-pos">
+          <v-col
+            class="col-form"
+            cols="12"
+            sm="6"
+          >
+            <p class="txt-label mt-4">Email</p>
+            <v-text-field
+              placeholder="Nhập email"
+              dense
+              outlined
+              type="email"
+              v-model="email"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </div>
+      <div class="paper sticky-wrapper">
+        <button type="submit" class="btn-submit">Đăng tin <icon-rightarrowwc/></button>
+      </div>
+    </form>
   </div>
 </template>
 
 <script>
 import SideBar from '../../components/SideBar'
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import * as Yup from 'yup'
 export default {
-  components: { SideBar },
+  components: { SideBar,
+    ValidationProvider,
+    ValidationObserver},
   data () {
     return {
       type: 'sale',
@@ -187,6 +286,12 @@ export default {
       area: '',
       price: '',
       priceType: 'VND',
+      images: [],
+      url: '',
+      name: '',
+      email: '',
+      phoneNumber: '',
+      isDragging: false,
       saleItem: [
         'Bán căn hộ chung cư',
         'Bán nhà riêng',
@@ -199,6 +304,18 @@ export default {
         'Bán condotel',
         'Bán kho, nhà xưởng',
         'Bán loại bất động sản khác'
+      ],
+      rentItem: [
+        'Cho thuê căn hộ chung cư',
+        'Cho thuê nhà riêng',
+        'Cho thuê nhà biệt thự, liền kề',
+        'Cho thuê nhà mặt phố',
+        'Cho thuê shophouse, nhà phố thương mại',
+        'Cho thuê nhà trọ, phòng trọ',
+        'Cho thuê văn phòng',
+        'Cho thuê, sang nhượng cửa hàng, ki ốt',
+        'Cho thuê kho, nhà xưởng, đất',
+        'Cho thuê loại bất động sản khác'
       ],
       priceTypeItem: [
         'VND',
@@ -243,6 +360,98 @@ export default {
       this.street = ''
       const code = this.districtItem.find(item => item.name === input).code
       await this.$store.dispatch('common/getWard', code)
+    },
+    selectFiles () {
+      this.$refs.fileInput.click()
+    },
+    onFileSelected (event) {
+      const files = event.target.files
+      // eslint-disable-next-line no-useless-return
+      if (files.length === 0) return
+      for (const element of files) {
+        if (element.type.split('/')[0] !== 'image') continue
+        if (!this.images.some(e => e.name === element.name)) {
+          this.images.push({name: element.name, url: URL.createObjectURL(element), description: ''})
+        }
+      }
+      console.log(this.images)
+    },
+    deleteImg (idx) {
+      this.images.splice(idx, 1)
+    },
+    onDragOver (event) {
+      event.preventDefault()
+      this.isDragging = true
+      event.dataTransfer.dropEffect = 'copy'
+    },
+    onDragLeave (event) {
+      event.preventDefault()
+      this.isDragging = false
+    },
+    onDrop (event) {
+      event.preventDefault()
+      this.isDragging = false
+      const files = event.dataTransfer.files
+      for (const element of files) {
+        if (element.type.split('/')[0] !== 'image') continue
+        if (!this.images.some(e => e.name === element.name)) {
+          this.images.push({name: element.name, url: URL.createObjectURL(element), description: ''})
+        }
+      }
+    },
+    handleSubmit () {
+      const schema = Yup.object().shape({
+        type: Yup.string().required(),
+        propertyType: Yup.string().required(),
+        city: Yup.string().required(),
+        district: Yup.string().required(),
+        ward: Yup.string().required(),
+        street: Yup.string(),
+        project: Yup.string(),
+        moreInfo: Yup.string().required(),
+        title: Yup.string().min(30).max(99).required(),
+        description: Yup.string().min(30).max(3000).required(),
+        area: Yup.number().required(),
+        price: Yup.number().required(),
+        priceType: Yup.string().required(),
+        images: Yup.array(),
+        url: Yup.string(),
+        name: Yup.string().required(),
+        phoneNumber: Yup.number().required(),
+        email: Yup.string().email()
+      })
+      schema.validate(
+        { type: this.type,
+          propertyType: this.propertyType,
+          city: this.city,
+          district: this.district,
+          ward: this.ward,
+          street: this.street,
+          project: this.project,
+          moreInfo: this.moreInfo,
+          title: this.title,
+          description: this.description,
+          area: Number(this.area),
+          price: Number(this.price),
+          priceType: this.priceType,
+          images: this.images,
+          url: this.url,
+          name: this.name,
+          phoneNumber: Number(this.phoneNumber),
+          email: this.email }
+      )
+        .then(() => {
+          // this.$store.dispatch('user/postLoginInfo', {
+          //   username: this.username,
+          //   password: this.password
+          // })
+          //   .then(() => {
+          //     if (this.errLogin === '') location.reload()
+          //   })
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 }
@@ -269,6 +478,14 @@ export default {
   background-color: rgb(255, 255, 255);
   box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 4px;
   border-radius: 4px;
+}
+.sticky-wrapper{
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 8px 24px;
+  position: sticky;
+  bottom: 0px;
+  z-index: 10;
 }
 .btn-tab{
     margin-top: 16px;
@@ -330,4 +547,90 @@ export default {
   .row-pos{
     margin-top: 0;
   }
+.img-upload-place{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  width: 100%;
+  height: 138px;
+  border: 1px dashed rgb(242, 242, 242);
+  cursor: pointer;
+}
+.txt-upload-primary{
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: rgb(44, 44, 44);
+  margin: 0;
+}
+.txt-upload-secondary{
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: rgb(153, 153, 153);
+  margin: 0;
+}
+.img-preview{
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.image-item{
+  width: calc(100% / 3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 4px 16px 4px;
+}
+.img-holder{
+  position: relative;
+  width:100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(64px);
+  height: 100%;
+  border-radius: 2px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.close-btn{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: white;
+  border-radius: 50% ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  border: 1px solid rgb(204, 204, 204);
+}
+.image-item img{
+  max-width: -webkit-fill-available;
+  height: 120px;
+  object-fit: cover;
+}
+.btn-submit{
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 48px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: rgb(224, 60, 49);
+  padding: 12px 8px 12px 16px;
+  color: rgb(255, 255, 255);
+  opacity: 1;
+  border: none;
+}
+.collapse-header{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
 </style>
