@@ -1,14 +1,14 @@
 <template>
   <router-link :to="{name: 'PropertiesDetail',params: {propertiesId: data.ID,}}" class="wrapper">
       <div class="thumbnail">
-        <img v-bind:src="data.picture[0]"/>
+        <img v-bind:src="data.images[0].url" :alt="data.images[0].name"/>
         <div class="img-holder">
           <icon-photo/>
-          <span><b>{{ data.picture.length }}</b></span>
+          <span><b>{{ data.images.length }}</b></span>
         </div>
     </div>
     <div class="card-content">
-      <h3>{{ data.name }}</h3>
+      <h3>{{ data.title }}</h3>
       <div class="info-txt">
         <p class="txt-ct">{{ formatCurrency }}</p>
         <p>·</p>
@@ -16,7 +16,7 @@
       </div>
       <div class="address-txt">
         <icon-mappoint/>
-        <span>{{ data.address }}</span>
+        <span>{{ formatAddress }}</span>
       </div>
       <div class="time-txt">
         <p>{{ formatTimeCalendar }}</p>
@@ -45,6 +45,9 @@ export default {
     },
     formatTimeCalendar: function () {
       return `Đăng ${formatTimeCalendar(this.data.createdAt)}`
+    },
+    formatAddress: function () {
+      return `${this.data.district.split(' ').splice(1).join(' ')}, ${this.data.city}`
     }
   }
 }
@@ -62,6 +65,9 @@ export default {
     box-sizing: content-box;
     background: #fff;
     cursor: pointer;
+  }
+  p{
+    margin: 0;
   }
   .wrapper:hover{
     box-shadow: 0px 4px 16px 0px rgba(44,44,44,0.08);
@@ -130,8 +136,7 @@ export default {
     font-size: 16px;
     line-height: 26px;
     font-weight: 600;
-    color: #E03C31;
-    line-height: 26px;
+    color: #E03C31
   }
   .time-txt{
     margin-top: 16px;

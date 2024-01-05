@@ -9,6 +9,15 @@ export const getPropertiesList = async () => {
   }
 }
 
+export const postProperties = async (dataPost) => {
+  try {
+    const { data } = await HTTP.post('/api/postProperties', dataPost)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
 export default {
   getPropertiesList
 }

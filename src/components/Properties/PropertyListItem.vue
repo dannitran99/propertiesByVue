@@ -1,10 +1,10 @@
 <template>
   <div class="item-card">
     <div class="img-card">
-        <img v-bind:src="data.picture[0]"/>
+        <img v-bind:src="data.images[0].url" :alt="data.images[0].name"/>
         <div class="img-holder">
           <icon-photo/>
-          <span><b>{{ data.picture.length }}</b></span>
+          <span><b>{{ data.images.length }}</b></span>
         </div>
     </div>
     <div class="card-detail">{{data.name}}</div>

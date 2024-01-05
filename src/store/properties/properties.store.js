@@ -1,8 +1,10 @@
-import { getPropertiesList } from '@/api/properties.api'
+import { getPropertiesList, postProperties } from '@/api/properties.api'
+import { postImg } from '@/api/cloudinary.api'
 
 export default {
   namespaced: true,
   state: {
+    isLoading: false,
     propertiesList: [],
     categoryFilter: []
   },
@@ -15,6 +17,9 @@ export default {
     }
   },
   mutations: {
+    LOADING_STATE (state, payload) {
+      state.isLoading = payload
+    },
     GET_PROPERTIES_LIST (state, data) {
       state.propertiesList = data
     },
@@ -33,6 +38,23 @@ export default {
     },
     filterChange (context, payload) {
       context.commit('CHANGE_FILTER', payload.data)
+    },
+    async postProperties (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await postProperties(payload)
+      if (!error && response) {
+        console.log(response)
+      } else {
+        // context.commit('LOGIN_POST_ERROR', error)
+      }
+    },
+    async postImg (context, payload) {
+      const [error, response] = await postImg(payload)
+      if (!error && response) {
+        return response
+      } else {
+        return error
+      }
     }
   }
 }

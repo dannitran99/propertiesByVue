@@ -258,6 +258,7 @@
       </div>
       <div class="paper sticky-wrapper">
         <button type="submit" class="btn-submit">Đăng tin <icon-rightarrowwc/></button>
+        <p>{{ errorMessage }}</p>
       </div>
     </form>
   </div>
@@ -292,6 +293,7 @@ export default {
       email: '',
       phoneNumber: '',
       isDragging: false,
+      errorMessage: '',
       saleItem: [
         'Bán căn hộ chung cư',
         'Bán nhà riêng',
@@ -371,10 +373,17 @@ export default {
       for (const element of files) {
         if (element.type.split('/')[0] !== 'image') continue
         if (!this.images.some(e => e.name === element.name)) {
-          this.images.push({name: element.name, url: URL.createObjectURL(element), description: ''})
+          const post = new FormData()
+          post.append('file', element)
+          post.append('upload_preset', 'nucez74c')
+          post.append('cloud_name', 'dadyvbcci')
+          this.$store.dispatch('properties/postImg', post).then(
+            (res) => {
+              this.images.push({name: element.name, url: res.url, description: ''})
+            }
+          )
         }
       }
-      console.log(this.images)
     },
     deleteImg (idx) {
       this.images.splice(idx, 1)
@@ -395,29 +404,37 @@ export default {
       for (const element of files) {
         if (element.type.split('/')[0] !== 'image') continue
         if (!this.images.some(e => e.name === element.name)) {
-          this.images.push({name: element.name, url: URL.createObjectURL(element), description: ''})
+          const post = new FormData()
+          post.append('file', element)
+          post.append('upload_preset', 'nucez74c')
+          post.append('cloud_name', 'dadyvbcci')
+          this.$store.dispatch('properties/postImg', post).then(
+            (res) => {
+              this.images.push({name: element.name, url: res.url, description: ''})
+            }
+          )
         }
       }
     },
     handleSubmit () {
       const schema = Yup.object().shape({
         type: Yup.string().required(),
-        propertyType: Yup.string().required(),
-        city: Yup.string().required(),
-        district: Yup.string().required(),
-        ward: Yup.string().required(),
+        propertyType: Yup.string().required('Vui lòng chọn loại bất động sản'),
+        city: Yup.string().required('Vui lòng chọn tỉnh, thành phố'),
+        district: Yup.string().required('Vui lòng chọn quận, huyện'),
+        ward: Yup.string().required('Vui lòng chọn phường, xã'),
         street: Yup.string(),
         project: Yup.string(),
-        moreInfo: Yup.string().required(),
-        title: Yup.string().min(30).max(99).required(),
-        description: Yup.string().min(30).max(3000).required(),
-        area: Yup.number().required(),
-        price: Yup.number().required(),
-        priceType: Yup.string().required(),
+        moreInfo: Yup.string().required('Vui lòng nhập địa chỉ hiển thị'),
+        title: Yup.string().min(30, 'Tiêu đề tối thiểu 30 ký tự').max(99, 'Tiêu đề không quá 99 ký tự').required('Vui lòng nhập tiêu đề'),
+        description: Yup.string().min(30, 'Mô tả tối thiểu 30 ký tự').max(3000, 'Mô tả không vượt quá 3000 ký tự').required('Vui lòng nhập mô tả'),
+        area: Yup.number().required('Vui lòng nhập diện tích'),
+        price: Yup.number().required('Vui lòng nhập mức giá'),
+        priceType: Yup.string().required('Vui lòng nhập đơn vị'),
         images: Yup.array(),
         url: Yup.string(),
-        name: Yup.string().required(),
-        phoneNumber: Yup.number().required(),
+        name: Yup.string().required('Vui lòng nhập tên liên lạc'),
+        phoneNumber: Yup.number().required('Vui lòng nhập số điện thoại'),
         email: Yup.string().email()
       })
       schema.validate(
@@ -431,26 +448,47 @@ export default {
           moreInfo: this.moreInfo,
           title: this.title,
           description: this.description,
-          area: Number(this.area),
-          price: Number(this.price),
+          area: Number(this.area) ? Number(this.area) : undefined,
+          price: Number(this.price) ? Number(this.price) : undefined,
           priceType: this.priceType,
           images: this.images,
           url: this.url,
           name: this.name,
-          phoneNumber: Number(this.phoneNumber),
+          phoneNumber: Number(this.phoneNumber) ? Number(this.phoneNumber) : undefined,
           email: this.email }
       )
         .then(() => {
-          // this.$store.dispatch('user/postLoginInfo', {
-          //   username: this.username,
-          //   password: this.password
+          this.errorMessage = ''
+          this.$store.dispatch('properties/postProperties', {
+            type: this.type,
+            propertyType: this.propertyType,
+            city: this.city,
+            district: this.district,
+            ward: this.ward,
+            street: this.street,
+            project: this.project,
+            moreInfo: this.moreInfo,
+            title: this.title,
+            description: this.description,
+            area: Number(this.area),
+            price: Number(this.price),
+            priceType: this.priceType,
+            images: this.images,
+            url: this.url,
+            name: this.name,
+            phoneNumber: this.phoneNumber,
+            email: this.email,
+            user: localStorage.getItem('username'),
+            createdAt: new Date()
+          })
+          // .then(() => {
+          //   if (this.errRegister === '') {
+          //     this.loginDialog = true
+          //   }
           // })
-          //   .then(() => {
-          //     if (this.errLogin === '') location.reload()
-          //   })
         })
         .catch((err) => {
-          console.log(err)
+          this.errorMessage = err.toString().split(':')[1]
         })
     }
   }
@@ -481,11 +519,17 @@ export default {
 }
 .sticky-wrapper{
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-direction: row-reverse;
   padding: 8px 24px;
   position: sticky;
   bottom: 0px;
   z-index: 10;
+}
+.sticky-wrapper p{
+  color: red;
+  margin: 0;
 }
 .btn-tab{
     margin-top: 16px;
