@@ -1,11 +1,13 @@
-import { postLoginInfo, postRegister } from '@/api/users.api'
+import { postLoginInfo, postRegister, changePassword } from '@/api/users.api'
 
 export default {
   namespaced: true,
   state: {
     isLoading: false,
     errLogin: '',
-    errRegister: ''
+    errRegister: '',
+    errChangePass: '',
+    snackbar: false
   },
   getters: {
     isLoading (state) {
@@ -16,11 +18,20 @@ export default {
     },
     errRegister (state) {
       return state.errRegister
+    },
+    errChangePass (state) {
+      return state.errChangePass
+    },
+    snackbar (state) {
+      return state.snackbar
     }
   },
   mutations: {
     LOADING_STATE (state, payload) {
       state.isLoading = payload
+    },
+    SNACKBAR_STATE (state, payload) {
+      state.snackbar = payload
     },
     LOGIN_SUCCESS (state) {
       state.errLogin = ''
@@ -32,6 +43,9 @@ export default {
     REGISTER_ERROR (state, error) {
       state.errRegister = error
     },
+    CHANGEPASS_ERROR (state, error) {
+      state.errChangePass = error.response.data.message || ''
+    },
     LOGIN_POST_ERROR (state, error) {
       state.errLogin = error.response.data.message || ''
       state.isLoading = false
@@ -41,7 +55,7 @@ export default {
       state.isLoading = false
     },
     REGISTER_POST_ERROR (state, error) {
-      state.errRegister = error.response.data.message || ''
+      state.errRegister = error.response.data.message || error || ''
       state.isLoading = false
     }
   },
@@ -71,6 +85,20 @@ export default {
       } else {
         context.commit('REGISTER_POST_ERROR', error)
       }
+    },
+    async changePassword (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await changePassword(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+        context.commit('SNACKBAR_STATE', true)
+      } else {
+        context.commit('CHANGEPASS_ERROR', error)
+        context.commit('LOADING_STATE', false)
+      }
+    },
+    setSnackbarState (context, payload) {
+      context.commit('SNACKBAR_STATE', payload)
     }
   }
 }

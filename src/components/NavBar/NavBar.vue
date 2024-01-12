@@ -5,10 +5,40 @@
         <nav-bar-button v-for="item in menu" v-bind:key="item.label" v-bind:label="item.label" v-bind:href="item.href" v-bind:submenu="item.sub" v-bind:path="item.path"/>
       </ul>
       <div v-if="login" class="account-info">
-        <router-link :to="{name: 'PostProperty'}" >
+
+        <div class="user-info">
+          <router-link to="/danh-sach">
+            <v-avatar color="rgb(255, 236, 235)" size="40">
+              <span class="text-h6 avt-text">{{ username.split(' ').reverse()[0][0].toUpperCase() }}</span>
+            </v-avatar>
+            <p class="txt-user">{{ username }}</p>
+            <icon-downtriangle/>
+          </router-link>
+          <ul class="sub-menu-user">
+            <li>
+              <router-link to="/danh-sach">
+                <icon-list/>Quản lý tin đăng
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/tai-khoan">
+                <icon-user/>Thay đổi thông tin cá nhân
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/doi-mat-khau">
+                <icon-lock/>Thay đổi mật khẩu
+              </router-link>
+            </li>
+            <div class="divider-li"></div>
+            <li>
+              <button  @click="logout"><icon-logout/>Đăng xuất</button>
+            </li>
+          </ul>
+        </div>
+        <router-link :to="{name: 'PostProperty'}" class="btn-post">
           Đăng tin
         </router-link>
-        <button  @click="logout"><icon-logout/></button>
       </div>
       <login-button v-else/>
     </div>
@@ -84,11 +114,13 @@ export default {
       isSale: false,
       isRent: false,
       menu: MENU_ITEM,
-      login: false
+      login: false,
+      username: undefined
     }
   },
   created () {
     this.login = !!localStorage.getItem('token')
+    this.username = localStorage.getItem('username')
   },
   watch: {
     '$route' () {
@@ -235,5 +267,76 @@ export default {
     display: flex;
     align-items: center;
     gap: 20px;
+  }
+  .btn-post{
+    color: #2C2C2C;
+    border: solid 1px #ccc;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    letter-spacing: -.2px;
+    padding: 13px 15px;
+    border-radius: 8px;
+  }
+  .user-info{
+    position: relative;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    cursor: pointer;
+  }
+  .user-info:hover .sub-menu-user{
+    display: block;
+  }
+  .sub-menu-user{
+    list-style-type: none;
+    position: absolute;
+    display: none;
+    width: 250px;
+    border-radius: 8px;
+    margin: 0;
+    padding-inline: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: #fff;
+    box-shadow: 0 8px 20px hsla(0,0%,71%,.3);
+    text-align: left;
+    left: -50%;
+    bottom: 0;
+    transform: translate(0%, 100%);
+  }
+  .sub-menu-user li{
+    font-size: 14px;
+    line-height: 20px;
+    padding: 5px 20px;
+  }
+  .sub-menu-user li:hover{
+    background: #F2F2F2;
+  }
+  .sub-menu-user li,button,a{
+    color: #000;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .avt-text{
+    font-weight: 500;
+    color: rgb(116, 21, 15);
+  }
+  .txt-user{
+    margin: 0;
+    max-width: 100px;
+    font-size: 14px;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+  .divider-li{
+    border-bottom: 1px solid #f2f2f2;
+    margin: 3px 0;
   }
 </style>

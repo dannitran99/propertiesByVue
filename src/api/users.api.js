@@ -18,6 +18,15 @@ export const postRegister = async (dataPost) => {
   }
 }
 
+export const changePassword = async (dataPost) => {
+  try {
+    const { data } = await HTTP.post('/api/changePassword', dataPost)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
 export default {
   postLoginInfo
 }

@@ -1,5 +1,6 @@
 import { getPropertiesList, postProperties } from '@/api/properties.api'
 import { postImg } from '@/api/cloudinary.api'
+import router from '@/router'
 
 export default {
   namespaced: true,
@@ -43,7 +44,8 @@ export default {
       context.commit('LOADING_STATE', true)
       const [error, response] = await postProperties(payload)
       if (!error && response) {
-        console.log(response)
+        context.commit('LOADING_STATE', false)
+        router.push('/danh-sach')
       } else {
         // context.commit('LOGIN_POST_ERROR', error)
       }

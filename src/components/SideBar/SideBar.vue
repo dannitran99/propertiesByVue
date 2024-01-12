@@ -25,7 +25,8 @@ export default {
     drawer: null,
     items: [
       { title: 'Đăng mới', path: '/dang-tin' },
-      { title: 'Danh sách tin', path: '/danh-sach' }
+      { title: 'Danh sách tin', path: '/danh-sach' },
+      { title: 'Quản lý tài khoản', path: '/tai-khoan' }
     ],
     username: undefined,
     current: ''

@@ -12,6 +12,16 @@ export default new Router({
       component: () => import('@/views/HomePage')
     },
     {
+      path: '/tai-khoan',
+      name: 'UserInformation',
+      component: () => import('@/views/UserInformation')
+    },
+    {
+      path: '/doi-mat-khau',
+      name: 'ChangePassword',
+      component: () => import('@/views/UserInformation')
+    },
+    {
       path: '/dang-tin',
       name: 'PostProperty',
       component: () => import('@/views/PostProperty')

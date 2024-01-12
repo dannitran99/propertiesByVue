@@ -431,7 +431,7 @@ export default {
         area: Yup.number().required('Vui lòng nhập diện tích'),
         price: Yup.number().required('Vui lòng nhập mức giá'),
         priceType: Yup.string().required('Vui lòng nhập đơn vị'),
-        images: Yup.array(),
+        images: Yup.array().min(1, 'Tối thiểu 1 ảnh'),
         url: Yup.string(),
         name: Yup.string().required('Vui lòng nhập tên liên lạc'),
         phoneNumber: Yup.number().required('Vui lòng nhập số điện thoại'),

@@ -47,7 +47,7 @@ export default {
       return `Đăng ${formatTimeCalendar(this.data.createdAt)}`
     },
     formatAddress: function () {
-      return `${this.data.district.split(' ').splice(1).join(' ')}, ${this.data.city}`
+      return `${this.data.district}, ${this.data.city}`
     }
   }
 }
@@ -94,7 +94,6 @@ export default {
   }
   .img-holder span{
     color: #fff;
-    font-family: "Roboto Medium",Roboto,Arial !important;
     font-size: 14px;
     line-height: 20px;
     font-weight: normal !important
@@ -131,6 +130,13 @@ export default {
     display: flex;
     gap: 5px;
     align-items: center;
+  }
+  .address-txt span{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
   }
   .txt-ct{
     font-size: 16px;
