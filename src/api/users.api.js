@@ -27,6 +27,24 @@ export const changePassword = async (dataPost) => {
   }
 }
 
+export const disableAccount = async (dataPost) => {
+  try {
+    const { data } = await HTTP.post('/api/disableAccount', dataPost)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
+export const deleteAccount = async (dataPost) => {
+  try {
+    const { data } = await HTTP.post('/api/deleteAccount', dataPost)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
 export default {
   postLoginInfo
 }

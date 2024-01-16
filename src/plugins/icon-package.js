@@ -27,6 +27,7 @@ import MediaPlay from '@/components/icons/MediaPlay.vue'
 import List from '@/components/icons/List.vue'
 import User from '@/components/icons/User.vue'
 import Lock from '@/components/icons/Lock.vue'
+import Camera from '@/components/icons/Camera.vue'
 const iconElements = {
   RightArrow,
   Home,
@@ -56,7 +57,8 @@ const iconElements = {
   MediaPlay,
   List,
   User,
-  Lock
+  Lock,
+  Camera
 }
 
 export default {

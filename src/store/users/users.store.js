@@ -1,4 +1,4 @@
-import { postLoginInfo, postRegister, changePassword } from '@/api/users.api'
+import { postLoginInfo, postRegister, changePassword, disableAccount, deleteAccount } from '@/api/users.api'
 
 export default {
   namespaced: true,
@@ -7,6 +7,7 @@ export default {
     errLogin: '',
     errRegister: '',
     errChangePass: '',
+    errDisableAccount: '',
     snackbar: false
   },
   getters: {
@@ -21,6 +22,9 @@ export default {
     },
     errChangePass (state) {
       return state.errChangePass
+    },
+    errDisableAccount (state) {
+      return state.errDisableAccount
     },
     snackbar (state) {
       return state.snackbar
@@ -49,6 +53,9 @@ export default {
     LOGIN_POST_ERROR (state, error) {
       state.errLogin = error.response.data.message || ''
       state.isLoading = false
+    },
+    DISABLE_ACCOUNT_ERROR (state, error) {
+      state.errDisableAccount = error.response.data.message || ''
     },
     REGISTER_SUCCESS (state) {
       state.errRegister = ''
@@ -94,6 +101,31 @@ export default {
         context.commit('SNACKBAR_STATE', true)
       } else {
         context.commit('CHANGEPASS_ERROR', error)
+        context.commit('LOADING_STATE', false)
+      }
+    },
+    async disableAccount (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await disableAccount(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+        localStorage.removeItem('token')
+        localStorage.removeItem('username')
+        location.reload()
+      } else {
+        context.commit('DISABLE_ACCOUNT_ERROR', error)
+        context.commit('LOADING_STATE', false)
+      }
+    },
+    async deleteAccount (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await deleteAccount(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+        localStorage.removeItem('token')
+        localStorage.removeItem('username')
+        location.reload()
+      } else {
         context.commit('LOADING_STATE', false)
       }
     },
