@@ -1,8 +1,10 @@
-import { postLoginInfo, postRegister, changePassword, disableAccount, deleteAccount } from '@/api/users.api'
+import { postLoginInfo, postRegister, changePassword, disableAccount, deleteAccount, changeAvatar } from '@/api/users.api'
+import { postImg } from '@/api/cloudinary.api'
 
 export default {
   namespaced: true,
   state: {
+    avatar: localStorage.getItem('avatar'),
     isLoading: false,
     errLogin: '',
     errRegister: '',
@@ -28,6 +30,9 @@ export default {
     },
     snackbar (state) {
       return state.snackbar
+    },
+    avatar (state) {
+      return state.avatar
     }
   },
   mutations: {
@@ -64,6 +69,9 @@ export default {
     REGISTER_POST_ERROR (state, error) {
       state.errRegister = error.response.data.message || error || ''
       state.isLoading = false
+    },
+    CHANGE_AVATAR (state, payload) {
+      state.avatar = payload
     }
   },
   actions: {
@@ -73,6 +81,7 @@ export default {
       if (!error && response) {
         localStorage.setItem('token', response.token)
         localStorage.setItem('username', response.username)
+        localStorage.setItem('avatar', response.avatar)
         context.commit('LOGIN_SUCCESS')
       } else {
         context.commit('LOGIN_POST_ERROR', error)
@@ -111,6 +120,7 @@ export default {
         context.commit('LOADING_STATE', false)
         localStorage.removeItem('token')
         localStorage.removeItem('username')
+        localStorage.removeItem('avatar')
         location.reload()
       } else {
         context.commit('DISABLE_ACCOUNT_ERROR', error)
@@ -124,6 +134,7 @@ export default {
         context.commit('LOADING_STATE', false)
         localStorage.removeItem('token')
         localStorage.removeItem('username')
+        localStorage.removeItem('avatar')
         location.reload()
       } else {
         context.commit('LOADING_STATE', false)
@@ -131,6 +142,23 @@ export default {
     },
     setSnackbarState (context, payload) {
       context.commit('SNACKBAR_STATE', payload)
+    },
+    async postImg (context, payload) {
+      const [error, response] = await postImg(payload)
+      if (!error && response) {
+        return response
+      } else {
+        return error
+      }
+    },
+    async changeAvatar (context, payload) {
+      const [error, response] = await changeAvatar(payload)
+      if (!error && response) {
+        localStorage.setItem('avatar', response.avatar)
+        context.commit('CHANGE_AVATAR', response.avatar)
+      } else {
+        return error
+      }
     }
   }
 }

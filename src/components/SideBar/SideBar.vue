@@ -1,7 +1,8 @@
 <template>
     <v-navigation-drawer v-model="drawer" class="drawer">
       <div class="user-info">
-        <v-avatar color="rgb(255, 236, 235)" size="64">
+        <img :src="avatar" alt="avatar"  class="avatar-img" v-if="avatar">
+        <v-avatar color="rgb(255, 236, 235)" size="64" v-else>
           <span class="text-h5 avt-text">{{ username.split(' ').reverse()[0][0].toUpperCase() }}</span>
         </v-avatar>
         <p class="txt-user">{{ username }}</p>
@@ -31,6 +32,13 @@ export default {
     username: undefined,
     current: ''
   }),
+  computed: {
+    avatar: {
+      get () {
+        return this.$store.getters['user/avatar']
+      }
+    }
+  },
   methods: {
     navigate (item) {
       !this.current.includes(item.path) && this.$router.push(item.path)
@@ -98,5 +106,11 @@ export default {
   .active{
     background-color: rgb(242, 242, 242);
     border-left: 2px solid red;
+  }
+  .avatar-img{
+    border-radius: 100%;
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
   }
 </style>

@@ -12,7 +12,13 @@
               <div class="form">
                 <h3>Thông tin cá nhân</h3>
                 <input accept="image/*,.heic" type="file" autocomplete="off" tabindex="-1" style="display: none;" ref="fileInput" @change="onFileSelected">
-                <div class="img-upload-place mt-2" @click="selectFiles" @dragover.prevent="onDragOver" @dragleave.prevent="onDragLeave" @drop.prevent="onDrop">
+                <div v-if="avatar" class="img-upload-place mt-2">
+                  <img :src="avatar" alt="avatar"  class="avatar-img" >
+                  <div class="close-btn" @click="handleDeleteAvatar">
+                    <icon-closewb/>
+                  </div>
+                </div>
+                <div class="img-upload-place mt-2" @click="selectFiles" @dragover.prevent="onDragOver" @dragleave.prevent="onDragLeave" @drop.prevent="onDrop" v-else>
                   <icon-camera/>
                   <p class="txt-upload-secondary mb-0">Tải ảnh</p>
                 </div>
@@ -258,6 +264,11 @@ export default {
       get () {
         return this.$store.getters['user/isLoading']
       }
+    },
+    avatar: {
+      get () {
+        return this.$store.getters['user/avatar']
+      }
     }
   },
   created () {
@@ -318,22 +329,26 @@ export default {
     },
     onFileSelected (event) {
       const files = event.target.files
-      // eslint-disable-next-line no-useless-return
-      // if (files.length === 0) return
-      // for (const element of files) {
-      //   if (element.type.split('/')[0] !== 'image') continue
-      //   if (!this.images.some(e => e.name === element.name)) {
-      //     const post = new FormData()
-      //     post.append('file', element)
-      //     post.append('upload_preset', 'nucez74c')
-      //     post.append('cloud_name', 'dadyvbcci')
-      //     this.$store.dispatch('properties/postImg', post).then(
-      //       (res) => {
-      //         this.images.push({name: element.name, url: res.url, description: ''})
-      //       }
-      //     )
-      //   }
-      // }
+      if (files[0].type.split('/')[0] === 'image') {
+        const post = new FormData()
+        post.append('file', files[0])
+        post.append('upload_preset', 'nucez74c')
+        post.append('cloud_name', 'dadyvbcci')
+        this.$store.dispatch('user/postImg', post).then(
+          (res) => {
+            this.$store.dispatch('user/changeAvatar', {
+              user: localStorage.getItem('username'),
+              avatar: res.url
+            })
+          }
+        )
+      }
+    },
+    handleDeleteAvatar () {
+      this.$store.dispatch('user/changeAvatar', {
+        user: localStorage.getItem('username'),
+        avatar: ''
+      })
     },
     selectFiles () {
       this.$refs.fileInput.click()
@@ -351,20 +366,22 @@ export default {
       event.preventDefault()
       this.isDragging = false
       const files = event.dataTransfer.files
-      // for (const element of files) {
-      //   if (element.type.split('/')[0] !== 'image') continue
-      //   if (!this.images.some(e => e.name === element.name)) {
-      //     const post = new FormData()
-      //     post.append('file', element)
-      //     post.append('upload_preset', 'nucez74c')
-      //     post.append('cloud_name', 'dadyvbcci')
-      //     this.$store.dispatch('properties/postImg', post).then(
-      //       (res) => {
-      //         this.images.push({name: element.name, url: res.url, description: ''})
-      //       }
-      //     )
-      //   }
-      // }
+      for (const element of files) {
+        if (element.type.split('/')[0] !== 'image') continue
+        const post = new FormData()
+        post.append('file', files[0])
+        post.append('upload_preset', 'nucez74c')
+        post.append('cloud_name', 'dadyvbcci')
+        this.$store.dispatch('user/postImg', post).then(
+          (res) => {
+            this.$store.dispatch('user/changeAvatar', {
+              user: localStorage.getItem('username'),
+              avatar: res.url
+            })
+          }
+        )
+        return
+      }
     }
   }
 }
@@ -495,6 +512,7 @@ export default {
   transform: translate(-50%,-50%)
 }
 .img-upload-place{
+  position: relative;
   margin: auto;
   border: 1px dashed rgb(242, 242, 242);
   border-radius: 100%;
@@ -507,6 +525,28 @@ export default {
   color: rgb(153, 153, 153);
   cursor: pointer;
   background-color: rgb(250, 250, 250);
+}
+.avatar-img{
+  margin: auto;
+  border-radius: 100%;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  cursor: default;
+}
+.close-btn{
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: white;
+  border-radius: 50% ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  border: 1px solid rgb(204, 204, 204);
 }
 .sticky-wrapper{
   display: flex;

@@ -8,7 +8,8 @@
 
         <div class="user-info">
           <router-link to="/danh-sach">
-            <v-avatar color="rgb(255, 236, 235)" size="40">
+            <img :src="avatar" alt="avatar"  class="avatar-img" v-if="avatar">
+            <v-avatar color="rgb(255, 236, 235)" size="40" v-else>
               <span class="text-h6 avt-text">{{ username.split(' ').reverse()[0][0].toUpperCase() }}</span>
             </v-avatar>
             <p class="txt-user">{{ username }}</p>
@@ -118,6 +119,13 @@ export default {
       username: undefined
     }
   },
+  computed: {
+    avatar: {
+      get () {
+        return this.$store.getters['user/avatar']
+      }
+    }
+  },
   created () {
     this.login = !!localStorage.getItem('token')
     this.username = localStorage.getItem('username')
@@ -132,6 +140,7 @@ export default {
     logout: () => {
       localStorage.removeItem('token')
       localStorage.removeItem('username')
+      localStorage.removeItem('avatar')
       location.reload()
     }
   }
@@ -338,5 +347,11 @@ export default {
   .divider-li{
     border-bottom: 1px solid #f2f2f2;
     margin: 3px 0;
+  }
+  .avatar-img{
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
   }
 </style>

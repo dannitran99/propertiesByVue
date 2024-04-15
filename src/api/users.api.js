@@ -45,6 +45,15 @@ export const deleteAccount = async (dataPost) => {
   }
 }
 
+export const changeAvatar = async (dataPost) => {
+  try {
+    const { data } = await HTTP.post('/api/changeAvatar', dataPost)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
 export default {
   postLoginInfo
 }
