@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <side-bar/>
-    <form @submit.prevent="handleSubmit" class="main-area">
+    <form @submit.prevent="handleSubmit" class="main-area" :class="[{'hide' : !drawer}]">
       <div class="paper">
         <h2>Thông tin cơ bản</h2>
         <div class="btn-tab">
@@ -341,6 +341,11 @@ export default {
       get () {
         return this.$store.getters['common/ward']
       }
+    },
+    drawer: {
+      get () {
+        return this.$store.getters['user/drawer']
+      }
     }
   },
   async created () {
@@ -503,12 +508,15 @@ export default {
   overflow: auto;
   height: calc(100vh - 72px) ;
   background-color: rgb(249, 249, 249);
-  width: 100%;
+  width: calc(100vw - 256px);
   padding-top: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
+}
+.hide{
+  width: 100vw;
 }
 .paper{
   width: 696px;

@@ -54,6 +54,15 @@ export const changeAvatar = async (dataPost) => {
   }
 }
 
+export const getInfoUser = async (dataPost) => {
+  try {
+    const { data } = await HTTP.get(`/api/getInfoUser?name=${dataPost.user}`)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
 export default {
   postLoginInfo
 }

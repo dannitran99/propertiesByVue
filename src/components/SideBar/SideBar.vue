@@ -1,5 +1,6 @@
 <template>
-    <v-navigation-drawer v-model="drawer" class="drawer">
+  <div class="wrapper">
+    <v-navigation-drawer :value="drawer" class="drawer" :class="[{'hide' : !drawer}]">
       <div class="user-info">
         <img :src="avatar" alt="avatar"  class="avatar-img" v-if="avatar">
         <v-avatar color="rgb(255, 236, 235)" size="64" v-else>
@@ -14,16 +15,16 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-      <div class="btn-hide" @click="hideDrawer">
+    </v-navigation-drawer>
+    <div class="btn-hide" @click="hideDrawer">
         <icon-leftarrow />
       </div>
-    </v-navigation-drawer>
+  </div>
 </template>
 
 <script>
 export default {
   data: () => ({
-    drawer: null,
     items: [
       { title: 'Đăng mới', path: '/dang-tin' },
       { title: 'Danh sách tin', path: '/danh-sach' },
@@ -37,6 +38,11 @@ export default {
       get () {
         return this.$store.getters['user/avatar']
       }
+    },
+    drawer: {
+      get () {
+        return this.$store.getters['user/drawer']
+      }
     }
   },
   methods: {
@@ -44,7 +50,7 @@ export default {
       !this.current.includes(item.path) && this.$router.push(item.path)
     },
     hideDrawer () {
-      this.drawer = false
+      this.$store.dispatch('user/toggleDrawer')
     }
   },
   created () {
@@ -58,10 +64,16 @@ export default {
 </script>
 
 <style scoped>
+  .wrapper{
+    position: relative;
+  }
   .drawer{
     background-color: transparent;
     height: calc(100vh - 72px) !important;
     overflow: visible;
+  }
+  .hide{
+    width: 0 !important;
   }
   .avt-text{
     font-weight: 600;
@@ -85,7 +97,7 @@ export default {
     align-items: center;
     transform: translate(50%,0);
     margin-top: 16px;
-    z-index: 99;
+    z-index: 10;
     box-shadow: rgba(182, 182, 182, 0.18) 0px 4px 8px;
     border-radius: 50%;
     width: 32px;

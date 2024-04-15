@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <side-bar/>
-    <div class="main-area">
+    <div class="main-area" :class="[{'hide' : !drawer}]">
       <div :class="[{'point-event' : isLoading},'paper']">
             <h2 class="px-5">Quản lý tài khoản</h2>
             <div class="tab">
@@ -269,10 +269,23 @@ export default {
       get () {
         return this.$store.getters['user/avatar']
       }
+    },
+    drawer: {
+      get () {
+        return this.$store.getters['user/drawer']
+      }
+    },
+    userInfo: {
+      get () {
+        return this.$store.getters['user/userInfo']
+      }
     }
   },
-  created () {
+  async created () {
     this.tab = this.$route.path.slice(1)
+    await this.$store.dispatch('user/getInfoUser', {
+      user: localStorage.getItem('username')
+    })
   },
   watch: {
     '$route' () {
@@ -395,7 +408,7 @@ export default {
   overflow: auto;
   height: calc(100vh - 72px) ;
   background-color: rgb(249, 249, 249);
-  width: 100%;
+  width: calc(100vw - 256px);
   padding-top: 24px;
   display: flex;
   flex-direction: column;
@@ -557,5 +570,8 @@ export default {
   position: sticky;
   bottom: 0px;
   z-index: 10;
+}
+.hide{
+  width: 100vw;
 }
 </style>

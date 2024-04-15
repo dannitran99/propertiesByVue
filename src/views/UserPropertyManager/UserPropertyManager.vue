@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <side-bar/>
-    <div class="main-area">
+    <div class="main-area" :class="[{'hide' : !drawer}]">
       <div class="header">
         <div class="content-main">
           <h2>Danh sách tin</h2>
@@ -19,6 +19,13 @@ export default {
     return {
       // state: 'initial state'
     }
+  },
+  computed: {
+    drawer: {
+      get () {
+        return this.$store.getters['user/drawer']
+      }
+    }
   }
   // methods: {
   //   changeState () {
@@ -34,7 +41,11 @@ export default {
 }
 .main-area{
   background-color: rgb(249, 249, 249);
-  width: 100%;
+  width: calc(100vw - 256px);
+  transition: all .2s ease;
+}
+.hide{
+  width: 100vw;
 }
 .header{
   background-color: white;

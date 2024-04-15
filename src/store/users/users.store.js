@@ -1,16 +1,22 @@
-import { postLoginInfo, postRegister, changePassword, disableAccount, deleteAccount, changeAvatar } from '@/api/users.api'
+import { postLoginInfo, postRegister, changePassword, disableAccount, deleteAccount, changeAvatar, getInfoUser } from '@/api/users.api'
 import { postImg } from '@/api/cloudinary.api'
 
 export default {
   namespaced: true,
   state: {
     avatar: localStorage.getItem('avatar'),
+    drawer: true,
     isLoading: false,
     errLogin: '',
     errRegister: '',
     errChangePass: '',
     errDisableAccount: '',
-    snackbar: false
+    snackbar: false,
+    userInfo: {
+      name: '',
+      phoneNumber: '',
+      email: ''
+    }
   },
   getters: {
     isLoading (state) {
@@ -33,9 +39,18 @@ export default {
     },
     avatar (state) {
       return state.avatar
+    },
+    drawer (state) {
+      return state.drawer
+    },
+    userInfo (state) {
+      return state.userInfo
     }
   },
   mutations: {
+    TOGGLE_DRAWER (state) {
+      state.drawer = !state.drawer
+    },
     LOADING_STATE (state, payload) {
       state.isLoading = payload
     },
@@ -72,9 +87,15 @@ export default {
     },
     CHANGE_AVATAR (state, payload) {
       state.avatar = payload
+    },
+    GET_USER_INFO (state, payload) {
+      state.userInfo = payload
     }
   },
   actions: {
+    toggleDrawer (context) {
+      context.commit('TOGGLE_DRAWER')
+    },
     async postLoginInfo (context, payload) {
       context.commit('LOADING_STATE', true)
       const [error, response] = await postLoginInfo(payload)
@@ -156,6 +177,14 @@ export default {
       if (!error && response) {
         localStorage.setItem('avatar', response.avatar)
         context.commit('CHANGE_AVATAR', response.avatar)
+      } else {
+        return error
+      }
+    },
+    async getInfoUser (context, payload) {
+      const [error, response] = await getInfoUser(payload)
+      if (!error && response) {
+        context.commit('GET_USER_INFO', response)
       } else {
         return error
       }
