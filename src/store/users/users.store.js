@@ -1,4 +1,4 @@
-import { postLoginInfo, postRegister, changePassword, disableAccount, deleteAccount, changeAvatar, getInfoUser } from '@/api/users.api'
+import { postLoginInfo, postRegister, changePassword, disableAccount, deleteAccount, changeAvatar, getInfoUser, changeInfo } from '@/api/users.api'
 import { postImg } from '@/api/cloudinary.api'
 
 export default {
@@ -182,10 +182,23 @@ export default {
       }
     },
     async getInfoUser (context, payload) {
+      context.commit('LOADING_STATE', true)
       const [error, response] = await getInfoUser(payload)
       if (!error && response) {
+        context.commit('LOADING_STATE', false)
         context.commit('GET_USER_INFO', response)
       } else {
+        context.commit('LOADING_STATE', false)
+        return error
+      }
+    },
+    async changeInfo (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await changeInfo(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+      } else {
+        context.commit('LOADING_STATE', false)
         return error
       }
     }

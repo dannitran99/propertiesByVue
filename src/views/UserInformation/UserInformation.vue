@@ -9,59 +9,67 @@
                 <button @click="navigate('doi-mat-khau')" :class="[{'active' : tab ==='doi-mat-khau'}]">Cài đặt tài khoản</button>
             </div>
             <div v-if="tab==='tai-khoan'">
-              <div class="form">
-                <h3>Thông tin cá nhân</h3>
-                <input accept="image/*,.heic" type="file" autocomplete="off" tabindex="-1" style="display: none;" ref="fileInput" @change="onFileSelected">
-                <div v-if="avatar" class="img-upload-place mt-2">
-                  <img :src="avatar" alt="avatar"  class="avatar-img" >
-                  <div class="close-btn" @click="handleDeleteAvatar">
-                    <icon-closewb/>
+              <form @submit.prevent="handleChangeInfo">
+                <div class="form">
+                  <h3>Thông tin cá nhân</h3>
+                  <input accept="image/*,.heic" type="file" autocomplete="off" tabindex="-1" style="display: none;" ref="fileInput" @change="onFileSelected">
+                  <div v-if="avatar" class="img-upload-place mt-2">
+                    <img :src="avatar" alt="avatar"  class="avatar-img" >
+                    <div class="close-btn" @click="handleDeleteAvatar">
+                      <icon-closewb/>
+                    </div>
                   </div>
-                </div>
-                <div class="img-upload-place mt-2" @click="selectFiles" @dragover.prevent="onDragOver" @dragleave.prevent="onDragLeave" @drop.prevent="onDrop" v-else>
-                  <icon-camera/>
-                  <p class="txt-upload-secondary mb-0">Tải ảnh</p>
-                </div>
-                <v-row class="mt-1 mb-5">
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    class="pb-0"
-                  >
-                    <p class="txt-label">Họ và tên</p>
-                    <v-text-field
+                  <div class="img-upload-place mt-2" @click="selectFiles" @dragover.prevent="onDragOver" @dragleave.prevent="onDragLeave" @drop.prevent="onDrop" v-else>
+                    <icon-camera/>
+                    <p class="txt-upload-secondary mb-0">Tải ảnh</p>
+                  </div>
+                  <v-row class="mt-1 mb-5">
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      class="pb-0"
+                    >
+                      <p class="txt-label">Họ và tên</p>
+                      <v-text-field
+                        dense
+                        outlined
+                        hide-details
+                        v-model="valuesInfo.name"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-divider></v-divider>
+                  <h3 class="mt-5">Thông tin liên hệ</h3>
+                  <v-row class="mt-1 mb-3">
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      class="pb-0"
+                    >
+                      <p class="txt-label">Số điện thoại</p>
+                      <v-text-field
+                        dense
+                        outlined
+                        hide-details
+                        type="number"
+                        hide-spin-buttons
+                        v-model="valuesInfo.phoneNumber"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <p class="txt-label">Email</p>
+                  <v-text-field
                     dense
                     outlined
                     hide-details
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-divider></v-divider>
-                <h3 class="mt-5">Thông tin liên hệ</h3>
-                <v-row class="mt-1 mb-3">
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    class="pb-0"
-                  >
-                    <p class="txt-label">Số điện thoại</p>
-                    <v-text-field
-                    dense
-                    outlined
-                    hide-details
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <p class="txt-label">Email</p>
-                <v-text-field
-                dense
-                outlined
-                hide-details
-                ></v-text-field>
-              </div>
-              <div class="paper sticky-wrapper">
-                <button class="btn-submit">Lưu thay đổi</button>
-              </div>
+                    v-model="valuesInfo.email"
+                    type="email"
+                  ></v-text-field>
+                </div>
+                <div class="paper sticky-wrapper">
+                  <button type="submit" class="btn-submit">Lưu thay đổi</button>
+                </div>
+              </form>
             </div>
             <div v-if="tab==='doi-mat-khau'">
               <form class="form" @submit.prevent="handleChangePass">
@@ -74,12 +82,12 @@
                       >
                           <p class="txt-label">Mật khẩu hiện tại</p>
                           <v-text-field
-                          dense
-                          outlined
-                          type="password"
-                          v-model="values.currentPassword"
-                          :error-messages="errors.currentPassword"
-                          @validate="validate('currentPassword')"
+                            dense
+                            outlined
+                            type="password"
+                            v-model="values.currentPassword"
+                            :error-messages="errors.currentPassword"
+                            @validate="validate('currentPassword')"
                           ></v-text-field>
                       </v-col>
                   </v-row>
@@ -91,12 +99,12 @@
                       >
                           <p class="txt-label">Mật khẩu mới</p>
                           <v-text-field
-                          dense
-                          outlined
-                          type="password"
-                          v-model="values.newPassword"
-                          :error-messages="errors.newPassword"
-                          @validate="validate('newPassword')"
+                            dense
+                            outlined
+                            type="password"
+                            v-model="values.newPassword"
+                            :error-messages="errors.newPassword"
+                            @validate="validate('newPassword')"
                           ></v-text-field>
                       </v-col>
                   </v-row>
@@ -108,12 +116,12 @@
                       >
                           <p class="txt-label">Nhập lại mật khẩu mới</p>
                           <v-text-field
-                          dense
-                          outlined
-                          type="password"
-                          v-model="values.confirmPassword"
-                          :error-messages="errors.confirmPassword"
-                          @validate="validate('confirmPassword')"
+                            dense
+                            outlined
+                            type="password"
+                            v-model="values.confirmPassword"
+                            :error-messages="errors.confirmPassword"
+                            @validate="validate('confirmPassword')"
                           ></v-text-field>
                       </v-col>
                       <v-col
@@ -222,6 +230,12 @@ const schema = Yup.object().shape({
   confirmPassword: Yup.string().oneOf([Yup.ref('newPassword'), null], 'Nhập lại mật khẩu không khớp')
 })
 
+const schemaInfo = Yup.object().shape({
+  name: Yup.string(),
+  phoneNumber: Yup.string(),
+  email: Yup.string().email()
+})
+
 export default {
   components: { SideBar,
     ValidationProvider,
@@ -233,6 +247,11 @@ export default {
         currentPassword: '',
         newPassword: '',
         confirmPassword: ''
+      },
+      valuesInfo: {
+        name: '',
+        phoneNumber: '',
+        email: ''
       },
       errors: {
         currentPassword: '',
@@ -282,14 +301,19 @@ export default {
     }
   },
   async created () {
-    this.tab = this.$route.path.slice(1)
     await this.$store.dispatch('user/getInfoUser', {
       user: localStorage.getItem('username')
     })
+    this.tab = this.$route.path.slice(1)
   },
   watch: {
     '$route' () {
       this.tab = this.$route.path.slice(1)
+    },
+    userInfo: function () {
+      this.valuesInfo.name = this.userInfo.name
+      this.valuesInfo.phoneNumber = this.userInfo.phoneNumber
+      this.valuesInfo.email = this.userInfo.email
     }
   },
   methods: {
@@ -327,6 +351,19 @@ export default {
         })
         .catch(err => {
           this.errors[err.path] = err.message
+        })
+    },
+    handleChangeInfo () {
+      schemaInfo.validate(this.valuesInfo, { abortEarly: false }).then(() => {
+        this.$store.dispatch('user/changeInfo', {
+          user: localStorage.getItem('username'),
+          name: this.valuesInfo.name,
+          phoneNumber: this.valuesInfo.phoneNumber,
+          email: this.valuesInfo.email
+        })
+      })
+        .catch((err) => {
+          console.log(err)
         })
     },
     handleDisableAccount () {

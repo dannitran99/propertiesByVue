@@ -63,6 +63,15 @@ export const getInfoUser = async (dataPost) => {
   }
 }
 
+export const changeInfo = async (dataPost) => {
+  try {
+    const { data } = await HTTP.post(`/api/changeInfo`, dataPost)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
 export default {
   postLoginInfo
 }

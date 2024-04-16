@@ -16,7 +16,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <div class="btn-hide" @click="hideDrawer">
+    <div class="btn-hide" :class="[{'active-hide' : !drawer}]" @click="hideDrawer">
         <icon-leftarrow />
       </div>
   </div>
@@ -104,6 +104,15 @@ export default {
     height: 32px;
     background-color: white;
     cursor: pointer;
+  }
+  .btn-hide svg{
+    transition: .5s;
+  }
+  .active-hide{
+    right: -20px;
+  }
+  .active-hide svg{
+    transform: rotate(180deg);
   }
   .list-item{
     height: 48px;
