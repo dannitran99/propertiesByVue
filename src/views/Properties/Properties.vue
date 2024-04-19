@@ -1,25 +1,41 @@
 <template>
-    <div class="content">
-      <div class="main-content">
+    <div class="wrapper">
+      <div class="content">
         <p class="content-breadcrumb">{{ isSale }}</p>
         <p class="subtitle">Hiện có {{ properties.length }} bất động sản.</p>
-        <properties v-for="item in properties" :key="item.ID" :data="item"/>
+        <div class="properties-list">
+          <template v-if="isLoading">
+            <properties-skeleton/>
+            <properties-skeleton/>
+            <properties-skeleton/>
+            <properties-skeleton/>
+          </template>
+          <properties v-for="item in properties" :key="item.ID" :data="item" v-else/>
+        </div>
       </div>
       <div class="filter">
 
       </div>
-    </div>
 
+    </div>
 </template>
 
 <script>
+
+import PropertiesSkeleton from '../../components/Properties/PropertyCardSkeleton.vue'
 export default {
+  components: { PropertiesSkeleton },
   data () {
     return {
       isSale: ''
     }
   },
   computed: {
+    isLoading: {
+      get () {
+        return this.$store.getters['properties/isLoading']
+      }
+    },
     properties: {
       get () {
         return this.$store.getters['properties/propertiesList']
@@ -39,15 +55,15 @@ export default {
 </script>
 
 <style scoped>
-  .content{
+  .wrapper{
     display: flex;
-    margin-top: 24px !important;
+    margin-top: 129px !important;
     margin: 0 auto;
     max-width: 1140px;
   }
-  .main-content{
+  .content{
     width: 848px;
-    margin-right: 30px
+    /* margin-right: 30px */
   }
   .filter{
     width: 262px
@@ -65,5 +81,8 @@ export default {
     color: #2C2C2C;
     display: inline-block;
     margin: 6px 0 0 0;
+  }
+  .properties-list >:not(:last-child){
+    margin-bottom: 16px;
   }
 </style>

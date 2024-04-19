@@ -1,7 +1,7 @@
 <template>
   <v-app id="app">
     <nav-bar class="nav-bar"/>
-    <router-view/>
+    <router-view class="main-content"/>
   </v-app>
 </template>
 
@@ -25,5 +25,8 @@ a{
 }
 .nav-bar{
   z-index: 99;
+}
+.main-content{
+  margin-top: 72px;
 }
 </style>

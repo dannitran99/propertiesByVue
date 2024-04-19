@@ -154,14 +154,17 @@ export default {
     gap: 1rem;
     height: 62px;
     padding: 17px 15px 7px 15px;
-
-    background-color: #fff;
     margin: 0;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
   }
   .nav-wrapper{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    background-color: #fff;
     box-shadow: 0 4px 10px hsla(0,0%,71%,.18);
   }
   .nav-header{

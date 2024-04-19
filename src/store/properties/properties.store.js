@@ -15,6 +15,9 @@ export default {
     },
     categoryFilter (state) {
       return state.categoryFilter
+    },
+    isLoading (state) {
+      return state.isLoading
     }
   },
   mutations: {
@@ -30,10 +33,13 @@ export default {
   },
   actions: {
     async getPropertiesList (context) {
+      context.commit('LOADING_STATE', true)
       const [error, response] = await getPropertiesList()
       if (!error && response) {
+        context.commit('LOADING_STATE', false)
         context.commit('GET_PROPERTIES_LIST', response)
       } else {
+        context.commit('LOADING_STATE', false)
         console.error(error)
       }
     },

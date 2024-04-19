@@ -7,7 +7,12 @@
         <p>Thông tin mới, đầy đủ, hấp dẫn về thị trường bất động sản Việt Nam thông qua dữ liệu lớn về giá,<br/> giao dịch, nguồn cung - cầu và khảo sát thực tế của đội ngũ phóng viên, biên tập</p>
       </div>
       <div class="content-main">
-        <news-card-skeleton v-if="isLoading"/>
+        <template v-if="isLoading">
+          <news-card-skeleton/>
+          <news-card-skeleton/>
+          <news-card-skeleton/>
+          <news-card-skeleton/>
+        </template>
         <news-card v-else v-for="item in news" :key="item.id" :data="item"/>
       </div>
     </div>

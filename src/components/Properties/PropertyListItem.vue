@@ -32,7 +32,6 @@ export default {
         border: 1px solid #F2F2F2;
         box-sizing: border-box;
         box-shadow: 0px 4px 6px 0px rgba(44,44,44,0.04);
-        margin-bottom: 16px;
     }
     .img-card{
         position: relative;
