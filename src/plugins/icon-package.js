@@ -28,6 +28,7 @@ import List from '@/components/icons/List.vue'
 import User from '@/components/icons/User.vue'
 import Lock from '@/components/icons/Lock.vue'
 import Camera from '@/components/icons/Camera.vue'
+import Phone from '@/components/icons/Phone.vue'
 const iconElements = {
   RightArrow,
   Home,
@@ -58,7 +59,8 @@ const iconElements = {
   List,
   User,
   Lock,
-  Camera
+  Camera,
+  Phone
 }
 
 export default {

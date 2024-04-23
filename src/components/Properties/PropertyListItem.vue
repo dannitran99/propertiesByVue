@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper-skeleton">
+    <router-link :to="{name: 'PropertiesDetail',params: {propertiesId: data.ID,}}" class="navigate-link"></router-link>
     <v-row class="img-gallery" no-gutters>
       <template v-if="data.images.length > 1">
         <v-col cols="8" >
@@ -62,8 +63,15 @@
           <p class="post-create">{{ formatTimeCalendar }}</p>
         </div>
       </div>
+      <div class="info-addition">
+        <button class="btn-reveal" @click="handleReveal">
+          <icon-phone/>{{ phoneReveal? data.phoneNumber : phoneNumber }}
+        </button>
+        <div class="ico-heart">
+          <icon-heart/>
+        </div>
+      </div>
     </div>
-    <router-link :to="{name: 'PropertiesDetail',params: {propertiesId: data.ID,}}" class="navigate-link"></router-link>
   </div>
 </template>
 
@@ -74,6 +82,11 @@ export default {
   props: {
     data: {
       type: Object
+    }
+  },
+  data () {
+    return {
+      phoneReveal: false
     }
   },
   computed: {
@@ -88,6 +101,14 @@ export default {
     },
     formatAddress: function () {
       return `${this.data.district}, ${this.data.city}`
+    },
+    phoneNumber: function () {
+      return `${this.data.phoneNumber.slice(0, -3)}*** Hiện số`
+    }
+  },
+  methods: {
+    handleReveal: function () {
+      this.phoneReveal = true
     }
   }
 }
@@ -204,7 +225,33 @@ export default {
 .navigate-link{
   position: absolute;
   width:100%;
-  height: 100%;
+  height: calc(100% - 64px);
   top: 0;
+}
+.info-addition{
+  display: flex;
+  gap: 10px;
+}
+.btn-reveal{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #fff;
+  background: #009BA1;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 5px 11px;
+  border-radius: 4px;
+}
+.ico-heart{
+  color: #2C2C2C;
+  background: #fff;
+  border: solid 1px #ccc;
+  border-radius: 4px;
+  width:32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
