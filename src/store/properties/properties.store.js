@@ -1,4 +1,4 @@
-import { getPropertiesList, postProperties } from '@/api/properties.api'
+import { getPropertiesList, postProperties, getPostedProperty } from '@/api/properties.api'
 import { postImg } from '@/api/cloudinary.api'
 import router from '@/router'
 
@@ -61,6 +61,17 @@ export default {
       if (!error && response) {
         return response
       } else {
+        return error
+      }
+    },
+    async getPostedProperty (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await getPostedProperty(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+        context.commit('GET_PROPERTIES_LIST', response)
+      } else {
+        context.commit('LOADING_STATE', false)
         return error
       }
     }

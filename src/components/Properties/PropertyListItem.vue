@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper-skeleton">
-    <router-link :to="{name: 'PropertiesDetail',params: {propertiesId: data.ID,}}" class="navigate-link"></router-link>
+    <router-link :to="{name: 'PropertiesDetail',params: {propertiesId: data.ID,}}" class="navigate-link" :class="[{'hide' : hideInfo}]"></router-link>
     <v-row class="img-gallery" no-gutters>
       <template v-if="data.images.length > 1">
         <v-col cols="8" >
@@ -52,7 +52,7 @@
       <p class="txt-description">{{ data.description }}</p>
     </div>
     <v-divider></v-divider>
-    <div class="info-div">
+    <div class="info-div" v-if="!hideInfo">
       <div class="info-user">
         <img :src="data.avatar" alt="avatar"  class="avatar-img" v-if="data.avatar">
         <v-avatar color="rgb(255, 236, 235)" size="32" v-else>
@@ -63,7 +63,7 @@
           <p class="post-create">{{ formatTimeCalendar }}</p>
         </div>
       </div>
-      <div class="info-addition">
+      <div class="info-addition" >
         <button class="btn-reveal" @click="handleReveal">
           <icon-phone/>{{ phoneReveal? data.phoneNumber : phoneNumber }}
         </button>
@@ -82,6 +82,10 @@ export default {
   props: {
     data: {
       type: Object
+    },
+    hideInfo: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -253,5 +257,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.hide{
+  height: 100%;
 }
 </style>

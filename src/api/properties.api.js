@@ -18,6 +18,15 @@ export const postProperties = async (dataPost) => {
   }
 }
 
+export const getPostedProperty = async (dataPost) => {
+  try {
+    const { data } = await HTTP.get(`/api/getPostedProperty?name=${dataPost.user}`)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
 export default {
   getPropertiesList
 }
