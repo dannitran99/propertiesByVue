@@ -7,11 +7,15 @@ export default {
   state: {
     isLoading: false,
     propertiesList: [],
+    propertiesListPosted: [],
     categoryFilter: []
   },
   getters: {
     propertiesList (state) {
       return state.propertiesList
+    },
+    propertiesListPosted (state) {
+      return state.propertiesListPosted
     },
     categoryFilter (state) {
       return state.categoryFilter
@@ -26,6 +30,9 @@ export default {
     },
     GET_PROPERTIES_LIST (state, data) {
       state.propertiesList = data
+    },
+    GET_PROPERTIES_LIST_POSTED (state, data) {
+      state.propertiesListPosted = data
     },
     CHANGE_FILTER (state, data) {
       state.categoryFilter = data
@@ -69,7 +76,7 @@ export default {
       const [error, response] = await getPostedProperty(payload)
       if (!error && response) {
         context.commit('LOADING_STATE', false)
-        context.commit('GET_PROPERTIES_LIST', response)
+        context.commit('GET_PROPERTIES_LIST_POSTED', response)
       } else {
         context.commit('LOADING_STATE', false)
         return error

@@ -14,7 +14,15 @@
           <properties-skeleton/>
           <properties-skeleton/>
         </template>
-        <properties :hideInfo="true" v-for="item in properties" :key="item.ID" :data="item" v-else/>
+        <template v-else>
+          <template v-if="properties.length">
+            <properties :hideInfo="true" v-for="item in properties" :key="item.ID" :data="item" />
+          </template>
+          <div class="none-data" v-else>
+            <p>Tin đăng của bạn sẽ được tiếp cận hơn 6 triệu người <br/> tìm mua/thuê bất động sản mỗi tháng</p>
+            <router-link :to="{name: 'PostProperty'}" class="btn-submit">Đăng tin ngay</router-link>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -38,7 +46,7 @@ export default {
     },
     properties: {
       get () {
-        return this.$store.getters['properties/propertiesList']
+        return this.$store.getters['properties/propertiesListPosted']
       }
     }
   },
@@ -79,5 +87,23 @@ export default {
 }
 .content-main >:not(:last-child){
   margin-bottom: 30px;
+}
+.none-data{
+  margin-top: 100px;
+  text-align: center;
+}
+.btn-submit{
+  height: 48px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: rgb(224, 60, 49);
+  padding: 12px 6px;
+  color: rgb(255, 255, 255);
+  opacity: 1;
+  border: none;
+  transition: opacity .2s ease;
+}
+.btn-submit:hover{
+  opacity: .7;
 }
 </style>

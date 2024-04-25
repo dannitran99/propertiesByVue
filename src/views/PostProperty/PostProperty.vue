@@ -679,6 +679,10 @@ export default {
   color: rgb(255, 255, 255);
   opacity: 1;
   border: none;
+  transition: opacity .2s ease;
+}
+.btn-submit:hover{
+  opacity: .7;
 }
 .collapse-header{
   display: flex;

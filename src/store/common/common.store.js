@@ -33,7 +33,7 @@ export default {
     async getCity (context) {
       const [error, response] = await getCity()
       if (!error && response) {
-        const cityName = response.map(item => ({name: item.name, code: item.code}))
+        const cityName = response.results.map(item => ({name: item['province_name'], code: item['province_id']}))
         context.commit('GET_CITY_LIST', cityName)
       } else {
         console.error(error)
@@ -42,7 +42,7 @@ export default {
     async getDistrict (context, payload) {
       const [error, response] = await getDistrict(payload)
       if (!error && response) {
-        const districtName = response.districts.map(item => ({name: item.name, code: item.code}))
+        const districtName = response.results.map(item => ({name: item['district_name'], code: item['district_id']}))
         context.commit('GET_DISTRICT_LIST', districtName)
       } else {
         console.error(error)
@@ -51,7 +51,7 @@ export default {
     async getWard (context, payload) {
       const [error, response] = await getWard(payload)
       if (!error && response) {
-        const wardName = response.wards.map(item => ({name: item.name, code: item.code}))
+        const wardName = response.results.map(item => ({name: item['ward_name'], code: item['ward_id']}))
         context.commit('GET_WARD_LIST', wardName)
       } else {
         console.error(error)

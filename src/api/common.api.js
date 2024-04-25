@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const HTTP = axios.create({
-  baseURL: 'https://provinces.open-api.vn/api/'
+  baseURL: 'https://vapi.vnappmob.com/api/'
 })
 
 HTTP.interceptors.response.use(
@@ -13,7 +13,7 @@ HTTP.interceptors.response.use(
 
 export const getCity = async () => {
   try {
-    const { data } = await HTTP.get()
+    const { data } = await HTTP.get('/province/')
     return [null, data]
   } catch (error) {
     return [error]
@@ -22,7 +22,7 @@ export const getCity = async () => {
 
 export const getDistrict = async (code) => {
   try {
-    const { data } = await HTTP.get(`/p/${code}?depth=2`)
+    const { data } = await HTTP.get(`/province/district/${code}`)
     return [null, data]
   } catch (error) {
     return [error]
@@ -31,7 +31,7 @@ export const getDistrict = async (code) => {
 
 export const getWard = async (code) => {
   try {
-    const { data } = await HTTP.get(`/d/${code}?depth=2`)
+    const { data } = await HTTP.get(`/province/ward/${code}`)
     return [null, data]
   } catch (error) {
     return [error]
