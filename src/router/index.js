@@ -48,7 +48,12 @@ export default new Router({
     },
     {
       path: '/nha-dat-ban/:propertiesId',
-      name: 'PropertiesDetail',
+      name: 'PropertiesSaleDetail',
+      component: () => import('@/views/Properties/PropertiesContent')
+    },
+    {
+      path: '/nha-dat-cho-thue/:propertiesId',
+      name: 'PropertiesRentDetail',
       component: () => import('@/views/Properties/PropertiesContent')
     },
     {

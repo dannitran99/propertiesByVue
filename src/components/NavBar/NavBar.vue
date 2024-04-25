@@ -132,8 +132,8 @@ export default {
   },
   watch: {
     '$route' () {
-      this.isSale = this.$route.path.includes('nha-dat-ban')
-      this.isRent = this.$route.path.includes('nha-dat-cho-thue')
+      this.isSale = this.$route.path === '/nha-dat-ban'
+      this.isRent = this.$route.path === '/nha-dat-cho-thue'
     }
   },
   methods: {

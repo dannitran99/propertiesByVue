@@ -1,4 +1,4 @@
-import { getPropertiesList, postProperties, getPostedProperty } from '@/api/properties.api'
+import { getPropertiesList, postProperties, getPostedProperty, getPropertiesDetail } from '@/api/properties.api'
 import { postImg } from '@/api/cloudinary.api'
 import router from '@/router'
 
@@ -8,7 +8,8 @@ export default {
     isLoading: false,
     propertiesList: [],
     propertiesListPosted: [],
-    categoryFilter: []
+    categoryFilter: [],
+    data: null
   },
   getters: {
     propertiesList (state) {
@@ -22,11 +23,17 @@ export default {
     },
     isLoading (state) {
       return state.isLoading
+    },
+    data (state) {
+      return state.data
     }
   },
   mutations: {
     LOADING_STATE (state, payload) {
       state.isLoading = payload
+    },
+    RESET_LIST (state) {
+      state.propertiesList = []
     },
     GET_PROPERTIES_LIST (state, data) {
       state.propertiesList = data
@@ -36,12 +43,16 @@ export default {
     },
     CHANGE_FILTER (state, data) {
       state.categoryFilter = data
+    },
+    GET_PROPERTIES_DETAIL (state, data) {
+      state.data = data
     }
   },
   actions: {
-    async getPropertiesList (context) {
+    async getPropertiesList (context, payload) {
       context.commit('LOADING_STATE', true)
-      const [error, response] = await getPropertiesList()
+      context.commit('RESET_LIST')
+      const [error, response] = await getPropertiesList(payload)
       if (!error && response) {
         context.commit('LOADING_STATE', false)
         context.commit('GET_PROPERTIES_LIST', response)
@@ -77,6 +88,17 @@ export default {
       if (!error && response) {
         context.commit('LOADING_STATE', false)
         context.commit('GET_PROPERTIES_LIST_POSTED', response)
+      } else {
+        context.commit('LOADING_STATE', false)
+        return error
+      }
+    },
+    async getPropertiesDetail (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await getPropertiesDetail(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+        context.commit('GET_PROPERTIES_DETAIL', response)
       } else {
         context.commit('LOADING_STATE', false)
         return error

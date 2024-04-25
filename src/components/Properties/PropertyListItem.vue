@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper-skeleton">
-    <router-link :to="{name: 'PropertiesDetail',params: {propertiesId: data.ID,}}" class="navigate-link" :class="[{'hide' : hideInfo}]"></router-link>
+    <router-link :to="{name: this.$route.path.includes('nha-dat-ban') ?'PropertiesSaleDetail' : 'PropertiesRentDetail',params: {propertiesId: data.ID,}}" class="navigate-link" :class="[{'hide' : hideInfo}]"></router-link>
     <v-row class="img-gallery" no-gutters>
       <template v-if="data.images.length > 1">
         <v-col cols="8" >

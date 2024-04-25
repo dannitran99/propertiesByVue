@@ -43,13 +43,18 @@ export default {
     }
   },
   watch: {
-    '$route' () {
+    async '$route' () {
       this.isSale = this.$route.path.includes('nha-dat-ban') ? 'Bán' : 'Cho thuê'
+      await this.$store.dispatch('properties/getPropertiesList', {
+        type: this.$route.path.includes('nha-dat-ban') ? 'sale' : 'rent'
+      })
     }
   },
   async created () {
     this.isSale = this.$route.path.includes('nha-dat-ban') ? 'Bán' : 'Cho thuê'
-    await this.$store.dispatch('properties/getPropertiesList')
+    await this.$store.dispatch('properties/getPropertiesList', {
+      type: this.$route.path.includes('nha-dat-ban') ? 'sale' : 'rent'
+    })
   }
 }
 </script>
