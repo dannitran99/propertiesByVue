@@ -5,6 +5,7 @@ import PropertiesHomePage from '@/components/PropertiesHomePage'
 import BreadCrumb from '@/components/BreadCrumb'
 import Properties from '@/components/Properties'
 import NewsCard from '@/components/News/NewsCard'
+import Carousel from '@/components/Carousel'
 import NewsCardSkeleton from '@/components/News/NewsCard/NewsCardSkeleton.vue'
 const commonElements = {
   NavBar,
@@ -14,6 +15,7 @@ const commonElements = {
   BreadCrumb,
   Properties,
   NewsCard,
+  Carousel,
   NewsCardSkeleton
 }
 

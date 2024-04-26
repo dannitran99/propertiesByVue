@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{name: 'PropertiesDetail',params: {propertiesId: data.ID,}}" class="wrapper">
+  <router-link :to="{name: 'PropertiesSaleDetail',params: {propertiesId: data.ID,}}" class="wrapper">
       <div class="thumbnail">
         <img v-bind:src="data.images[0].url" :alt="data.images[0].name"/>
         <div class="img-holder">
