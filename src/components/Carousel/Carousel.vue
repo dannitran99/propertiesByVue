@@ -1,20 +1,29 @@
 <template>
-  <div class="wrapper-gallery" @mousemove="handleMouseMove" @mousedown="handleMouseDown" @mouseup="handleMouseLeave" @mouseleave="handleMouseLeave">
-    <ul :style="{transform: `translate3d(${-858 * currentIdx + currentTranslateX}px, 0px, 0px)`, transitionDuration: `${isTrans?'300ms':'0ms'}`}">
-      <li v-for="item in imageList" :key="item.name">
-        <div class="image-overlay">
-          <img :src="item.url" alt="img" draggable="false"/>
-        </div>
-        <div class="image-layout" :style="{ backgroundImage: `url(${item.url})` }"></div>
-      </li>
-    </ul>
-    <div></div>
-    <button class="btn-nav go-right" @click="handleGoRight" v-if="currentIdx<imageList.length-1">
-      <icon-leftarrow/>
-    </button>
-    <button class="btn-nav go-left" @click="handleGoLeft" v-if="currentIdx>0" >
-      <icon-leftarrow/>
-    </button >
+  <div>
+    <div class="wrapper-gallery" @mousemove="handleMouseMove" @mousedown="handleMouseDown" @mouseup="handleMouseLeave" @mouseleave="handleMouseLeave">
+      <ul :style="{transform: `translate3d(${-858 * currentIdx + currentTranslateX}px, 0px, 0px)`, transitionDuration: `${isTrans?'300ms':'0ms'}`}">
+        <li v-for="item in imageList" :key="item.name">
+          <div class="image-overlay">
+            <img :src="item.url" alt="img" draggable="false"/>
+          </div>
+          <div class="image-layout" :style="{ backgroundImage: `url(${item.url})` }"></div>
+        </li>
+      </ul>
+      <div class="pagination">{{ `${currentIdx + 1} / ${imageList.length}` }}</div>
+      <button class="btn-nav go-right" @click="handleGoRight" v-if="currentIdx<imageList.length-1">
+        <icon-leftarrow/>
+      </button>
+      <button class="btn-nav go-left" @click="handleGoLeft" v-if="currentIdx>0" >
+        <icon-leftarrow/>
+      </button >
+    </div>
+    <div @mousedown="handleDownSlick" @mousemove="handleMoveSlick" @mouseup="handleSlickLeave" @mouseleave="handleSlickLeave">
+      <ul class="slick" ref="slick">
+        <li v-for="(item, idx) in imageList" :key="item.name" @click="handleChangeSlide(idx)">
+          <img :src="item.url" alt="img" draggable="false" :class="[{'active' : idx === currentIdx}]"/>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -31,7 +40,10 @@ export default {
       currentIdx: 0,
       isDragging: false,
       startPosX: 0,
-      currentTranslateX: 0
+      currentTranslateX: 0,
+      slickTrans: false,
+      startSlickPos: 0,
+      startSlickScroll: 0
     }
   },
   methods: {
@@ -64,6 +76,23 @@ export default {
       this.currentTranslateX = 0
       this.isTrans = true
       setTimeout(() => { this.isTrans = false }, 300)
+    },
+    handleChangeSlide: function (idx) {
+      this.currentIdx = idx
+      this.isTrans = true
+      setTimeout(() => { this.isTrans = false }, 300)
+    },
+    handleDownSlick: function (e) {
+      this.slickTrans = true
+      this.startSlickPos = e.clientX
+      this.startSlickScroll = this.$refs.slick.scrollLeft
+    },
+    handleMoveSlick: function (e) {
+      if (!this.slickTrans) return
+      this.$refs.slick.scrollLeft = this.startSlickScroll - (e.clientX - this.startSlickPos)
+    },
+    handleSlickLeave: function () {
+      this.slickTrans = false
     }
   }
 }
@@ -107,7 +136,6 @@ export default {
   z-index: 9;
 }
 .image-overlay{
-/* bug */
   position: absolute;
   top: 0;
   left: 0;
@@ -116,15 +144,26 @@ export default {
   content: "";
   display: block;
   z-index: 10;
-  background: rgba(0, 0, 0, 0.3);
-  -webkit-backdrop-filter: blur(64px);
-  backdrop-filter: blur(64px);
+  background: rgba(0, 0, 0, 0.65);
+/* bug */
+  /* backdrop-filter: blur(64px); */
   text-align: center;
 }
 .image-overlay img{
   min-height: 100%;
   cursor: pointer;
   height: 100%;
+}
+.pagination{
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  color: #fff;
+  padding: 0px 8px;
+  font-size: 14px;
+  line-height: 20px;
 }
 .btn-nav{
   background-color: #fff;
@@ -146,5 +185,25 @@ export default {
 }
 .go-right svg{
   transform: rotate(180deg);
+}
+.slick{
+  height: 80px;
+  overflow: hidden;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+.slick >:not(:last-child){
+  margin-right: 8px;
+}
+.slick img{
+  width: 111px;
+  height: 100%;
+  border-radius: 4px;
+  object-fit: cover;
+  cursor: pointer;
+}
+.active{
+  border: 2px solid #2C2C2C;
 }
 </style>
