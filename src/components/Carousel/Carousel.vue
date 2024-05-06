@@ -1,20 +1,24 @@
 <template>
   <div>
-    <div class="wrapper-gallery" @mousemove="handleMouseMove" @mousedown="handleMouseDown" @mouseup="handleMouseLeave" @mouseleave="handleMouseLeave">
-      <ul :style="{transform: `translate3d(${-858 * currentIdx + currentTranslateX}px, 0px, 0px)`, transitionDuration: `${isTrans?'300ms':'0ms'}`}">
+    <div class="wrapper-gallery" @mousemove="handleMouseMove" @mousedown="handleMouseDown" @mouseup="handleMouseLeave" @mouseleave="handleMouseLeave" ref="gallery">
+      <ul :style="{transform: `translate3d(${-858 * currentIdx + gallery.currentTranslateX}px, 0px, 0px)`, transitionDuration: `${isTrans?'300ms':'0ms'}`}">
         <li v-for="item in imageList" :key="item.name">
           <div class="image-overlay">
-            <img :src="item.url" alt="img" draggable="false"/>
+            <img :src="item.url" alt="img" draggable="false" />
           </div>
           <div class="image-layout" :style="{ backgroundImage: `url(${item.url})` }"></div>
         </li>
       </ul>
       <div class="pagination">{{ `${currentIdx + 1} / ${imageList.length}` }}</div>
       <button class="btn-nav go-right" @click="handleGoRight" v-if="currentIdx<imageList.length-1">
-        <icon-leftarrow/>
+        <div>
+          <icon-leftarrow/>
+        </div>
       </button>
       <button class="btn-nav go-left" @click="handleGoLeft" v-if="currentIdx>0" >
-        <icon-leftarrow/>
+        <div>
+          <icon-leftarrow/>
+        </div>
       </button >
     </div>
     <div @mousedown="handleDownSlick" @mousemove="handleMoveSlick" @mouseup="handleSlickLeave" @mouseleave="handleSlickLeave">
@@ -23,6 +27,34 @@
           <img :src="item.url" alt="img" draggable="false" :class="[{'active' : idx === currentIdx}]"/>
         </li>
       </ul>
+    </div>
+    <div class="popup" v-if="popup">
+      <div class="navigate-btn">
+        <div class="pagination-popup">{{ `${currentIdx + 1} / ${imageList.length}` }}</div>
+        <div class="action-btn">
+          <button @click="popup=false">
+            <icon-closewb/>
+          </button>
+        </div>
+      </div>
+      <div class="content-popup">
+        <div class="popup-wrapper" @click="clickOutSide">
+          <div class="gallery-holder">
+            <ul class="gallery-popup" :style="{transform: `translate3d( ${ 100 * -currentIdx }%, 0px, 0px)`, transitionDuration: `${isTrans?'600ms':'0ms'}`}">
+              <li v-for="item in imageList" :key="item.name">
+                <img :src="item.url" alt="img" draggable="false" @click="clickImage"/>
+              </li>
+            </ul>
+          </div>
+          <button class="btn-nav-popup go-right" @click="handleGoRight" v-if="currentIdx<imageList.length-1">
+            <icon-leftarrow/>
+          </button>
+          <button class="btn-nav-popup go-left" @click="handleGoLeft" v-if="currentIdx>0" >
+            <icon-leftarrow/>
+          </button>
+        </div>
+        <div class="slick-popup"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -36,44 +68,57 @@ export default {
   },
   data () {
     return {
+      popup: false,
       isTrans: false,
       currentIdx: 0,
-      isDragging: false,
-      startPosX: 0,
-      currentTranslateX: 0,
-      slickTrans: false,
-      startSlickPos: 0,
-      startSlickScroll: 0
+      gallery: {
+        isDragging: false,
+        startPosX: 0,
+        currentTranslateX: 0
+      },
+      slick: {
+        slickTrans: false,
+        startSlickPos: 0,
+        startSlickScroll: 0
+      }
     }
   },
   methods: {
-    handleGoRight: function () {
+    handleGoRight: function (e) {
+      e.stopPropagation()
       this.currentIdx++
       this.isTrans = true
       setTimeout(() => { this.isTrans = false }, 300)
     },
-    handleGoLeft: function () {
+    handleGoLeft: function (e) {
+      e.stopPropagation()
       this.currentIdx--
       this.isTrans = true
       setTimeout(() => { this.isTrans = false }, 300)
     },
     handleMouseDown: function (e) {
-      this.isDragging = true
-      this.startPosX = e.clientX
+      this.gallery.isDragging = true
+      this.gallery.startPosX = e.clientX
     },
     handleMouseMove: function (e) {
-      if (!this.isDragging) return
-      this.currentTranslateX = e.clientX - this.startPosX
+      if (!this.gallery.isDragging) return
+      this.gallery.currentTranslateX = e.clientX - this.gallery.startPosX
     },
     handleMouseLeave: function (e) {
-      this.isDragging = false
-      if (this.currentTranslateX > 429 && this.currentIdx > 0) {
+      if (!this.gallery.isDragging) return
+      const pos = this.gallery.startPosX - this.$refs.gallery.getBoundingClientRect().left
+      this.gallery.isDragging = false
+      if (this.gallery.currentTranslateX === 0 && pos > 51 && pos < 797) {
+        this.popup = true
+        return
+      }
+      if (this.gallery.currentTranslateX > 429 && this.currentIdx > 0) {
         this.currentIdx--
       }
-      if (this.currentTranslateX < -429 && this.currentIdx < this.imageList.length - 1) {
+      if (this.gallery.currentTranslateX < -429 && this.currentIdx < this.imageList.length - 1) {
         this.currentIdx++
       }
-      this.currentTranslateX = 0
+      this.gallery.currentTranslateX = 0
       this.isTrans = true
       setTimeout(() => { this.isTrans = false }, 300)
     },
@@ -83,16 +128,23 @@ export default {
       setTimeout(() => { this.isTrans = false }, 300)
     },
     handleDownSlick: function (e) {
-      this.slickTrans = true
-      this.startSlickPos = e.clientX
-      this.startSlickScroll = this.$refs.slick.scrollLeft
+      this.slick.slickTrans = true
+      this.slick.startSlickPos = e.clientX
+      this.slick.startSlickScroll = this.$refs.slick.scrollLeft
     },
     handleMoveSlick: function (e) {
-      if (!this.slickTrans) return
-      this.$refs.slick.scrollLeft = this.startSlickScroll - (e.clientX - this.startSlickPos)
+      if (!this.slick.slickTrans) return
+      this.$refs.slick.scrollLeft = this.slick.startSlickScroll - (e.clientX - this.slick.startSlickPos)
     },
     handleSlickLeave: function () {
-      this.slickTrans = false
+      if (!this.slick.slickTrans) return
+      this.slick.slickTrans = false
+    },
+    clickOutSide: function () {
+      this.popup = false
+    },
+    clickImage: function (e) {
+      e.stopPropagation()
     }
   }
 }
@@ -145,8 +197,6 @@ export default {
   display: block;
   z-index: 10;
   background: rgba(0, 0, 0, 0.65);
-/* bug */
-  /* backdrop-filter: blur(64px); */
   text-align: center;
 }
 .image-overlay img{
@@ -166,6 +216,19 @@ export default {
   line-height: 20px;
 }
 .btn-nav{
+
+  position: absolute;
+  top: 0;
+  height: 100%;
+}
+.btn-nav >div{
+  background-color: #fff;
+  border: solid 1px #ccc;
+  padding: 8px ;
+  border-radius: 4px;
+  display: flex;
+}
+.btn-nav-popup{
   background-color: #fff;
   border: solid 1px #ccc;
   padding: 8px ;
@@ -176,10 +239,10 @@ export default {
 }
 .go-right{
   right: 0;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%,0);
 }
 .go-left{
-  transform: translate(50%, -50%);
+  transform: translate(50%, 0);
   left: 0;
 
 }
@@ -205,5 +268,89 @@ export default {
 }
 .active{
   border: 2px solid #2C2C2C;
+}
+.popup{
+  z-index: 1000;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  top: 0;
+  left: 0;
+}
+.navigate-btn{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%);
+  height: 56px;
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+  padding: 12px 0px;
+}
+.pagination-popup{
+  font-size: 14px;
+  line-height: 20px;
+  padding-left: 24px;
+  color: #fff;
+}
+.action-btn{
+  display: flex;
+  align-items: center;
+  padding-right: 24px;
+}
+.action-btn svg{
+  width: 24px;
+  height: 24px;
+}
+.content-popup{
+  position: fixed;
+  height: calc(100vh - 56px);
+  width: 100%;
+  top: 56px;
+}
+.popup-wrapper{
+  position: relative;
+  height: calc(100% - 112px);
+}
+.gallery-holder{
+  height: 100%;
+  opacity: 0;
+  transform: scale(0.5);
+  animation: fade-in 0.2s ease .3s forwards;
+}
+.gallery-popup{
+  position: absolute;
+  padding: 0;
+  display: flex;
+  list-style: none;
+  width: 100%;
+  height: 100%;
+}
+.gallery-popup li{
+  text-align: center;
+  flex-shrink: 0;
+  width: 100%;
+}
+.gallery-popup img{
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto !important;
+  height: auto !important;
+  cursor: grab;
+}
+.slick-popup{
+  height: 112px !important;
+  padding: 24px 10px !important;
+}
+@keyframes fade-in {
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 </style>
