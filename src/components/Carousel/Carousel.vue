@@ -32,6 +32,12 @@
       <div class="navigate-btn">
         <div class="pagination-popup">{{ `${currentIdx + 1} / ${imageList.length}` }}</div>
         <div class="action-btn">
+          <button  @click="handleZoomOut">
+            <icon-zoomout/>
+          </button>
+          <button @click="scale++">
+            <icon-zoomin/>
+          </button>
           <button @click="popup=false">
             <icon-closewb/>
           </button>
@@ -40,9 +46,9 @@
       <div class="content-popup">
         <div class="popup-wrapper" @click="clickOutSide">
           <div class="gallery-holder">
-            <ul class="gallery-popup" :style="{transform: `translate3d( ${ 100 * -currentIdx }%, 0px, 0px)`, transitionDuration: `${isTrans?'600ms':'0ms'}`}">
-              <li v-for="item in imageList" :key="item.name">
-                <img :src="item.url" alt="img" draggable="false" @click="clickImage"/>
+            <ul class="gallery-popup" :style="{transform: `translate3d( calc(${ 100 * -currentIdx }% + ${galleryPopup.currentTranslateX}px), ${scale === 1? '0px':`${galleryPopup.currentTranslateY}px`}, 0px)`, transitionDuration: `${isTrans?'600ms':'0ms'}`}">
+              <li v-for="(item,idx) in imageList" :key="item.name">
+                <img :src="item.url" alt="img" draggable="false" v-if="scale===1 || idx === currentIdx" @click="clickImage" @mousemove="handleMouseMovePopup" @mousedown="handleMouseDownPopup" @mouseup="handleMouseLeavePopup" @mouseleave="handleMouseLeavePopup" :style="{transform: `scale3d(${idx === currentIdx ?scale:1}, ${idx === currentIdx ?scale:1}, 1)`}"/>
               </li>
             </ul>
           </div>
@@ -53,7 +59,13 @@
             <icon-leftarrow/>
           </button>
         </div>
-        <div class="slick-popup"></div>
+        <div class="slick-popup fade-animation" @mousedown="handleDownSlickPopup" @mousemove="handleMoveSlickPopup" @mouseup="handleSlickLeavePopup" @mouseleave="handleSlickLeavePopup">
+          <ul class="slick slick-popup-gallery" ref="slick-popup" >
+            <li v-for="(item, idx) in imageList" :key="item.name" @click="handleChangeSlide(idx)">
+              <img :src="item.url" alt="img" draggable="false" :class="[{'active-popup' : idx === currentIdx}]" />
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -71,12 +83,25 @@ export default {
       popup: false,
       isTrans: false,
       currentIdx: 0,
+      scale: 1,
       gallery: {
         isDragging: false,
         startPosX: 0,
         currentTranslateX: 0
       },
+      galleryPopup: {
+        isDragging: false,
+        startPosX: 0,
+        currentTranslateX: 0,
+        startPosY: 0,
+        currentTranslateY: 0
+      },
       slick: {
+        slickTrans: false,
+        startSlickPos: 0,
+        startSlickScroll: 0
+      },
+      slickPopup: {
         slickTrans: false,
         startSlickPos: 0,
         startSlickScroll: 0
@@ -88,12 +113,18 @@ export default {
       e.stopPropagation()
       this.currentIdx++
       this.isTrans = true
+      this.scale = 1
+      this.galleryPopup.currentTranslateX = 0
+      this.galleryPopup.currentTranslateY = 0
       setTimeout(() => { this.isTrans = false }, 300)
     },
     handleGoLeft: function (e) {
       e.stopPropagation()
       this.currentIdx--
       this.isTrans = true
+      this.scale = 1
+      this.galleryPopup.currentTranslateX = 0
+      this.galleryPopup.currentTranslateY = 0
       setTimeout(() => { this.isTrans = false }, 300)
     },
     handleMouseDown: function (e) {
@@ -110,6 +141,9 @@ export default {
       this.gallery.isDragging = false
       if (this.gallery.currentTranslateX === 0 && pos > 51 && pos < 797) {
         this.popup = true
+        this.scale = 1
+        this.galleryPopup.currentTranslateX = 0
+        this.galleryPopup.currentTranslateY = 0
         return
       }
       if (this.gallery.currentTranslateX > 429 && this.currentIdx > 0) {
@@ -122,9 +156,38 @@ export default {
       this.isTrans = true
       setTimeout(() => { this.isTrans = false }, 300)
     },
+    handleMouseDownPopup: function (e) {
+      this.galleryPopup.isDragging = true
+      this.galleryPopup.startPosX = e.clientX - this.galleryPopup.currentTranslateX
+      this.galleryPopup.startPosY = e.clientY - this.galleryPopup.currentTranslateY
+    },
+    handleMouseMovePopup: function (e) {
+      if (!this.galleryPopup.isDragging) return
+      this.galleryPopup.currentTranslateX = e.clientX - this.galleryPopup.startPosX
+      this.galleryPopup.currentTranslateY = e.clientY - this.galleryPopup.startPosY
+    },
+    handleMouseLeavePopup: function (e) {
+      if (!this.galleryPopup.isDragging) return
+      this.galleryPopup.isDragging = false
+      if (this.scale === 1) {
+        if (this.galleryPopup.currentTranslateX > 429 && this.currentIdx > 0) {
+          this.currentIdx--
+        }
+        if (this.galleryPopup.currentTranslateX < -429 && this.currentIdx < this.imageList.length - 1) {
+          this.currentIdx++
+        }
+        this.galleryPopup.currentTranslateX = 0
+        this.galleryPopup.currentTranslateY = 0
+        this.isTrans = true
+        setTimeout(() => { this.isTrans = false }, 300)
+      }
+    },
     handleChangeSlide: function (idx) {
       this.currentIdx = idx
       this.isTrans = true
+      this.scale = 1
+      this.galleryPopup.currentTranslateX = 0
+      this.galleryPopup.currentTranslateY = 0
       setTimeout(() => { this.isTrans = false }, 300)
     },
     handleDownSlick: function (e) {
@@ -140,11 +203,31 @@ export default {
       if (!this.slick.slickTrans) return
       this.slick.slickTrans = false
     },
+    handleDownSlickPopup: function (e) {
+      this.slickPopup.slickTrans = true
+      this.slickPopup.startSlickPos = e.clientX
+      this.slickPopup.startSlickScroll = this.$refs['slick-popup'].scrollLeft
+    },
+    handleMoveSlickPopup: function (e) {
+      if (!this.slickPopup.slickTrans) return
+      this.$refs['slick-popup'].scrollLeft = this.slickPopup.startSlickScroll - (e.clientX - this.slickPopup.startSlickPos)
+    },
+    handleSlickLeavePopup: function () {
+      if (!this.slickPopup.slickTrans) return
+      this.slickPopup.slickTrans = false
+    },
     clickOutSide: function () {
       this.popup = false
     },
     clickImage: function (e) {
       e.stopPropagation()
+    },
+    handleZoomOut: function () {
+      this.scale > 1 && this.scale--
+      if (this.scale === 1) {
+        this.galleryPopup.currentTranslateX = 0
+        this.galleryPopup.currentTranslateY = 0
+      }
     }
   }
 }
@@ -203,6 +286,7 @@ export default {
   min-height: 100%;
   cursor: pointer;
   height: 100%;
+  user-select: none;
 }
 .pagination{
   position: absolute;
@@ -231,11 +315,15 @@ export default {
 .btn-nav-popup{
   background-color: #fff;
   border: solid 1px #ccc;
-  padding: 8px ;
+  padding: 11px ;
   border-radius: 4px;
   position: absolute;
   display: flex;
   top: 50%;
+}
+.btn-nav-popup svg{
+  width: 25px;
+  height: 25px;
 }
 .go-right{
   right: 0;
@@ -256,6 +344,13 @@ export default {
   list-style: none;
   display: flex;
 }
+.slick-popup-gallery{
+  height: 64px;
+}
+.slick-popup-gallery img{
+  width: 86px !important;
+  opacity: 0.64;
+}
 .slick >:not(:last-child){
   margin-right: 8px;
 }
@@ -265,6 +360,11 @@ export default {
   border-radius: 4px;
   object-fit: cover;
   cursor: pointer;
+  transition: all .3s ease;
+}
+.active-popup{
+  opacity: 1 !important;
+  border: 2px solid #fff;
 }
 .active{
   border: 2px solid #2C2C2C;
@@ -289,6 +389,7 @@ export default {
   width: 100%;
   z-index: 2;
   padding: 12px 0px;
+  background-color: #000;
 }
 .pagination-popup{
   font-size: 14px;
@@ -298,6 +399,7 @@ export default {
 }
 .action-btn{
   display: flex;
+  gap: 10px;
   align-items: center;
   padding-right: 24px;
 }
@@ -330,9 +432,11 @@ export default {
   height: 100%;
 }
 .gallery-popup li{
-  text-align: center;
+  justify-content: center;
   flex-shrink: 0;
   width: 100%;
+  display: flex;
+  align-items: center;
 }
 .gallery-popup img{
   display: inline-block;
@@ -342,15 +446,35 @@ export default {
   width: auto !important;
   height: auto !important;
   cursor: grab;
+  transition: all .2s ease;
 }
 .slick-popup{
   height: 112px !important;
   padding: 24px 10px !important;
+  background-color: #000;
 }
 @keyframes fade-in {
   100% {
     opacity: 1;
     transform: scale(1);
+  }
+}
+.fade-animation {
+  animation-name: fade-in-down;
+  animation-iteration-count: 1;
+  animation-delay: 0.6s;
+  animation-duration: .3s;
+  animation-fill-mode: both;
+}
+
+@keyframes fade-in-down {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 </style>

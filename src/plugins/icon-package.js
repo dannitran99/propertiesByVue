@@ -29,6 +29,8 @@ import User from '@/components/icons/User.vue'
 import Lock from '@/components/icons/Lock.vue'
 import Camera from '@/components/icons/Camera.vue'
 import Phone from '@/components/icons/Phone.vue'
+import ZoomIn from '@/components/icons/ZoomIn.vue'
+import ZoomOut from '@/components/icons/ZoomOut.vue'
 const iconElements = {
   RightArrow,
   Home,
@@ -60,7 +62,9 @@ const iconElements = {
   User,
   Lock,
   Camera,
-  Phone
+  Phone,
+  ZoomIn,
+  ZoomOut
 }
 
 export default {
