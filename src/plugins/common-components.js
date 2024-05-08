@@ -1,4 +1,5 @@
 import NavBar from '@/components/NavBar'
+import FooterComp from '@/components/Footer'
 import LoginButton from '@/components/LoginButton'
 import NewsHomePage from '@/components/NewsHomePage'
 import PropertiesHomePage from '@/components/PropertiesHomePage'
@@ -9,6 +10,7 @@ import Carousel from '@/components/Carousel'
 import NewsCardSkeleton from '@/components/News/NewsCard/NewsCardSkeleton.vue'
 const commonElements = {
   NavBar,
+  FooterComp,
   LoginButton,
   NewsHomePage,
   PropertiesHomePage,

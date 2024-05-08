@@ -2,6 +2,7 @@
   <v-app id="app">
     <nav-bar class="nav-bar"/>
     <router-view class="main-content"/>
+    <footer-comp></footer-comp>
   </v-app>
 </template>
 
@@ -27,6 +28,7 @@ a{
   z-index: 99;
 }
 .main-content{
+  min-height: calc(100vh - 72px - 56px);
   margin-top: 72px;
 }
 </style>

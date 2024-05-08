@@ -26,3 +26,7 @@ export const formatTimeCalendar = (input) => {
 export const formatDateTime = (input) => {
   return moment(input).format('DD/MM/YYYY HH:mm')
 }
+
+export const formatDate = (input) => {
+  return moment(input).format('DD/MM/YYYY')
+}

@@ -43,7 +43,7 @@
     <div class="article">
       <p class="card-title"><b>{{ data.title }}</b></p>
       <div class="info-txt">
-        <p class="txt-ct">{{ formatCurrency }}</p>
+        <p class="txt-ct">{{ formatCurrency }}<span v-if="data.type==='rent'">/tháng</span></p>
         <p>·</p>
         <p class="txt-ct">{{ formatArea }}</p>
         <p>·</p>
