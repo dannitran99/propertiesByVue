@@ -3,7 +3,10 @@ import HTTP from './http'
 export const getPropertiesList = async (payload) => {
   try {
     let query = [`type=${payload.type}`]
-    payload.query.category && query.push(`category=${payload.query.category}`)
+    if (payload.query) {
+      payload.query.category && query.push(`category=${payload.query.category}`)
+      payload.query.k && query.push(`k=${payload.query.k}`)
+    }
     const { data } = await HTTP.get(`/api/properties?${query.join('&')}`)
     return [null, data]
   } catch (error) {

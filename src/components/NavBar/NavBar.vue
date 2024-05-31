@@ -54,7 +54,7 @@
       </div>
       <div class="input-search">
         <icon-magnify/>
-        <input/>
+        <input v-model="searchData" type="text" @keyup.enter="handleSearch"/>
       </div>
       <div class="divider"></div>
       <filter-category class="wide"/>
@@ -101,9 +101,11 @@
 </template>
 
 <script>
+import { cloneDeep } from '@/helpers/arrayHandler'
+import { FILTER_ID, MENU_ITEM } from '@/consts/label.js'
 import NavBarButton from './NavBarButton'
 import FilterCategory from './NavBarFilter/FilterCategory.vue'
-import {MENU_ITEM} from '@/consts/label.js'
+
 export default {
   name: 'NavBar',
   components: {
@@ -112,6 +114,7 @@ export default {
   },
   data () {
     return {
+      searchData: '',
       isSale: false,
       isRent: false,
       menu: MENU_ITEM,
@@ -123,6 +126,12 @@ export default {
     avatar: {
       get () {
         return this.$store.getters['user/avatar']
+      }
+    },
+    categoryIdFilter: {
+      get () {
+        let tmp = cloneDeep(this.$store.getters['properties/categoryIdFilter'])
+        return tmp.length === FILTER_ID.length ? [] : tmp
       }
     }
   },
@@ -142,6 +151,15 @@ export default {
       localStorage.removeItem('username')
       localStorage.removeItem('avatar')
       location.reload()
+    },
+    handleSearch: function () {
+      if (this.searchData) {
+        this.$router.push(this.categoryIdFilter.length ? {
+          path: this.$route.path, query: { category: this.categoryIdFilter.join(','), k: this.searchData }
+        } : {
+          path: this.$route.path, query: { k: this.searchData }
+        })
+      }
     }
   }
 }
