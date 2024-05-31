@@ -15,7 +15,7 @@
               <icon-cached/>
               <span>Đặt lại</span>
             </button>
-            <button class="btn-confirm">
+            <button class="btn-confirm" @click="handleSearch">
               <icon-magnify/>
               <span>Tìm kiếm</span>
             </button>
@@ -27,7 +27,7 @@
 <script>
 import FilterItem from './FilterItem.vue'
 import { removeElFromArr, cloneDeep } from '@/helpers/arrayHandler'
-import {FILTER_OPTION} from '@/consts/label.js'
+import {FILTER_OPTION, FILTER_ID} from '@/consts/label.js'
 export default {
   components: {
     'filter-item': FilterItem
@@ -49,6 +49,12 @@ export default {
         })
         return tmp
       }
+    },
+    categoryIdFilter: {
+      get () {
+        let tmp = cloneDeep(this.$store.getters['properties/categoryIdFilter'])
+        return tmp.length === FILTER_ID.length ? [] : tmp
+      }
     }
   },
   methods: {
@@ -56,7 +62,12 @@ export default {
       this.isActive = !this.isActive
     },
     handleReset () {
-      this.$store.dispatch('properties/filterChange', {data: []})
+      this.$store.dispatch('properties/filterChange', {data: [], filterId: []})
+    },
+    handleSearch () {
+      this.$router.push(this.categoryIdFilter.length ? {
+        path: this.$route.path, query: { category: this.categoryIdFilter.join(',') }
+      } : this.$route.path)
     }
   }
 }

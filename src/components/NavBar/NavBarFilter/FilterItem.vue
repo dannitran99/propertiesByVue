@@ -11,7 +11,7 @@
         <li v-for="item in data.subItem" v-bind:key="item.label">
           <div class="li-item align-left">
             <span>{{ item.label }}</span>
-            <input type="checkbox" v-model="categoryFilter" :value="item.label" @change="handleChangeSub" />
+            <input type="checkbox" v-model="categoryFilter" :value="item.label"  @change="() => handleChangeSub(item)" />
           </div>
         </li>
     </ul>
@@ -20,7 +20,7 @@
 
 <script>
 import { removeElFromArr, checkArrHasElArr, cloneDeep } from '@/helpers/arrayHandler'
-import {FILTER_LABEL} from '@/consts/label.js'
+import {FILTER_LABEL, FILTER_ID} from '@/consts/label.js'
 export default {
   props: {
     data: {
@@ -37,39 +37,57 @@ export default {
       },
       set () {
       }
+    },
+    categoryIdFilter: {
+      get () {
+        return this.$store.getters['properties/categoryIdFilter']
+      }
     }
   },
   methods: {
     handleChange: function ($event) {
       let tmp = this.categoryFilter
+      let tmpId = this.categoryIdFilter
       if (this.data.label === 'Tất cả nhà đất') {
         if (tmp.some((e) => e === 'Tất cả nhà đất')) {
+          tmpId = []
           tmp = []
         } else {
           tmp = cloneDeep(FILTER_LABEL)
+          tmpId = cloneDeep(FILTER_ID)
         }
       } else {
         if (tmp.some((e) => e === $event.target.value)) {
           removeElFromArr(tmp, $event.target.value)
+          this.data.value && removeElFromArr(tmpId, this.data.value)
           this.data.subItem && this.data.subItem.map(el => {
-            tmp.some((item) => item === el.label) && removeElFromArr(tmp, el.label)
+            if (tmp.some((item) => item === el.label)) {
+              removeElFromArr(tmp, el.label)
+              removeElFromArr(tmpId, el.value)
+            }
           })
         } else {
           tmp.push($event.target.value)
+          this.data.value && tmpId.push(this.data.value)
           this.data.subItem && this.data.subItem.map(el => {
-            !tmp.some((item) => item === el.label) && tmp.push(el.label)
+            if (!tmp.some((item) => item === el.label)) {
+              tmp.push(el.label)
+              tmpId.push(el.value)
+            }
           })
         }
         tmp.length === FILTER_LABEL.length - 1 && !tmp.some((e) => e === 'Tất cả nhà đất') ? tmp.push('Tất cả nhà đất') : removeElFromArr(tmp, 'Tất cả nhà đất')
       }
-      this.$store.dispatch('properties/filterChange', {data: tmp})
+      this.$store.dispatch('properties/filterChange', {data: tmp, filterId: tmpId})
     },
-    handleChangeSub: function ($event) {
+    handleChangeSub: function (item) {
       const tmp = this.categoryFilter
-      tmp.some((e) => e === $event.target.value) ? removeElFromArr(tmp, $event.target.value) : tmp.push($event.target.value)
+      const tmpId = this.categoryIdFilter
+      tmp.some((e) => e === item.label) ? removeElFromArr(tmp, item.label) : tmp.push(item.label)
+      tmpId.some((e) => e === item.value) ? removeElFromArr(tmpId, item.value) : tmpId.push(item.value)
       checkArrHasElArr(this.data.subItem && this.data.subItem.map(el => el.label), this.categoryFilter) ? tmp.push(this.data.label) : removeElFromArr(tmp, this.data.label)
       tmp.length === FILTER_LABEL.length - 1 && !tmp.some((e) => e === 'Tất cả nhà đất') ? tmp.push('Tất cả nhà đất') : removeElFromArr(tmp, 'Tất cả nhà đất')
-      this.$store.dispatch('properties/filterChange', {data: tmp})
+      this.$store.dispatch('properties/filterChange', {data: tmp, filterId: tmpId})
     }
   }
 }

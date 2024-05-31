@@ -46,14 +46,16 @@ export default {
     async '$route' () {
       this.isSale = this.$route.path.includes('nha-dat-ban') ? 'Bán' : 'Cho thuê'
       await this.$store.dispatch('properties/getPropertiesList', {
-        type: this.$route.path.includes('nha-dat-ban') ? 'sale' : 'rent'
+        type: this.$route.path.includes('nha-dat-ban') ? 'sale' : 'rent',
+        query: this.$route.query
       })
     }
   },
   async created () {
     this.isSale = this.$route.path.includes('nha-dat-ban') ? 'Bán' : 'Cho thuê'
     await this.$store.dispatch('properties/getPropertiesList', {
-      type: this.$route.path.includes('nha-dat-ban') ? 'sale' : 'rent'
+      type: this.$route.path.includes('nha-dat-ban') ? 'sale' : 'rent',
+      query: this.$route.query
     })
   }
 }

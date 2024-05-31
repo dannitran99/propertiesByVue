@@ -226,6 +226,7 @@ export default {
   color: #2C2C2C;
 }
 .description-p{
+  white-space: pre-line;
   font-size: 14px;
   line-height: 24px;
   margin: 0;

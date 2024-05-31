@@ -9,6 +9,7 @@ export default {
     propertiesList: [],
     propertiesListPosted: [],
     categoryFilter: [],
+    categoryIdFilter: [],
     data: null
   },
   getters: {
@@ -20,6 +21,9 @@ export default {
     },
     categoryFilter (state) {
       return state.categoryFilter
+    },
+    categoryIdFilter (state) {
+      return state.categoryIdFilter
     },
     isLoading (state) {
       return state.isLoading
@@ -42,7 +46,8 @@ export default {
       state.propertiesListPosted = data
     },
     CHANGE_FILTER (state, data) {
-      state.categoryFilter = data
+      state.categoryFilter = data.data
+      state.categoryIdFilter = data.filterId
     },
     GET_PROPERTIES_DETAIL (state, data) {
       state.data = data
@@ -62,7 +67,7 @@ export default {
       }
     },
     filterChange (context, payload) {
-      context.commit('CHANGE_FILTER', payload.data)
+      context.commit('CHANGE_FILTER', payload)
     },
     async postProperties (context, payload) {
       context.commit('LOADING_STATE', true)

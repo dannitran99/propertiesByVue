@@ -1,23 +1,61 @@
-export const FILTER_LABEL = ['Tất cả nhà đất', 'Căn hộ chung cư', 'Các loại nhà bán', 'Nhà riêng', 'Nhà biệt thự, liền kề', 'Nhà mặt phố', 'Shophouse, nhà phố thương mại', 'Các loại đất bán', 'Đất nền dự án', 'Bán đất', 'Kho, nhà xưởng', 'Bất động sản khác', 'Condotel', 'Trang trại, khu nghỉ dưỡng']
+import {PROPSSALETYPE} from './propstype'
+
+export const FILTER_LABEL = [
+  'Tất cả nhà đất',
+  PROPSSALETYPE.canho.secondaryLabel,
+  'Các loại nhà bán',
+  PROPSSALETYPE.nharieng.secondaryLabel,
+  PROPSSALETYPE.bietthu.secondaryLabel,
+  PROPSSALETYPE.nhamatpho.secondaryLabel,
+  PROPSSALETYPE.shophouse.secondaryLabel,
+  'Các loại đất bán',
+  PROPSSALETYPE.duan.secondaryLabel,
+  PROPSSALETYPE.dat.secondaryLabel,
+  PROPSSALETYPE.kho.secondaryLabel,
+  PROPSSALETYPE.khac.secondaryLabel,
+  PROPSSALETYPE.condotel.secondaryLabel,
+  PROPSSALETYPE.trangtrai.secondaryLabel
+]
+
+export const FILTER_ID = [
+  PROPSSALETYPE.canho.code,
+  PROPSSALETYPE.nharieng.code,
+  PROPSSALETYPE.bietthu.code,
+  PROPSSALETYPE.nhamatpho.code,
+  PROPSSALETYPE.shophouse.code,
+  PROPSSALETYPE.duan.code,
+  PROPSSALETYPE.dat.code,
+  PROPSSALETYPE.kho.code,
+  PROPSSALETYPE.khac.code,
+  PROPSSALETYPE.condotel.code,
+  PROPSSALETYPE.trangtrai.code
+]
 
 export const FILTER_OPTION = [
   { label: 'Tất cả nhà đất', icon: 'icon-house' },
-  { label: 'Căn hộ chung cư', icon: 'icon-building' },
+  {
+    label: PROPSSALETYPE.canho.secondaryLabel,
+    value: PROPSSALETYPE.canho.code,
+    icon: 'icon-building' },
   {
     label: 'Các loại nhà bán',
     icon: 'icon-homeaccount',
     subItem: [
       {
-        label: 'Nhà riêng'
+        label: PROPSSALETYPE.nharieng.secondaryLabel,
+        value: PROPSSALETYPE.nharieng.code
       },
       {
-        label: 'Nhà biệt thự, liền kề'
+        label: PROPSSALETYPE.bietthu.secondaryLabel,
+        value: PROPSSALETYPE.bietthu.code
       },
       {
-        label: 'Nhà mặt phố'
+        label: PROPSSALETYPE.nhamatpho.secondaryLabel,
+        value: PROPSSALETYPE.nhamatpho.code
       },
       {
-        label: 'Shophouse, nhà phố thương mại'
+        label: PROPSSALETYPE.shophouse.secondaryLabel,
+        value: PROPSSALETYPE.shophouse.code
       }
     ]
   },
@@ -26,24 +64,34 @@ export const FILTER_OPTION = [
     icon: 'icon-pinmap',
     subItem: [
       {
-        label: 'Đất nền dự án'
+        label: PROPSSALETYPE.duan.secondaryLabel,
+        value: PROPSSALETYPE.duan.code
       },
       {
-        label: 'Bán đất'
+        label: PROPSSALETYPE.dat.secondaryLabel,
+        value: PROPSSALETYPE.dat.code
       }
     ]
   },
   {
-    label: 'Trang trại, khu nghỉ dưỡng',
+    label: PROPSSALETYPE.trangtrai.secondaryLabel,
+    value: PROPSSALETYPE.trangtrai.code,
     icon: 'icon-condotel',
     subItem: [
       {
-        label: 'Condotel'
+        label: PROPSSALETYPE.condotel.secondaryLabel,
+        value: PROPSSALETYPE.condotel.code
       }
     ]
   },
-  { label: 'Kho, nhà xưởng', icon: 'icon-warehouse' },
-  { label: 'Bất động sản khác', icon: 'icon-housegroup' }
+  {
+    label: PROPSSALETYPE.kho.secondaryLabel,
+    value: PROPSSALETYPE.kho.code,
+    icon: 'icon-warehouse' },
+  {
+    label: PROPSSALETYPE.khac.secondaryLabel,
+    value: PROPSSALETYPE.khac.code,
+    icon: 'icon-housegroup' }
 ]
 
 export const MENU_ITEM = [
@@ -52,28 +100,28 @@ export const MENU_ITEM = [
     href: 'PropertiesForSale',
     path: 'nha-dat-ban',
     sub: [
-      { label: 'Bán căn hộ chung cư',
-        path: 'can-ho-chung-cu' },
-      { label: 'Bán nhà riêng',
-        path: 'nha-rieng' },
-      { label: 'Bán nhà biệt thự, liền kề',
-        path: 'nha-biet-thu-lien-ke' },
-      { label: 'Bán nhà mặt phố',
-        path: 'nha-mat-pho' },
-      { label: 'Bán shophouse, nhà phố thương mại',
-        path: 'shophouse-nha-pho-thuong-mai' },
-      { label: 'Bán đất nền dự án',
-        path: '-dat-nen-du-an' },
-      { label: 'Bán đất',
-        path: 'dat' },
-      { label: 'Bán trang trại, khu nghỉ dưỡng',
-        path: 'trang-trai-khu-nghi-duong' },
-      { label: 'Bán condotel',
-        path: 'condotel'},
-      { label: 'Bán kho, nhà xưởng',
-        path: 'kho-nha-xuong'},
-      { label: 'Bán loại bất động sản khác',
-        path: 'bat-dong-san-khac' }
+      { label: PROPSSALETYPE.canho.primaryLabel,
+        path: PROPSSALETYPE.canho.code },
+      { label: PROPSSALETYPE.nharieng.primaryLabel,
+        path: PROPSSALETYPE.nharieng.code },
+      { label: PROPSSALETYPE.bietthu.primaryLabel,
+        path: PROPSSALETYPE.bietthu.code },
+      { label: PROPSSALETYPE.nhamatpho.primaryLabel,
+        path: PROPSSALETYPE.nhamatpho.code },
+      { label: PROPSSALETYPE.shophouse.primaryLabel,
+        path: PROPSSALETYPE.shophouse.code },
+      { label: PROPSSALETYPE.duan.primaryLabel,
+        path: PROPSSALETYPE.duan.code },
+      { label: PROPSSALETYPE.dat.primaryLabel,
+        path: PROPSSALETYPE.dat.code },
+      { label: PROPSSALETYPE.trangtrai.primaryLabel,
+        path: PROPSSALETYPE.trangtrai.code },
+      { label: PROPSSALETYPE.condotel.primaryLabel,
+        path: PROPSSALETYPE.condotel.code},
+      { label: PROPSSALETYPE.kho.primaryLabel,
+        path: PROPSSALETYPE.kho.code},
+      { label: PROPSSALETYPE.khac.primaryLabel,
+        path: PROPSSALETYPE.khac.code }
     ]
   },
   {
