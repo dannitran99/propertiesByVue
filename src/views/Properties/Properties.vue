@@ -70,7 +70,7 @@ export default {
   }
   .content{
     width: 848px;
-    /* margin-right: 30px */
+    margin-top: 24px
   }
   .filter{
     width: 262px

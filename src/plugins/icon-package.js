@@ -31,6 +31,12 @@ import Camera from '@/components/icons/Camera.vue'
 import Phone from '@/components/icons/Phone.vue'
 import ZoomIn from '@/components/icons/ZoomIn.vue'
 import ZoomOut from '@/components/icons/ZoomOut.vue'
+import Villa from '@/components/icons/Villa.vue'
+import StreetHouse from '@/components/icons/StreetHouse.vue'
+import Bunk from '@/components/icons/Bunk.vue'
+import Shophouse from '@/components/icons/Shophouse.vue'
+import Case from '@/components/icons/Case.vue'
+import Shop from '@/components/icons/Shop.vue'
 const iconElements = {
   RightArrow,
   Home,
@@ -64,7 +70,13 @@ const iconElements = {
   Camera,
   Phone,
   ZoomIn,
-  ZoomOut
+  ZoomOut,
+  Villa,
+  StreetHouse,
+  Bunk,
+  Shophouse,
+  Case,
+  Shop
 }
 
 export default {

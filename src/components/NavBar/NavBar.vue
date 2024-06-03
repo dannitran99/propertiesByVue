@@ -54,18 +54,12 @@
       </div>
       <div class="input-search">
         <icon-magnify/>
-        <input v-model="searchData" type="text" @keyup.enter="handleSearch"/>
+        <input :value="searchKeyword" type="text" @keyup.enter="handleSearch" @input="handleSearchChange"/>
       </div>
       <div class="divider"></div>
       <filter-category class="wide"/>
       <div class="divider"></div>
-      <div class="filter wide">
-        <div class="title-dv">
-          <p>Khu vực & dự án</p>
-          <icon-downtriangle/>
-        </div>
-        <p>Toàn quốc</p>
-      </div>
+      <filter-location class="wide"/>
       <div class="divider"></div>
       <div class="filter normal">
         <div class="title-dv">
@@ -90,31 +84,32 @@
         </div>
       </div>
       <div class="divider"></div>
-      <div class="filter">
+      <button class="filter" @click="clearFilter">
         <div class="title-dv">
           <icon-cached/>
           <p>Đặt lại</p>
         </div>
-      </div>
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 import { cloneDeep } from '@/helpers/arrayHandler'
-import { FILTER_ID, MENU_ITEM } from '@/consts/label.js'
+import { FILTER_SALE_ID, MENU_ITEM } from '@/consts/label.js'
 import NavBarButton from './NavBarButton'
 import FilterCategory from './NavBarFilter/FilterCategory.vue'
+import FilterLocation from './NavBarFilter/FilterLocation.vue'
 
 export default {
   name: 'NavBar',
   components: {
     'nav-bar-button': NavBarButton,
-    'filter-category': FilterCategory
+    'filter-category': FilterCategory,
+    'filter-location': FilterLocation
   },
   data () {
     return {
-      searchData: '',
       isSale: false,
       isRent: false,
       menu: MENU_ITEM,
@@ -128,10 +123,15 @@ export default {
         return this.$store.getters['user/avatar']
       }
     },
+    searchKeyword: {
+      get () {
+        return this.$store.getters['properties/searchKeyword']
+      }
+    },
     categoryIdFilter: {
       get () {
         let tmp = cloneDeep(this.$store.getters['properties/categoryIdFilter'])
-        return tmp.length === FILTER_ID.length ? [] : tmp
+        return tmp.length === FILTER_SALE_ID.length ? [] : tmp
       }
     }
   },
@@ -140,9 +140,12 @@ export default {
     this.username = localStorage.getItem('username')
   },
   watch: {
-    '$route' () {
+    '$route' (to, from) {
       this.isSale = this.$route.path === '/nha-dat-ban'
       this.isRent = this.$route.path === '/nha-dat-cho-thue'
+      if (to.path !== from.path) {
+        this.$store.dispatch('properties/clearFilter')
+      }
     }
   },
   methods: {
@@ -152,14 +155,23 @@ export default {
       localStorage.removeItem('avatar')
       location.reload()
     },
+    handleSearchChange: function (e) {
+      this.$store.dispatch('properties/searchChange', e.target.value)
+    },
     handleSearch: function () {
-      if (this.searchData) {
+      if (this.searchKeyword) {
         this.$router.push(this.categoryIdFilter.length ? {
-          path: this.$route.path, query: { category: this.categoryIdFilter.join(','), k: this.searchData }
+          path: this.$route.path, query: { category: this.categoryIdFilter.join(','), k: this.searchKeyword }
         } : {
-          path: this.$route.path, query: { k: this.searchData }
+          path: this.$route.path, query: { k: this.searchKeyword }
         })
       }
+    },
+    clearFilter: function () {
+      this.$store.dispatch('properties/clearFilter')
+      this.$router.push({
+        path: this.$route.path
+      })
     }
   }
 }

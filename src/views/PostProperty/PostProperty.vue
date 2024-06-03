@@ -267,7 +267,7 @@
 </template>
 
 <script>
-import {PROPSSALETYPE} from '../../consts/propstype'
+import {PROPSSALETYPE, PROPSRENTTYPE} from '../../consts/propstype'
 import SideBar from '../../components/SideBar'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import * as Yup from 'yup'
@@ -344,16 +344,46 @@ export default {
         }
       ],
       rentItem: [
-        'Cho thuê căn hộ chung cư',
-        'Cho thuê nhà riêng',
-        'Cho thuê nhà biệt thự, liền kề',
-        'Cho thuê nhà mặt phố',
-        'Cho thuê shophouse, nhà phố thương mại',
-        'Cho thuê nhà trọ, phòng trọ',
-        'Cho thuê văn phòng',
-        'Cho thuê, sang nhượng cửa hàng, ki ốt',
-        'Cho thuê kho, nhà xưởng, đất',
-        'Cho thuê loại bất động sản khác'
+        {
+          label: PROPSRENTTYPE.canho.primaryLabel,
+          value: PROPSRENTTYPE.canho.code
+        },
+        {
+          label: PROPSRENTTYPE.nharieng.primaryLabel,
+          value: PROPSRENTTYPE.nharieng.code
+        },
+        {
+          label: PROPSRENTTYPE.bietthu.primaryLabel,
+          value: PROPSRENTTYPE.bietthu.code
+        },
+        {
+          label: PROPSRENTTYPE.nhamatpho.primaryLabel,
+          value: PROPSRENTTYPE.nhamatpho.code
+        },
+        {
+          label: PROPSRENTTYPE.shophouse.primaryLabel,
+          value: PROPSRENTTYPE.shophouse.code
+        },
+        {
+          label: PROPSRENTTYPE.nhatro.primaryLabel,
+          value: PROPSRENTTYPE.nhatro.code
+        },
+        {
+          label: PROPSRENTTYPE.vanphong.primaryLabel,
+          value: PROPSRENTTYPE.vanphong.code
+        },
+        {
+          label: PROPSRENTTYPE.cuahang.primaryLabel,
+          value: PROPSRENTTYPE.cuahang.code
+        },
+        {
+          label: PROPSRENTTYPE.kho.primaryLabel,
+          value: PROPSRENTTYPE.kho.code
+        },
+        {
+          label: PROPSRENTTYPE.khac.primaryLabel,
+          value: PROPSRENTTYPE.khac.code
+        }
       ],
       priceTypeItem: [
         'VND',

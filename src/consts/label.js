@@ -1,6 +1,6 @@
-import {PROPSSALETYPE} from './propstype'
+import {PROPSSALETYPE, PROPSRENTTYPE} from './propstype'
 
-export const FILTER_LABEL = [
+export const FILTER_SALE_LABEL = [
   'Tất cả nhà đất',
   PROPSSALETYPE.canho.secondaryLabel,
   'Các loại nhà bán',
@@ -17,7 +17,21 @@ export const FILTER_LABEL = [
   PROPSSALETYPE.trangtrai.secondaryLabel
 ]
 
-export const FILTER_ID = [
+export const FILTER_RENT_LABEL = [
+  'Tất cả nhà đất',
+  PROPSRENTTYPE.canho.secondaryLabel,
+  PROPSRENTTYPE.nharieng.secondaryLabel,
+  PROPSRENTTYPE.bietthu.secondaryLabel,
+  PROPSRENTTYPE.nhamatpho.secondaryLabel,
+  PROPSRENTTYPE.nhatro.secondaryLabel,
+  PROPSRENTTYPE.shophouse.secondaryLabel,
+  PROPSRENTTYPE.vanphong.secondaryLabel,
+  PROPSRENTTYPE.cuahang.secondaryLabel,
+  PROPSRENTTYPE.kho.secondaryLabel,
+  PROPSRENTTYPE.khac.secondaryLabel
+]
+
+export const FILTER_SALE_ID = [
   PROPSSALETYPE.canho.code,
   PROPSSALETYPE.nharieng.code,
   PROPSSALETYPE.bietthu.code,
@@ -31,7 +45,74 @@ export const FILTER_ID = [
   PROPSSALETYPE.trangtrai.code
 ]
 
-export const FILTER_OPTION = [
+export const FILTER_RENT_ID = [
+  PROPSRENTTYPE.canho.code,
+  PROPSRENTTYPE.nharieng.code,
+  PROPSRENTTYPE.bietthu.code,
+  PROPSRENTTYPE.nhamatpho.code,
+  PROPSRENTTYPE.shophouse.code,
+  PROPSRENTTYPE.nhatro.code,
+  PROPSRENTTYPE.vanphong.code,
+  PROPSRENTTYPE.cuahang.code,
+  PROPSRENTTYPE.kho.code,
+  PROPSRENTTYPE.khac.code
+]
+
+export const FILTER_RENT_OPTION = [
+  { label: 'Tất cả nhà đất', icon: 'icon-house' },
+  {
+    label: PROPSRENTTYPE.canho.secondaryLabel,
+    value: PROPSRENTTYPE.canho.code,
+    icon: 'icon-building'
+  },
+  {
+    label: PROPSRENTTYPE.nharieng.secondaryLabel,
+    value: PROPSRENTTYPE.nharieng.code,
+    icon: 'icon-homeaccount'
+  },
+  {
+    label: PROPSRENTTYPE.bietthu.secondaryLabel,
+    value: PROPSRENTTYPE.bietthu.code,
+    icon: 'icon-villa'
+  },
+  {
+    label: PROPSRENTTYPE.nhamatpho.secondaryLabel,
+    value: PROPSRENTTYPE.nhamatpho.code,
+    icon: 'icon-streethouse'
+  },
+  {
+    label: PROPSRENTTYPE.nhatro.secondaryLabel,
+    value: PROPSRENTTYPE.nhatro.code,
+    icon: 'icon-bunk'
+  },
+  {
+    label: PROPSRENTTYPE.shophouse.secondaryLabel,
+    value: PROPSRENTTYPE.shophouse.code,
+    icon: 'icon-shophouse'
+  },
+  {
+    label: PROPSRENTTYPE.vanphong.secondaryLabel,
+    value: PROPSRENTTYPE.vanphong.code,
+    icon: 'icon-case'
+  },
+  {
+    label: PROPSRENTTYPE.cuahang.secondaryLabel,
+    value: PROPSRENTTYPE.cuahang.code,
+    icon: 'icon-shop'
+  },
+  {
+    label: PROPSRENTTYPE.kho.secondaryLabel,
+    value: PROPSRENTTYPE.kho.code,
+    icon: 'icon-warehouse'
+  },
+  {
+    label: PROPSRENTTYPE.khac.secondaryLabel,
+    value: PROPSRENTTYPE.khac.code,
+    icon: 'icon-housegroup'
+  }
+]
+
+export const FILTER_SALE_OPTION = [
   { label: 'Tất cả nhà đất', icon: 'icon-house' },
   {
     label: PROPSSALETYPE.canho.secondaryLabel,
@@ -129,16 +210,26 @@ export const MENU_ITEM = [
     href: 'PropertiesForRent',
     path: 'nha-dat-cho-thue',
     sub: [
-      { label: 'Cho thuê căn hộ chung cư' },
-      { label: 'Cho thuê nhà riêng' },
-      { label: 'Cho thuê nhà biệt thự, liền kề' },
-      { label: 'Cho thuê nhà mặt phố' },
-      { label: 'Cho thuê shophouse, nhà phố thương mại' },
-      { label: 'Cho thuê nhà trọ, phòng trọ' },
-      { label: 'Cho thuê văn phòng' },
-      { label: 'Cho thuê, sang nhượng cửa hàng, ki ốt' },
-      { label: 'Cho thuê kho, nhà xưởng, đất' },
-      { label: 'Cho thuê loại bất động sản khác' }
+      { label: PROPSRENTTYPE.canho.primaryLabel,
+        path: PROPSRENTTYPE.canho.code },
+      { label: PROPSRENTTYPE.nharieng.primaryLabel,
+        path: PROPSRENTTYPE.nharieng.code },
+      { label: PROPSRENTTYPE.bietthu.primaryLabel,
+        path: PROPSRENTTYPE.bietthu.code },
+      { label: PROPSRENTTYPE.nhamatpho.primaryLabel,
+        path: PROPSRENTTYPE.nhamatpho.code },
+      { label: PROPSRENTTYPE.shophouse.primaryLabel,
+        path: PROPSRENTTYPE.shophouse.code },
+      { label: PROPSRENTTYPE.nhatro.primaryLabel,
+        path: PROPSRENTTYPE.nhatro.code },
+      { label: PROPSRENTTYPE.vanphong.primaryLabel,
+        path: PROPSRENTTYPE.vanphong.code },
+      { label: PROPSRENTTYPE.cuahang.primaryLabel,
+        path: PROPSRENTTYPE.cuahang.code },
+      { label: PROPSRENTTYPE.kho.primaryLabel,
+        path: PROPSRENTTYPE.kho.code },
+      { label: PROPSRENTTYPE.khac.primaryLabel,
+        path: PROPSRENTTYPE.khac.code }
     ]
   },
   {

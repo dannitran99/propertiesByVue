@@ -5,6 +5,7 @@ import router from '@/router'
 export default {
   namespaced: true,
   state: {
+    searchKeyword: '',
     isLoading: false,
     propertiesList: [],
     propertiesListPosted: [],
@@ -13,6 +14,9 @@ export default {
     data: null
   },
   getters: {
+    searchKeyword (state) {
+      return state.searchKeyword
+    },
     propertiesList (state) {
       return state.propertiesList
     },
@@ -33,6 +37,9 @@ export default {
     }
   },
   mutations: {
+    SEARCH_TYPING (state, payload) {
+      state.searchKeyword = payload
+    },
     LOADING_STATE (state, payload) {
       state.isLoading = payload
     },
@@ -51,6 +58,11 @@ export default {
     },
     GET_PROPERTIES_DETAIL (state, data) {
       state.data = data
+    },
+    CLEAR_FILTER (state) {
+      state.searchKeyword = ''
+      state.categoryFilter = []
+      state.categoryIdFilter = []
     }
   },
   actions: {
@@ -63,8 +75,10 @@ export default {
         context.commit('GET_PROPERTIES_LIST', response)
       } else {
         context.commit('LOADING_STATE', false)
-        console.error(error)
       }
+    },
+    searchChange (context, payload) {
+      context.commit('SEARCH_TYPING', payload)
     },
     filterChange (context, payload) {
       context.commit('CHANGE_FILTER', payload)
@@ -78,6 +92,9 @@ export default {
       } else {
         // context.commit('LOGIN_POST_ERROR', error)
       }
+    },
+    clearFilter (context) {
+      context.commit('CLEAR_FILTER')
     },
     async postImg (context, payload) {
       const [error, response] = await postImg(payload)

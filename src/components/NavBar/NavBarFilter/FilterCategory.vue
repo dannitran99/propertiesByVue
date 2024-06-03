@@ -1,14 +1,14 @@
 <template>
-    <div class="filter" v-on:click.self="onClickPopup">
+    <div class="filter" v-on:click.self="onClickPopup" v-click-outside="handleClickOutside">
         <div class="title-dv" v-on:click.self="onClickPopup">
           <p v-on:click.self="onClickPopup">Loại nhà đất</p>
           <icon-downtriangle v-on:click.self="onClickPopup"/>
         </div>
         <p class="result-text" v-on:click.self="onClickPopup" v-if="categoryFilter.length">{{ categoryFilter.join(', ') }}</p>
         <p v-else class="result-text" v-on:click.self="onClickPopup">Tất cả</p>
-        <div v-if="isActive" class="popup-modal" >
+        <div v-if="isActive" class="popup-modal">
           <ul>
-            <filter-item v-for="item in selectOption" v-bind:key="item.label" v-bind:data="item" />
+            <filter-item v-for="item in selectOption" v-bind:key="item.label" v-bind:data="item" v-bind:filterLabel="filterLabel" v-bind:filterId="filterId"/>
           </ul>
           <div class="filter-footer">
             <button @click="handleReset">
@@ -25,17 +25,19 @@
 </template>
 
 <script>
-import FilterItem from './FilterItem.vue'
+import FilterCategoryItem from './FilterCategoryItem.vue'
 import { removeElFromArr, cloneDeep } from '@/helpers/arrayHandler'
-import {FILTER_OPTION, FILTER_ID} from '@/consts/label.js'
+import { FILTER_SALE_OPTION, FILTER_RENT_OPTION, FILTER_SALE_ID, FILTER_RENT_ID, FILTER_SALE_LABEL, FILTER_RENT_LABEL } from '@/consts/label.js'
 export default {
   components: {
-    'filter-item': FilterItem
+    'filter-item': FilterCategoryItem
   },
   data () {
     return {
       isActive: false,
-      selectOption: FILTER_OPTION
+      selectOption: [],
+      filterLabel: [],
+      filterId: []
     }
   },
   computed: {
@@ -43,7 +45,7 @@ export default {
       get () {
         let tmp = cloneDeep(this.$store.getters['properties/categoryFilter'])
         tmp.map(el => {
-          el === 'Tất cả nhà đất' ? removeElFromArr(tmp, 'Tất cả nhà đất') : FILTER_OPTION.map(item => {
+          el === 'Tất cả nhà đất' ? removeElFromArr(tmp, 'Tất cả nhà đất') : FILTER_SALE_OPTION.map(item => {
             item.label === el && item.subItem && item.subItem.map(subEl => removeElFromArr(tmp, subEl.label))
           })
         })
@@ -53,11 +55,42 @@ export default {
     categoryIdFilter: {
       get () {
         let tmp = cloneDeep(this.$store.getters['properties/categoryIdFilter'])
-        return tmp.length === FILTER_ID.length ? [] : tmp
+        return tmp.length === FILTER_SALE_ID.length ? [] : tmp
       }
     }
   },
+  watch: {
+    '$route' () {
+      if (this.$route.path === '/nha-dat-ban') {
+        this.selectOption = FILTER_SALE_OPTION
+        this.filterLabel = FILTER_SALE_LABEL
+        this.filterId = FILTER_SALE_ID
+      }
+      if (this.$route.path === '/nha-dat-cho-thue') {
+        this.selectOption = FILTER_RENT_OPTION
+        this.filterLabel = FILTER_RENT_LABEL
+        this.filterId = FILTER_RENT_ID
+      }
+    }
+  },
+  created () {
+    if (this.$route.path === '/nha-dat-ban') {
+      this.selectOption = FILTER_SALE_OPTION
+      this.filterLabel = FILTER_SALE_LABEL
+      this.filterId = FILTER_SALE_ID
+    }
+    if (this.$route.path === '/nha-dat-cho-thue') {
+      this.selectOption = FILTER_RENT_OPTION
+      this.filterLabel = FILTER_RENT_LABEL
+      this.filterId = FILTER_RENT_ID
+    }
+  },
   methods: {
+    handleClickOutside () {
+      if (this.isActive) {
+        this.isActive = false
+      }
+    },
     onClickPopup () {
       this.isActive = !this.isActive
     },
@@ -114,7 +147,6 @@ export default {
   .result-text{
     font-size: 14px;
     line-height: 20px;
-    line-height: 20px;
     color: #2C2C2C;
     white-space: nowrap;
     overflow: hidden;
@@ -125,9 +157,7 @@ export default {
     gap: 5px;
   }
   .popup-modal{
-    width: 300px;
     position: absolute;
-    /* transform: translate(0, 50%); */
     top: 65px;
     left: 0px;
     z-index: 9;

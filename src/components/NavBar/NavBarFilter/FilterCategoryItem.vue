@@ -20,13 +20,18 @@
 
 <script>
 import { removeElFromArr, checkArrHasElArr, cloneDeep } from '@/helpers/arrayHandler'
-import {FILTER_LABEL, FILTER_ID} from '@/consts/label.js'
 export default {
   props: {
     data: {
       type: Object
     },
     checkedNames: {
+      type: Array
+    },
+    filterLabel: {
+      type: Array
+    },
+    filterId: {
       type: Array
     }
   },
@@ -53,8 +58,8 @@ export default {
           tmpId = []
           tmp = []
         } else {
-          tmp = cloneDeep(FILTER_LABEL)
-          tmpId = cloneDeep(FILTER_ID)
+          tmp = cloneDeep(this.filterLabel)
+          tmpId = cloneDeep(this.filterId)
         }
       } else {
         if (tmp.some((e) => e === $event.target.value)) {
@@ -76,7 +81,7 @@ export default {
             }
           })
         }
-        tmp.length === FILTER_LABEL.length - 1 && !tmp.some((e) => e === 'Tất cả nhà đất') ? tmp.push('Tất cả nhà đất') : removeElFromArr(tmp, 'Tất cả nhà đất')
+        tmp.length === this.filterLabel.length - 1 && !tmp.some((e) => e === 'Tất cả nhà đất') ? tmp.push('Tất cả nhà đất') : removeElFromArr(tmp, 'Tất cả nhà đất')
       }
       this.$store.dispatch('properties/filterChange', {data: tmp, filterId: tmpId})
     },
@@ -86,7 +91,7 @@ export default {
       tmp.some((e) => e === item.label) ? removeElFromArr(tmp, item.label) : tmp.push(item.label)
       tmpId.some((e) => e === item.value) ? removeElFromArr(tmpId, item.value) : tmpId.push(item.value)
       checkArrHasElArr(this.data.subItem && this.data.subItem.map(el => el.label), this.categoryFilter) ? tmp.push(this.data.label) : removeElFromArr(tmp, this.data.label)
-      tmp.length === FILTER_LABEL.length - 1 && !tmp.some((e) => e === 'Tất cả nhà đất') ? tmp.push('Tất cả nhà đất') : removeElFromArr(tmp, 'Tất cả nhà đất')
+      tmp.length === this.filterLabel.length - 1 && !tmp.some((e) => e === 'Tất cả nhà đất') ? tmp.push('Tất cả nhà đất') : removeElFromArr(tmp, 'Tất cả nhà đất')
       this.$store.dispatch('properties/filterChange', {data: tmp, filterId: tmpId})
     }
   }

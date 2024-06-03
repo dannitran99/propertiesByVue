@@ -7,11 +7,13 @@ import store from './store'
 import commonComponents from './plugins/common-components'
 import iconPackage from './plugins/icon-package'
 import vuetify from './plugins/vuetify'
+import directives from './plugins/click-outside-element'
 
 Vue.config.productionTip = false
 
 Vue.use(commonComponents)
 Vue.use(iconPackage)
+Vue.use(directives)
 
 /* eslint-disable no-new */
 new Vue({
