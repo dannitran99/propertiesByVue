@@ -11,6 +11,8 @@ export default {
     propertiesListPosted: [],
     categoryFilter: [],
     categoryIdFilter: [],
+    citySelected: '',
+    districtSelected: [],
     data: null
   },
   getters: {
@@ -28,6 +30,12 @@ export default {
     },
     categoryIdFilter (state) {
       return state.categoryIdFilter
+    },
+    citySelected (state) {
+      return state.citySelected
+    },
+    districtSelected (state) {
+      return state.districtSelected
     },
     isLoading (state) {
       return state.isLoading
@@ -56,6 +64,12 @@ export default {
       state.categoryFilter = data.data
       state.categoryIdFilter = data.filterId
     },
+    FILTER_CITY (state, data) {
+      state.citySelected = data
+    },
+    FILTER_DISTRICT (state, data) {
+      state.districtSelected = data
+    },
     GET_PROPERTIES_DETAIL (state, data) {
       state.data = data
     },
@@ -63,6 +77,19 @@ export default {
       state.searchKeyword = ''
       state.categoryFilter = []
       state.categoryIdFilter = []
+      state.citySelected = ''
+      state.districtSelected = []
+    },
+    SUBMIT_FILTER (state) {
+      const query = {}
+      state.categoryIdFilter.length && Object.assign(query, { category: state.categoryIdFilter.join(',') })
+      state.searchKeyword && Object.assign(query, { k: state.searchKeyword })
+      state.citySelected && Object.assign(query, { city: state.citySelected })
+      state.districtSelected.length && Object.assign(query, { district: state.districtSelected.join(',') })
+      router.push({
+        path: router.path,
+        query: query
+      })
     }
   },
   actions: {
@@ -82,6 +109,12 @@ export default {
     },
     filterChange (context, payload) {
       context.commit('CHANGE_FILTER', payload)
+    },
+    setFilterCity (context, payload) {
+      context.commit('FILTER_CITY', payload)
+    },
+    setFilterDistrict (context, payload) {
+      context.commit('FILTER_DISTRICT', payload)
     },
     async postProperties (context, payload) {
       context.commit('LOADING_STATE', true)
@@ -125,6 +158,9 @@ export default {
         context.commit('LOADING_STATE', false)
         return error
       }
+    },
+    submitFilter (context) {
+      context.commit('SUBMIT_FILTER')
     }
   }
 }

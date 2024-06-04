@@ -4,45 +4,75 @@
       <p @click.self="onClickPopup">Khu vực & dự án</p>
       <icon-downtriangle @click.self="onClickPopup"/>
     </div>
-    <p class="result-text" @click.self="onClickPopup">Toàn quốc</p>
+    <p class="result-text" @click.self="onClickPopup">{{citySelected||'Toàn quốc'}}</p>
     <div v-if="isActive" class="popup-modal">
       <div class="popup-content-wrapper">
         <div class="popup-content">
-            <div class="selector" @click="selectProvince(true)">
-                <p>Tỉnh/Thành</p>
-                <icon-righttriangle />
+            <div class="selector" :class="[{'selector-selected' : citySelected}]" @click="selectProvince(true)">
+                <div class="selector-title">
+                  <p :class="[{'selector-selected-title' : citySelected}]">Tỉnh/Thành</p>
+                  <p v-if="citySelected" class="selector-selected-detail">{{ citySelected }} </p>
+                </div>
+                <icon-righttriangle v-if="!citySelected"/>
+                <button v-else @click="clearSelectCity">
+                  <icon-closewb />
+                </button>
             </div>
-            <div class="selector" @click="selectProvince(false)">
-                <p>Quận/Huyện</p>
-                <icon-righttriangle />
+            <div class="selector" @click="selectProvince(false)" :class="[{'disable-selector' : !citySelected},{'selector-selected' : districtSelected.length}]">
+              <div class="selector-title">
+                <p :class="[{'selector-selected-title' : districtSelected.length}]">Quận/Huyện</p>
+                <p v-if="districtSelected.length" class="selector-selected-detail">{{ districtSelected.join(',') }} </p>
+              </div>
+              <icon-righttriangle v-if="!districtSelected.length"/>
+              <button v-else @click="clearSelectDistrict">
+                <icon-closewb />
+              </button>
             </div>
         </div>
         <div class="sub-selector" v-if="isActiveSub">
-            <div class="sub-selector-header">
-                <button @click="handleCloseSubSelector">
-                    <icon-leftarrow/>
-                </button>
-                <p>Chọn {{ selectorProvince? 'Tỉnh/Thành':'Quận/Huyện' }}</p>
-            </div>
-            <div class="sub-selector-search">
-                <icon-magnify/>
-                <input type="text" v-model="keyword" :placeholder="selectorProvince? 'Tìm Tỉnh/Thành phố':'Tìm Quận/Huyện'"/>
-            </div>
-            <ul v-if="selectorProvince" class="sub-selector-content">
-                <li>Tất cả Tỉnh/Thành</li>
-                <li v-for="item in cityItem" :key="item.id">
-                    {{ item.name }}
-                    <icon-righttriangle />
-                </li>
+          <div class="sub-selector-header">
+            <button @click="handleCloseSubSelector">
+              <icon-leftarrow/>
+            </button>
+            <p>Chọn {{ selectorProvince? 'Tỉnh/Thành':'Quận/Huyện' }}</p>
+          </div>
+          <div class="sub-selector-search">
+            <icon-magnify/>
+            <input v-if="selectorProvince" type="text" v-model="keywordCity" placeholder="Tìm Tỉnh/Thành phố"/>
+            <input v-else type="text" v-model="keywordWard" placeholder="Tìm Quận/Huyện"/>
+          </div>
+          <ul v-if="selectorProvince" class="sub-selector-content">
+            <li @click="clearSelectCity" :class="[{'selector-active' : citySelected === ''}]">Tất cả Tỉnh/Thành</li>
+            <li v-for="item in cityList" :key="item.id" @click="(e)=>handleSelectCity(e, item)" :class="[{'selector-active' : citySelected === item.name}]">
+              {{ item.name }}
+              <icon-righttriangle />
+            </li>
+          </ul>
+          <template v-else>
+            <ul class="sub-selector-content district-selector">
+              <li v-for="item in districtList" :key="item.id" @click="(e)=>handleSelectDistrict(e, item)" :class="[{'selector-active' : districtSelected.includes(item.name)}]">
+                {{ item.name }}
+                <input type="checkbox" v-model="districtSelected" :value="item.name"/>
+              </li>
             </ul>
+            <div class="filter-footer">
+              <button @click="clearSelectDistrict">
+                <icon-cached/>
+                <span>Đặt lại</span>
+              </button>
+              <button class="outlined-btn" @click="handleCloseSubSelector">
+                <span>Áp dụng {{ districtSelected.length ? ` ・ ${districtSelected.length} lựa chọn` :''}}</span>
+              </button>
+            </div>
+          </template>
         </div>
       </div>
     <div class="filter-footer">
-      <button >
+      <button @click="clearSelectCity">
         <icon-cached/>
         <span>Đặt lại</span>
       </button>
-      <button class="btn-confirm" >
+      <button class="btn-confirm" @click="submitFilter">
         <icon-magnify/>
         <span>Tìm kiếm</span>
       </button>
@@ -52,24 +82,60 @@
 </template>
 
 <script>
+import { removeElFromArr } from '@/helpers/arrayHandler'
 export default {
   data () {
     return {
       isActive: false,
       isActiveSub: false,
       selectorProvince: false,
-      keyword: ''
+      keywordCity: '',
+      keywordWard: '',
+      cityList: [],
+      districtList: []
     }
   },
   computed: {
+    citySelected: {
+      get () {
+        return this.$store.getters['properties/citySelected']
+      }
+    },
+    districtSelected: {
+      get () {
+        return this.$store.getters['properties/districtSelected']
+      }
+    },
     cityItem: {
       get () {
         return this.$store.getters['common/city']
+      }
+    },
+    districtItem: {
+      get () {
+        return this.$store.getters['common/district']
       }
     }
   },
   async created () {
     await this.$store.dispatch('common/getCity')
+    this.cityList = this.cityItem
+  },
+  watch: {
+    keywordCity () {
+      this.cityList = this.cityItem.filter(item => item.name.toUpperCase().indexOf(this.keywordCity.toUpperCase()) > -1)
+    },
+    keywordWard () {
+      this.districtList = this.districtItem.filter(item => item.name.toUpperCase().indexOf(this.keywordWard.toUpperCase()) > -1)
+    },
+    async citySelected () {
+      if (this.citySelected !== '') {
+        if (this.cityItem) await this.$store.dispatch('common/getCity')
+        const code = await this.cityItem.find(item => item.name === this.citySelected).code
+        await this.$store.dispatch('common/getDistrict', code)
+        this.districtList = this.districtItem
+      } else this.districtList = []
+    }
   },
   methods: {
     handleClickOutside () {
@@ -85,18 +151,51 @@ export default {
       }
     },
     selectProvince (isProvince) {
-      this.isActiveSub = true
       this.selectorProvince = isProvince
+      if (isProvince || this.citySelected) {
+        this.isActiveSub = true
+      }
     },
     handleCloseSubSelector (e) {
       e.stopPropagation()
       this.isActiveSub = false
+    },
+    clearSelectCity (e) {
+      e.stopPropagation()
+      this.isActiveSub = false
+      this.$store.dispatch('properties/setFilterCity', '')
+      this.$store.dispatch('properties/setFilterDistrict', [])
+    },
+    clearSelectDistrict (e) {
+      e.stopPropagation()
+      this.$store.dispatch('properties/setFilterDistrict', [])
+    },
+    async handleSelectCity (e, item) {
+      e.stopPropagation()
+      this.isActiveSub = false
+      this.$store.dispatch('properties/setFilterCity', item.name)
+      this.$store.dispatch('properties/setFilterDistrict', [])
+    },
+    handleSelectDistrict (e, item) {
+      e.stopPropagation()
+      let tmp = this.districtSelected
+      tmp.some((e) => e === item.name)
+        ? removeElFromArr(tmp, item.name)
+        : tmp.length < 3 && tmp.push(item.name)
+      this.$store.dispatch('properties/setFilterDistrict', tmp)
+    },
+    submitFilter () {
+      this.$store.dispatch('properties/submitFilter')
     }
   }
 }
 </script>
 
 <style scoped>
+input{
+  cursor: pointer;
+  accent-color: #961b12
+}
 .filter-localtion{
     position: relative;
     padding: 8px 16px;
@@ -162,7 +261,46 @@ export default {
     padding: 13px 15px;
     color: #2C2C2C;
 }
+.selector button{
+  widows: 16px;
+  height: 16px;
+}
+.selector-active{
+  color: #74150F !important;
+}
+.selector-selected{
+  padding: 0 15px 0 0;
+}
+.selector-title{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.selector-selected-title{
+  font-size: 12px;
+  line-height: 16px;
+  color: #999;
+  padding: 5px 15px 0px 15px;
+}
+.selector-selected-detail{
+  width: 300px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: #2C2C2C;
+  padding: 0px 35px 5px 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.disable-selector{
+  cursor: url('../../../assets/cursor-block.svg'),auto;
+}
+.district-selector{
+  height: calc(32px* 8) !important;
+}
 .sub-selector{
+    z-index: 10;
     position: absolute;
     top: 0;
     left: 0;
@@ -170,6 +308,7 @@ export default {
     background: #fff;
     overflow: auto;
     border-radius: 8px;
+    box-shadow: 0px 8px 20px rgba(182,182,182,0.42);
 }
 .sub-selector-header{
     display: flex;
@@ -254,6 +393,14 @@ export default {
     fill: #fff;
     background: #E03C31 !important;
     border: solid 1px #E03C31 !important;
+  }
+  .outlined-btn{
+    border: solid 1px #E03C31 !important;
+    background: #fff !important;
+    color: #E03C31 !important;
+  }
+  .outlined-btn:hover{
+    background: #FFECEB !important;
   }
   .btn-confirm svg{
     filter: invert(99%) sepia(0%) saturate(7500%) hue-rotate(212deg) brightness(101%) contrast(101%);

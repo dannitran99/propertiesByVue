@@ -33,25 +33,29 @@ export default {
     async getCity (context) {
       const [error, response] = await getCity()
       if (!error && response) {
-        const cityName = response.results.map(item => ({name: item['province_name'], code: item['province_id']}))
+        const cityName = response.data.map(item => ({name: item['full_name'], code: item['id']}))
         context.commit('GET_CITY_LIST', cityName)
       } else {
         console.error(error)
+        // add sample data
+        context.commit('GET_CITY_LIST', [{name: 'Ho Chi Minh', code: '1'}])
       }
     },
     async getDistrict (context, payload) {
       const [error, response] = await getDistrict(payload)
       if (!error && response) {
-        const districtName = response.results.map(item => ({name: item['district_name'], code: item['district_id']}))
+        const districtName = response.data.map(item => ({name: item['full_name'], code: item['id']}))
         context.commit('GET_DISTRICT_LIST', districtName)
       } else {
         console.error(error)
+        // add sample data
+        context.commit('GET_DISTRICT_LIST', [{name: 'Q7', code: '1'}])
       }
     },
     async getWard (context, payload) {
       const [error, response] = await getWard(payload)
       if (!error && response) {
-        const wardName = response.results.map(item => ({name: item['ward_name'], code: item['ward_id']}))
+        const wardName = response.data.map(item => ({name: item['full_name'], code: item['id']}))
         context.commit('GET_WARD_LIST', wardName)
       } else {
         console.error(error)

@@ -159,19 +159,11 @@ export default {
       this.$store.dispatch('properties/searchChange', e.target.value)
     },
     handleSearch: function () {
-      if (this.searchKeyword) {
-        this.$router.push(this.categoryIdFilter.length ? {
-          path: this.$route.path, query: { category: this.categoryIdFilter.join(','), k: this.searchKeyword }
-        } : {
-          path: this.$route.path, query: { k: this.searchKeyword }
-        })
-      }
+      this.$store.dispatch('properties/submitFilter')
     },
     clearFilter: function () {
       this.$store.dispatch('properties/clearFilter')
-      this.$router.push({
-        path: this.$route.path
-      })
+      this.$store.dispatch('properties/submitFilter')
     }
   }
 }

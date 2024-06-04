@@ -98,9 +98,7 @@ export default {
       this.$store.dispatch('properties/filterChange', {data: [], filterId: []})
     },
     handleSearch () {
-      this.$router.push(this.categoryIdFilter.length ? {
-        path: this.$route.path, query: { category: this.categoryIdFilter.join(',') }
-      } : this.$route.path)
+      this.$store.dispatch('properties/submitFilter')
     }
   }
 }

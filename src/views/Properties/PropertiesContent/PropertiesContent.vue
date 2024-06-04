@@ -4,13 +4,7 @@
     <div class="wrapper" v-else>
       <div class="content">
         <carousel :imageList="data.images"/>
-        <p class="breadcrumb">
-          <span class="breadcrumb-highlight">{{ data.type === 'sale'? 'Bán' : 'Cho thuê'  }}</span>
-          <span> / </span>
-          <span class="breadcrumb-highlight">{{ data.city  }}</span>
-          <span> / </span>
-          <span class="breadcrumb-highlight">{{ data.district  }}</span>
-        </p>
+        <bread-crumb-property :city="data.city" :district="data.district" class="breadcrumb-property"/>
         <h3>{{ data.title }}</h3>
         <p class="address-txt">{{ `${data.project? `${data.project}, `: ''} ${data.ward}, ${data.district}, ${data.city}` }}</p>
         <div class="detail-section">
@@ -112,16 +106,9 @@ export default {
   letter-spacing: -0.2px;
   color: #2C2C2C;
 }
-.breadcrumb{
+.breadcrumb-property{
   margin-top: 24px;
   margin-bottom: 8px;
-  font-size: 14px;
-  line-height: 20px;
-  color: #999;
-}
-.breadcrumb-highlight:hover{
-  cursor: pointer;
-  color: #505050;
 }
 .address-txt{
   font-size: 14px;
