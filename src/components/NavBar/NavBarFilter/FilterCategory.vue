@@ -45,7 +45,7 @@ export default {
       get () {
         let tmp = cloneDeep(this.$store.getters['properties/categoryFilter'])
         tmp.map(el => {
-          el === 'Tất cả nhà đất' ? removeElFromArr(tmp, 'Tất cả nhà đất') : FILTER_SALE_OPTION.map(item => {
+          el === 'Tất cả nhà đất' ? removeElFromArr(tmp, 'Tất cả nhà đất') : this.selectOption.map(item => {
             item.label === el && item.subItem && item.subItem.map(subEl => removeElFromArr(tmp, subEl.label))
           })
         })
@@ -55,7 +55,7 @@ export default {
     categoryIdFilter: {
       get () {
         let tmp = cloneDeep(this.$store.getters['properties/categoryIdFilter'])
-        return tmp.length === FILTER_SALE_ID.length ? [] : tmp
+        return tmp.length === this.filterId.length ? [] : tmp
       }
     }
   },
@@ -99,6 +99,7 @@ export default {
     },
     handleSearch () {
       this.$store.dispatch('properties/submitFilter')
+      this.isActive = false
     }
   }
 }

@@ -186,6 +186,7 @@ export default {
     },
     submitFilter () {
       this.$store.dispatch('properties/submitFilter')
+      this.isActive = false
     }
   }
 }

@@ -1,4 +1,5 @@
 import { getPropertiesList, postProperties, getPostedProperty, getPropertiesDetail } from '@/api/properties.api'
+import {FILTER_SALE_ID, FILTER_RENT_ID} from '../../consts/label'
 import { postImg } from '@/api/cloudinary.api'
 import router from '@/router'
 
@@ -13,6 +14,10 @@ export default {
     categoryIdFilter: [],
     citySelected: '',
     districtSelected: [],
+    priceMin: null,
+    priceMax: null,
+    squareMin: null,
+    squareMax: null,
     data: null
   },
   getters: {
@@ -36,6 +41,18 @@ export default {
     },
     districtSelected (state) {
       return state.districtSelected
+    },
+    priceMin (state) {
+      return state.priceMin
+    },
+    priceMax (state) {
+      return state.priceMax
+    },
+    squareMin (state) {
+      return state.squareMin
+    },
+    squareMax (state) {
+      return state.squareMax
     },
     isLoading (state) {
       return state.isLoading
@@ -70,6 +87,18 @@ export default {
     FILTER_DISTRICT (state, data) {
       state.districtSelected = data
     },
+    MIN_PRICE_CHANGE (state, data) {
+      state.priceMin = data
+    },
+    MAX_PRICE_CHANGE (state, data) {
+      state.priceMax = data
+    },
+    MIN_SQUARE_CHANGE (state, data) {
+      state.squareMin = data
+    },
+    MAX_SQUARE_CHANGE (state, data) {
+      state.squareMax = data
+    },
     GET_PROPERTIES_DETAIL (state, data) {
       state.data = data
     },
@@ -79,13 +108,22 @@ export default {
       state.categoryIdFilter = []
       state.citySelected = ''
       state.districtSelected = []
+      state.priceMin = null
+      state.priceMax = null
+      state.squareMin = null
+      state.squareMax = null
     },
     SUBMIT_FILTER (state) {
       const query = {}
-      state.categoryIdFilter.length && Object.assign(query, { category: state.categoryIdFilter.join(',') })
+      const codeList = router.history.current.path === '/nha-dat-ban' ? FILTER_SALE_ID : FILTER_RENT_ID
+      state.categoryIdFilter.length && state.categoryIdFilter.length < codeList.length && Object.assign(query, { category: state.categoryIdFilter.join(',') })
       state.searchKeyword && Object.assign(query, { k: state.searchKeyword })
       state.citySelected && Object.assign(query, { city: state.citySelected })
       state.districtSelected.length && Object.assign(query, { district: state.districtSelected.join(',') })
+      state.priceMin && Object.assign(query, { minPrice: state.priceMin })
+      state.priceMax && Object.assign(query, { maxPrice: state.priceMax })
+      state.squareMin && Object.assign(query, { minSquare: state.squareMin })
+      state.squareMax && Object.assign(query, { maxSquare: state.squareMax })
       router.push({
         path: router.path,
         query: query
@@ -115,6 +153,18 @@ export default {
     },
     setFilterDistrict (context, payload) {
       context.commit('FILTER_DISTRICT', payload)
+    },
+    minPriceChange (context, payload) {
+      context.commit('MIN_PRICE_CHANGE', payload)
+    },
+    maxPriceChange (context, payload) {
+      context.commit('MAX_PRICE_CHANGE', payload)
+    },
+    minSquareChange (context, payload) {
+      context.commit('MIN_SQUARE_CHANGE', payload)
+    },
+    maxSquareChange (context, payload) {
+      context.commit('MAX_SQUARE_CHANGE', payload)
     },
     async postProperties (context, payload) {
       context.commit('LOADING_STATE', true)

@@ -8,6 +8,10 @@ export const getPropertiesList = async (payload) => {
       payload.query.k && query.push(`k=${payload.query.k}`)
       payload.query.city && query.push(`city=${payload.query.city}`)
       payload.query.district && query.push(`district=${payload.query.district}`)
+      payload.query.minPrice && query.push(`minp=${payload.query.minPrice}`)
+      payload.query.maxPrice && query.push(`maxp=${payload.query.maxPrice}`)
+      payload.query.minSquare && query.push(`mins=${payload.query.minSquare}`)
+      payload.query.maxSquare && query.push(`maxs=${payload.query.maxSquare}`)
     }
     const { data } = await HTTP.get(`/api/properties?${query.join('&')}`)
     return [null, data]

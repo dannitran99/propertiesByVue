@@ -37,6 +37,7 @@ import Bunk from '@/components/icons/Bunk.vue'
 import Shophouse from '@/components/icons/Shophouse.vue'
 import Case from '@/components/icons/Case.vue'
 import Shop from '@/components/icons/Shop.vue'
+import RightArrowSC from '@/components/icons/RightArrowSC.vue'
 const iconElements = {
   RightArrow,
   Home,
@@ -76,7 +77,8 @@ const iconElements = {
   Bunk,
   Shophouse,
   Case,
-  Shop
+  Shop,
+  RightArrowSC
 }
 
 export default {

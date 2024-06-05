@@ -61,21 +61,9 @@
       <div class="divider"></div>
       <filter-location class="wide"/>
       <div class="divider"></div>
-      <div class="filter normal">
-        <div class="title-dv">
-          <p>Mức giá</p>
-          <icon-downtriangle/>
-        </div>
-        <p>Tất cả</p>
-      </div>
+      <filter-price class="normal"/>
       <div class="divider"></div>
-      <div class="filter normal">
-        <div class="title-dv">
-          <p>Diện tích</p>
-          <icon-downtriangle/>
-        </div>
-        <p>Tất cả</p>
-      </div>
+      <filter-square class="normal"/>
       <div class="divider"></div>
       <div class="filter">
         <div class="title-dv">
@@ -100,13 +88,17 @@ import { FILTER_SALE_ID, MENU_ITEM } from '@/consts/label.js'
 import NavBarButton from './NavBarButton'
 import FilterCategory from './NavBarFilter/FilterCategory.vue'
 import FilterLocation from './NavBarFilter/FilterLocation.vue'
+import FilterPrice from './NavBarFilter/FilterPrice.vue'
+import FilterSquare from './NavBarFilter/FilterSquare.vue'
 
 export default {
   name: 'NavBar',
   components: {
     'nav-bar-button': NavBarButton,
     'filter-category': FilterCategory,
-    'filter-location': FilterLocation
+    'filter-location': FilterLocation,
+    'filter-price': FilterPrice,
+    'filter-square': FilterSquare
   },
   data () {
     return {

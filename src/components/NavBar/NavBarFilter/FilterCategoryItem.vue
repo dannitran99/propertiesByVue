@@ -90,7 +90,13 @@ export default {
       const tmpId = this.categoryIdFilter
       tmp.some((e) => e === item.label) ? removeElFromArr(tmp, item.label) : tmp.push(item.label)
       tmpId.some((e) => e === item.value) ? removeElFromArr(tmpId, item.value) : tmpId.push(item.value)
-      checkArrHasElArr(this.data.subItem && this.data.subItem.map(el => el.label), this.categoryFilter) ? tmp.push(this.data.label) : removeElFromArr(tmp, this.data.label)
+      if (checkArrHasElArr(this.data.subItem && this.data.subItem.map(el => el.label), this.categoryFilter)) {
+        this.data.value && tmpId.push(this.data.value)
+        tmp.push(this.data.label)
+      } else {
+        this.data.value && removeElFromArr(tmpId, this.data.value)
+        removeElFromArr(tmp, this.data.label)
+      }
       tmp.length === this.filterLabel.length - 1 && !tmp.some((e) => e === 'Tất cả nhà đất') ? tmp.push('Tất cả nhà đất') : removeElFromArr(tmp, 'Tất cả nhà đất')
       this.$store.dispatch('properties/filterChange', {data: tmp, filterId: tmpId})
     }
