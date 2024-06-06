@@ -15,14 +15,21 @@
         <properties v-for="item in properties" :key="item.ID" :data="item" v-else />
       </div>
     </div>
-    <div class="filter">
-      <properties-filter :title="'Lọc theo khoảng giá'" />
+    <div class="filter" :style="{ 'min-height': `${minHeight}px` }">
+      <div class="filter-container" ref="filter" :class="[{ 'positionBot': bottom }]">
+        <properties-filter :title="'Lọc theo khoảng giá'" :list="selectPriceList" :min="minp" :max="maxp"
+          @handleSelect="handleSelectPriceFilter" />
+        <properties-filter :title="'Lọc theo diện tích'" :list="selectSquareList" :min="mins" :max="maxs"
+          @handleSelect="handleSelectSquareFilter" />
+      </div>
     </div>
 
   </div>
 </template>
 
 <script>
+import { FILTER_SQUARE } from '@/consts/squareFilter.js'
+import { FILTER_SALE_PRICE, FILTER_RENT_PRICE } from '@/consts/priceFilter.js'
 import { checkArrHasElArr } from '@/helpers/arrayHandler'
 import BreadCrumbProperty from '../../components/BreadCrumbProperty/BreadCrumbProperty.vue'
 import { PROPSSALETYPE, PROPSRENTTYPE } from '../../consts/propstype'
@@ -37,7 +44,15 @@ export default {
       district: [],
       type: '',
       typeTitle: '',
-      at: ''
+      at: '',
+      minp: null,
+      maxp: null,
+      mins: null,
+      maxs: null,
+      selectPriceList: [],
+      selectSquareList: FILTER_SQUARE,
+      minHeight: 0,
+      bottom: false
     }
   },
   computed: {
@@ -50,12 +65,38 @@ export default {
       get() {
         return this.$store.getters['properties/propertiesList']
       }
+    },
+    priceMin: {
+      get() {
+        return this.$store.getters['properties/priceMin']
+      }
+    },
+    priceMax: {
+      get() {
+        return this.$store.getters['properties/priceMax']
+      }
+    },
+    squareMin: {
+      get() {
+        return this.$store.getters['properties/squareMin']
+      }
+    },
+    squareMax: {
+      get() {
+        return this.$store.getters['properties/squareMax']
+      }
     }
   },
   watch: {
     async '$route'() {
       this.handleGetRouterQuery()
     }
+  },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll)
   },
   async created() {
     if (this.$route.query.category) {
@@ -73,6 +114,12 @@ export default {
   },
   methods: {
     handleGetRouterQuery: async function () {
+      this.bottom = false
+      this.selectPriceList = this.$route.path === '/nha-dat-ban' ? FILTER_SALE_PRICE : FILTER_RENT_PRICE
+      this.minp = Number(this.$route.query.minPrice) || null
+      this.maxp = Number(this.$route.query.maxPrice) || null
+      this.mins = Number(this.$route.query.minSquare) || null
+      this.maxs = Number(this.$route.query.maxSquare) || null
       this.city = this.$route.query.city || ''
       this.district = this.$route.query.district ? this.$route.query.district.split(',') : []
       this.at = 'trên toàn quốc'
@@ -103,6 +150,7 @@ export default {
         this.type = label.join(', ')
         this.typeTitle = this.$route.path.includes('nha-dat-ban') ? `Mua bán ${label.join(', ')}` : `Cho thuê ${label.join(', ')}`
       }
+      this.minHeight = this.$refs['filter'].offsetHeight + 24
       await this.$store.dispatch('properties/getPropertiesList', {
         type: this.$route.path.includes('nha-dat-ban') ? 'sale' : 'rent',
         query: this.$route.query
@@ -122,6 +170,22 @@ export default {
         }
       })
       return tmp
+    },
+    handleSelectPriceFilter: function (item) {
+      this.$store.dispatch('properties/minPriceChange', item.min)
+      this.$store.dispatch('properties/maxPriceChange', item.max)
+      this.$store.dispatch('properties/submitFilter')
+    },
+    handleSelectSquareFilter: function (item) {
+      this.$store.dispatch('properties/minSquareChange', item.min)
+      this.$store.dispatch('properties/maxSquareChange', item.max)
+      this.$store.dispatch('properties/submitFilter')
+    },
+    handleScroll: function () {
+      const headerheight = 72 + 56
+      const footerheight = 56
+      const filterpadding = 48
+      this.bottom = (window.scrollY > document.documentElement.scrollHeight - this.$refs['filter'].offsetHeight - headerheight - footerheight - filterpadding)
     }
   }
 }
@@ -133,6 +197,7 @@ export default {
   margin-top: 129px !important;
   margin: 0 auto;
   max-width: 1140px;
+  min-height: calc(100vh - 72px - 56px - 57px);
 }
 
 .title-property {
@@ -150,11 +215,17 @@ export default {
 }
 
 .filter {
+  position: relative;
   margin-top: 24px;
   width: 262px
 }
 
-.filter>:not(:last-child) {
+.filter-container {
+  width: inherit;
+  position: fixed;
+}
+
+.filter :not(:last-child) {
   margin-bottom: 16px;
 }
 
@@ -168,10 +239,19 @@ export default {
   line-height: 20px;
   color: #2C2C2C;
   display: inline-block;
-  margin: 6px 0 0 0;
+  margin: 6px 0 16px 0;
+}
+
+.properties-list {
+  margin-bottom: 24px;
 }
 
 .properties-list>:not(:last-child) {
   margin-bottom: 16px;
+}
+
+.positionBot {
+  position: absolute;
+  bottom: 24px;
 }
 </style>
