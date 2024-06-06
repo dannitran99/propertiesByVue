@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     handleGetRouterQuery: async function () {
-      this.bottom = false
+      this.handleScroll()
       this.selectPriceList = this.$route.path === '/nha-dat-ban' ? FILTER_SALE_PRICE : FILTER_RENT_PRICE
       this.minp = Number(this.$route.query.minPrice) || null
       this.maxp = Number(this.$route.query.maxPrice) || null

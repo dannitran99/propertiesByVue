@@ -8,6 +8,7 @@ import BreadCrumbProperty from '@/components/BreadCrumbProperty'
 import Properties from '@/components/Properties'
 import NewsCard from '@/components/News/NewsCard'
 import Carousel from '@/components/Carousel'
+import ScrollToTop from '@/components/ScrollToTop'
 import NewsCardSkeleton from '@/components/News/NewsCard/NewsCardSkeleton.vue'
 const commonElements = {
   NavBar,
@@ -20,7 +21,8 @@ const commonElements = {
   Properties,
   NewsCard,
   Carousel,
-  NewsCardSkeleton
+  NewsCardSkeleton,
+  ScrollToTop
 }
 
 export default {

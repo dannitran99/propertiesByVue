@@ -38,6 +38,7 @@ import Shophouse from '@/components/icons/Shophouse.vue'
 import Case from '@/components/icons/Case.vue'
 import Shop from '@/components/icons/Shop.vue'
 import RightArrowSC from '@/components/icons/RightArrowSC.vue'
+import ArrowUp from '@/components/icons/ArrowUp.vue'
 const iconElements = {
   RightArrow,
   Home,
@@ -78,7 +79,8 @@ const iconElements = {
   Shophouse,
   Case,
   Shop,
-  RightArrowSC
+  RightArrowSC,
+  ArrowUp
 }
 
 export default {

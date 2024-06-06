@@ -2,6 +2,7 @@
   <v-app id="app">
     <nav-bar class="nav-bar" />
     <router-view class="main-content" />
+    <scroll-to-top />
     <footer-comp></footer-comp>
   </v-app>
 </template>
