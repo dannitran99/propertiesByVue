@@ -191,6 +191,7 @@ export default {
 }
 
 .search-nav {
+  font-family: 'Roboto-Regular', sans-serif;
   border-top: 1px solid #F2F2F2;
   height: 57px;
   display: flex;
@@ -321,7 +322,6 @@ export default {
   border: solid 1px #ccc;
   font-size: 14px;
   line-height: 20px;
-  font-weight: 600;
   letter-spacing: -.2px;
   padding: 13px 15px;
   border-radius: 8px;
@@ -340,6 +340,7 @@ export default {
 }
 
 .sub-menu-user {
+  font-family: 'Roboto-Regular', sans-serif;
   list-style-type: none;
   position: absolute;
   display: none;
@@ -383,6 +384,7 @@ a {
 }
 
 .txt-user {
+  font-family: 'Roboto-Regular', sans-serif;
   margin: 0;
   max-width: 100px;
   font-size: 14px;

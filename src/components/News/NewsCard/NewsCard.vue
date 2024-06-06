@@ -27,6 +27,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 .card-new {
   display: flex;
   gap: 12px;
@@ -51,7 +55,8 @@ export default {
 }
 
 .card-info h3 {
-  font-weight: 400;
+  font-family: 'Lexend-Medium', sans-serif;
+  font-weight: normal;
   font-size: 18px;
   line-height: 28px;
   margin: 5px 0 10px 0;

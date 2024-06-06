@@ -121,6 +121,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 .wrapper-skeleton {
   position: relative;
   border: 1px solid #F2F2F2;
@@ -166,6 +170,7 @@ export default {
 }
 
 .card-title {
+  font-family: 'Lexend-Medium', sans-serif;
   font-size: 14px;
   line-height: 20px;
   font-weight: normal !important;

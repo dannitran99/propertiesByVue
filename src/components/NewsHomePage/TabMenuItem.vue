@@ -1,5 +1,5 @@
 <template>
-  <li :class="[{ 'enable-tab': isEnable }]" v-on:click="changeTab"><b>{{ data.label }}</b></li>
+  <li :class="[{ 'enable-tab': isEnable }]" v-on:click="changeTab">{{ data.label }}</li>
 </template>
 
 <script>
@@ -32,7 +32,6 @@ li {
   padding: 12px 16px;
   font-size: 24px;
   line-height: 32px;
-  font-weight: normal !important;
   letter-spacing: -.2px;
   color: #999;
   cursor: pointer;

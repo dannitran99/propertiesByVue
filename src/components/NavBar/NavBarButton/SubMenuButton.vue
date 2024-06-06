@@ -41,6 +41,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 li {
   padding: 6px 16px;
   list-style-type: none;

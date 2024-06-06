@@ -44,7 +44,7 @@ export default {
   },
   watch: {
     keyword(val) {
-      val !== '' ? this.clearHide = false : this.clearHide = true
+      this.clearHide = val === ''
     }
   },
   methods: {
@@ -59,6 +59,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 span {
   font-size: 14px;
   line-height: 22px;

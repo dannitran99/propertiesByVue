@@ -65,6 +65,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 .wrapper {
   position: relative;
 }

@@ -1,7 +1,8 @@
 <template>
-  <router-link :to="{ name: 'NewsDetail', params: { newsId: data.ID, } }" class="wrapper" :class="[{ 'show': isDisplay }]">
+  <router-link :to="{ name: 'NewsDetail', params: { newsId: data.ID, } }" class="wrapper"
+    :class="[{ 'show': isDisplay }]">
     <img v-bind:src="data.thumbnail">
-    <p class="title"><b>{{ data.name }}</b></p>
+    <p class="title">{{ data.name }}</p>
     <div class="time">
       <icon-clock />
       <p class="time">{{ moment() }}</p>
@@ -62,10 +63,11 @@ a {
 }
 
 .title {
+  font-family: 'Lexend-Medium', sans-serif !important;
+  font-weight: 400;
   text-align: left;
   font-size: 24px;
   line-height: 32px;
-  font-weight: normal !important;
   letter-spacing: -0.2px;
   margin-top: 0;
   margin-bottom: 8px;
@@ -74,6 +76,7 @@ a {
 }
 
 .time {
+  font-family: 'Roboto-Regular', sans-serif;
   display: flex;
   align-items: center;
   gap: 5px;

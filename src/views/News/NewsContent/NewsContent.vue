@@ -2,7 +2,7 @@
   <div>
     <bread-crumb v-bind:items="breadCrumb" />
     <div class="content">
-      <h1><b>{{ content.name }}</b></h1>
+      <h1>{{ content.name }}</h1>
       <p>{{ content.content }}</p>
     </div>
   </div>
@@ -37,7 +37,12 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 h1 {
+  font-family: 'Lexend-Medium', sans-serif;
   font-weight: 500;
   font-size: 40px;
   line-height: 64px;

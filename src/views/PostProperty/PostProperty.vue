@@ -443,6 +443,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 .content {
   display: flex;
 }
@@ -469,6 +473,11 @@ export default {
   background-color: rgb(255, 255, 255);
   box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 4px;
   border-radius: 4px;
+}
+
+.paper h2 {
+  font-family: 'Lexend-Medium', sans-serif;
+  font-weight: 400;
 }
 
 .sticky-wrapper {

@@ -14,8 +14,18 @@ export default {
 </script>
 
 <style>
+@font-face {
+  font-family: 'Lexend-Medium';
+  src: url('../public/fonts/Lexend-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto-Regular';
+  src: url('../public/fonts/Roboto-Regular.ttf') format('truetype');
+}
+
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Lexend-Medium', 'Roboto-Regular', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* text-align: center; */

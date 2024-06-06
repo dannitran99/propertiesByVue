@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="filter">
-
+      <properties-filter :title="'Lọc theo khoảng giá'" />
     </div>
 
   </div>
@@ -27,9 +27,10 @@ import { checkArrHasElArr } from '@/helpers/arrayHandler'
 import BreadCrumbProperty from '../../components/BreadCrumbProperty/BreadCrumbProperty.vue'
 import { PROPSSALETYPE, PROPSRENTTYPE } from '../../consts/propstype'
 import PropertiesSkeleton from '../../components/Properties/PropertyCardSkeleton.vue'
+import PropertiesFilter from '../../components/Properties/PropertyFilter.vue'
 import { FILTER_RENT_OPTION, FILTER_SALE_OPTION } from '../../consts/label'
 export default {
-  components: { PropertiesSkeleton, BreadCrumbProperty },
+  components: { PropertiesSkeleton, BreadCrumbProperty, PropertiesFilter },
   data() {
     return {
       city: '',
@@ -137,18 +138,24 @@ export default {
 .title-property {
   font-size: 24px;
   line-height: 32px;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: -0.2px;
   color: #2C2C2C;
 }
 
 .content {
   width: 848px;
-  margin-top: 24px
+  margin-top: 24px;
+  margin-right: 30px;
 }
 
 .filter {
+  margin-top: 24px;
   width: 262px
+}
+
+.filter>:not(:last-child) {
+  margin-bottom: 16px;
 }
 
 .content-breadcrumb {
@@ -156,6 +163,7 @@ export default {
 }
 
 .subtitle {
+  font-family: 'Roboto-Regular', sans-serif;
   font-size: 14px;
   line-height: 20px;
   color: #2C2C2C;

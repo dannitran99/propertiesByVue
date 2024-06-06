@@ -196,6 +196,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 input {
   cursor: pointer;
   accent-color: #961b12

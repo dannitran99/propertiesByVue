@@ -5,7 +5,8 @@
       <div :class="[{ 'point-event': isLoading }, 'paper']">
         <h2 class="px-5">Quản lý tài khoản</h2>
         <div class="tab">
-          <button @click="navigate('tai-khoan')" :class="[{ 'active': tab === 'tai-khoan' }]">Chỉnh sửa thông tin</button>
+          <button @click="navigate('tai-khoan')" :class="[{ 'active': tab === 'tai-khoan' }]">Chỉnh sửa thông
+            tin</button>
           <button @click="navigate('doi-mat-khau')" :class="[{ 'active': tab === 'doi-mat-khau' }]">Cài đặt tài
             khoản</button>
         </div>
@@ -362,6 +363,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 .content {
   display: flex;
 }
@@ -376,6 +381,12 @@ export default {
   flex-direction: column;
   align-items: center;
   gap: 8px;
+}
+
+.main-area h2,
+h3 {
+  font-family: 'Lexend-Medium', sans-serif;
+  font-weight: 400;
 }
 
 .paper {

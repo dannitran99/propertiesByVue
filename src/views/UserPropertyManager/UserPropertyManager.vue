@@ -59,6 +59,10 @@ export default {
 </script>
 
 <style scoped>
+h2 {
+  font-weight: 400;
+}
+
 .content {
   display: flex;
 }
@@ -97,6 +101,10 @@ export default {
 .none-data {
   margin-top: 100px;
   text-align: center;
+}
+
+.none-data p {
+  font-family: 'Roboto-Regular', sans-serif;
 }
 
 .btn-submit {

@@ -22,6 +22,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 a {
   text-decoration: none;
   color: #2C2C2C;

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">
-      <h2><b>Bất động sản dành cho bạn</b></h2>
+      <h2>Bất động sản dành cho bạn</h2>
       <div class="redirect-title">
         <router-link :to="{ name: 'PropertiesForSale' }">
           <p class="clickable-text">Tin nhà đất bán mới nhất</p>
@@ -42,9 +42,10 @@ export default {
 
 <style scoped>
 h2 {
+  font-weight: normal;
+  font-family: 'Lexend-Medium', sans-serif;
   font-size: 24px;
   line-height: 32px;
-  font-weight: normal !important;
   letter-spacing: -.2px;
   color: #2C2C2C;
   display: block;

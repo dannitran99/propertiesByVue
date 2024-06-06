@@ -89,6 +89,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 .wrapper {
   position: relative;
   display: flex;
@@ -104,6 +108,8 @@ export default {
 }
 
 .content h3 {
+  font-family: 'Lexend-Medium', sans-serif;
+  font-weight: 400;
   font-size: 24px;
   line-height: 32px;
   letter-spacing: -0.2px;
@@ -221,10 +227,11 @@ export default {
 }
 
 .description-title {
+  font-family: 'Lexend-Medium', sans-serif;
+  font-weight: 500;
   margin-bottom: 16px;
   font-size: 18px;
   line-height: 28px;
-  font-weight: 600;
   letter-spacing: -.2px;
   color: #2C2C2C;
 }

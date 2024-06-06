@@ -61,6 +61,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 .breadcrumb {
   font-size: 14px;
   line-height: 20px;

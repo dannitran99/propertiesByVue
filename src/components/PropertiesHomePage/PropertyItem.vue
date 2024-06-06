@@ -54,6 +54,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 .wrapper {
   text-decoration: none;
   text-align: left;
@@ -110,6 +114,7 @@ p {
 }
 
 .card-content h3 {
+  font-family: 'Lexend-Medium', sans-serif;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -117,7 +122,7 @@ p {
   -webkit-box-orient: vertical;
   font-size: 14px;
   line-height: 20px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: .2px;
   color: #2C2C2C;
   margin: 0;

@@ -52,8 +52,13 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 h1 {
-  font-weight: 700;
+  font-family: 'Lexend-Medium', sans-serif;
+  font-weight: 500;
   font-size: 40px;
   line-height: 64px;
   margin: 0;

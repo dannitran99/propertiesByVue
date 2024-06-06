@@ -48,6 +48,7 @@ ul {
 }
 
 a {
+  font-family: 'Roboto-Regular', sans-serif;
   text-decoration: none;
   color: #E03C31;
   font-size: 14px;

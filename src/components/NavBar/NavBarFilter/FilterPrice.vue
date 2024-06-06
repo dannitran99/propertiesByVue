@@ -180,6 +180,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 .filter-price {
   position: relative;
   padding: 8px 16px;

@@ -242,6 +242,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 .wrapper-gallery {
   position: relative;
   width: 848px;

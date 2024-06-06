@@ -108,6 +108,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Roboto-Regular', sans-serif;
+}
+
 ul {
   margin: 0;
   padding: 8px 0;
