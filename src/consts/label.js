@@ -1,4 +1,4 @@
-import {PROPSSALETYPE, PROPSRENTTYPE} from './propstype'
+import { PROPSSALETYPE, PROPSRENTTYPE } from './propstype'
 
 export const FILTER_SALE_LABEL = [
   'Tất cả nhà đất',
@@ -117,7 +117,8 @@ export const FILTER_SALE_OPTION = [
   {
     label: PROPSSALETYPE.canho.secondaryLabel,
     value: PROPSSALETYPE.canho.code,
-    icon: 'icon-building' },
+    icon: 'icon-building'
+  },
   {
     label: 'Các loại nhà bán',
     icon: 'icon-homeaccount',
@@ -168,11 +169,13 @@ export const FILTER_SALE_OPTION = [
   {
     label: PROPSSALETYPE.kho.secondaryLabel,
     value: PROPSSALETYPE.kho.code,
-    icon: 'icon-warehouse' },
+    icon: 'icon-warehouse'
+  },
   {
     label: PROPSSALETYPE.khac.secondaryLabel,
     value: PROPSSALETYPE.khac.code,
-    icon: 'icon-housegroup' }
+    icon: 'icon-housegroup'
+  }
 ]
 
 export const MENU_ITEM = [
@@ -181,28 +184,38 @@ export const MENU_ITEM = [
     href: 'PropertiesForSale',
     path: 'nha-dat-ban',
     sub: [
-      { label: PROPSSALETYPE.canho.primaryLabel,
-        path: PROPSSALETYPE.canho.code },
-      { label: PROPSSALETYPE.nharieng.primaryLabel,
-        path: PROPSSALETYPE.nharieng.code },
-      { label: PROPSSALETYPE.bietthu.primaryLabel,
-        path: PROPSSALETYPE.bietthu.code },
-      { label: PROPSSALETYPE.nhamatpho.primaryLabel,
-        path: PROPSSALETYPE.nhamatpho.code },
-      { label: PROPSSALETYPE.shophouse.primaryLabel,
-        path: PROPSSALETYPE.shophouse.code },
-      { label: PROPSSALETYPE.duan.primaryLabel,
-        path: PROPSSALETYPE.duan.code },
-      { label: PROPSSALETYPE.dat.primaryLabel,
-        path: PROPSSALETYPE.dat.code },
-      { label: PROPSSALETYPE.trangtrai.primaryLabel,
-        path: PROPSSALETYPE.trangtrai.code },
-      { label: PROPSSALETYPE.condotel.primaryLabel,
-        path: PROPSSALETYPE.condotel.code},
-      { label: PROPSSALETYPE.kho.primaryLabel,
-        path: PROPSSALETYPE.kho.code},
-      { label: PROPSSALETYPE.khac.primaryLabel,
-        path: PROPSSALETYPE.khac.code }
+      {
+        label: PROPSSALETYPE.canho.primaryLabel,
+        path: PROPSSALETYPE.canho.code
+      },
+      {
+        label: PROPSSALETYPE.nharieng.primaryLabel,
+        path: PROPSSALETYPE.nharieng.code
+      },
+      {
+        label: PROPSSALETYPE.bietthu.primaryLabel,
+        path: PROPSSALETYPE.bietthu.code
+      },
+      {
+        label: PROPSSALETYPE.nhamatpho.primaryLabel,
+        path: PROPSSALETYPE.nhamatpho.code
+      },
+      {
+        label: PROPSSALETYPE.shophouse.primaryLabel,
+        path: PROPSSALETYPE.shophouse.code
+      },
+      { label: PROPSSALETYPE.duan.primaryLabel, path: PROPSSALETYPE.duan.code },
+      { label: PROPSSALETYPE.dat.primaryLabel, path: PROPSSALETYPE.dat.code },
+      {
+        label: PROPSSALETYPE.trangtrai.primaryLabel,
+        path: PROPSSALETYPE.trangtrai.code
+      },
+      {
+        label: PROPSSALETYPE.condotel.primaryLabel,
+        path: PROPSSALETYPE.condotel.code
+      },
+      { label: PROPSSALETYPE.kho.primaryLabel, path: PROPSSALETYPE.kho.code },
+      { label: PROPSSALETYPE.khac.primaryLabel, path: PROPSSALETYPE.khac.code }
     ]
   },
   {
@@ -210,26 +223,40 @@ export const MENU_ITEM = [
     href: 'PropertiesForRent',
     path: 'nha-dat-cho-thue',
     sub: [
-      { label: PROPSRENTTYPE.canho.primaryLabel,
-        path: PROPSRENTTYPE.canho.code },
-      { label: PROPSRENTTYPE.nharieng.primaryLabel,
-        path: PROPSRENTTYPE.nharieng.code },
-      { label: PROPSRENTTYPE.bietthu.primaryLabel,
-        path: PROPSRENTTYPE.bietthu.code },
-      { label: PROPSRENTTYPE.nhamatpho.primaryLabel,
-        path: PROPSRENTTYPE.nhamatpho.code },
-      { label: PROPSRENTTYPE.shophouse.primaryLabel,
-        path: PROPSRENTTYPE.shophouse.code },
-      { label: PROPSRENTTYPE.nhatro.primaryLabel,
-        path: PROPSRENTTYPE.nhatro.code },
-      { label: PROPSRENTTYPE.vanphong.primaryLabel,
-        path: PROPSRENTTYPE.vanphong.code },
-      { label: PROPSRENTTYPE.cuahang.primaryLabel,
-        path: PROPSRENTTYPE.cuahang.code },
-      { label: PROPSRENTTYPE.kho.primaryLabel,
-        path: PROPSRENTTYPE.kho.code },
-      { label: PROPSRENTTYPE.khac.primaryLabel,
-        path: PROPSRENTTYPE.khac.code }
+      {
+        label: PROPSRENTTYPE.canho.primaryLabel,
+        path: PROPSRENTTYPE.canho.code
+      },
+      {
+        label: PROPSRENTTYPE.nharieng.primaryLabel,
+        path: PROPSRENTTYPE.nharieng.code
+      },
+      {
+        label: PROPSRENTTYPE.bietthu.primaryLabel,
+        path: PROPSRENTTYPE.bietthu.code
+      },
+      {
+        label: PROPSRENTTYPE.nhamatpho.primaryLabel,
+        path: PROPSRENTTYPE.nhamatpho.code
+      },
+      {
+        label: PROPSRENTTYPE.shophouse.primaryLabel,
+        path: PROPSRENTTYPE.shophouse.code
+      },
+      {
+        label: PROPSRENTTYPE.nhatro.primaryLabel,
+        path: PROPSRENTTYPE.nhatro.code
+      },
+      {
+        label: PROPSRENTTYPE.vanphong.primaryLabel,
+        path: PROPSRENTTYPE.vanphong.code
+      },
+      {
+        label: PROPSRENTTYPE.cuahang.primaryLabel,
+        path: PROPSRENTTYPE.cuahang.code
+      },
+      { label: PROPSRENTTYPE.kho.primaryLabel, path: PROPSRENTTYPE.kho.code },
+      { label: PROPSRENTTYPE.khac.primaryLabel, path: PROPSRENTTYPE.khac.code }
     ]
   },
   {
@@ -249,10 +276,7 @@ export const MENU_ITEM = [
       { label: 'Dự án khác' }
     ]
   },
-  { label: 'Tin tức',
-    href: 'News',
-    path: 'tin-tuc'
-  },
+  { label: 'Tin tức', href: 'News', path: 'tin-tuc' },
   {
     label: 'Wiki BĐS',
     sub: [

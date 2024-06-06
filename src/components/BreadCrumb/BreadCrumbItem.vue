@@ -1,11 +1,11 @@
 <template>
   <div class="list-breadcrumb">
-    <router-link :to="{name: 'HomePage'}" >
-      <icon-home/>
+    <router-link :to="{ name: 'HomePage' }">
+      <icon-home />
     </router-link>
-    <div v-for="(item,index) in items" :key="index">
+    <div v-for="(item, index) in items" :key="index">
       <icon-righttriangle />
-      <span >{{ item }}</span>
+      <span>{{ item }}</span>
     </div>
   </div>
 </template>
@@ -21,14 +21,15 @@ export default {
 </script>
 
 <style scoped>
-  .list-breadcrumb{
-    display: flex;
-    gap: 5px;
-  }
-  span{
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
-    color: #999;
-  }
+.list-breadcrumb {
+  display: flex;
+  gap: 5px;
+}
+
+span {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #999;
+}
 </style>

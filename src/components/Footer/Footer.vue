@@ -9,7 +9,7 @@ export default {
 </script>
 
 <style scoped>
-.wrapper{
+.wrapper {
   padding: 16px;
   background: #f2f2f2;
   text-align: center;

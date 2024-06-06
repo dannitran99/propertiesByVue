@@ -1,35 +1,36 @@
 <template>
-    <div class="wrapper">
-      <div class="content">
-        <bread-crumb-property class="content-breadcrumb" :city="city" :district="district.length === 1 ? district[0] : ''" :current="`${type} ${at}`"/>
-        <h3 class="title-property">{{ `${typeTitle} ${at}` }}</h3>
-        <p class="subtitle">Hiện có {{ properties.length }} bất động sản.</p>
-        <div class="properties-list">
-          <template v-if="isLoading">
-            <properties-skeleton/>
-            <properties-skeleton/>
-            <properties-skeleton/>
-            <properties-skeleton/>
-          </template>
-          <properties v-for="item in properties" :key="item.ID" :data="item" v-else/>
-        </div>
+  <div class="wrapper">
+    <div class="content">
+      <bread-crumb-property class="content-breadcrumb" :city="city" :district="district.length === 1 ? district[0] : ''"
+        :current="`${type} ${at}`" />
+      <h3 class="title-property">{{ `${typeTitle} ${at}` }}</h3>
+      <p class="subtitle">Hiện có {{ properties.length }} bất động sản.</p>
+      <div class="properties-list">
+        <template v-if="isLoading">
+          <properties-skeleton />
+          <properties-skeleton />
+          <properties-skeleton />
+          <properties-skeleton />
+        </template>
+        <properties v-for="item in properties" :key="item.ID" :data="item" v-else />
       </div>
-      <div class="filter">
-
-      </div>
+    </div>
+    <div class="filter">
 
     </div>
+
+  </div>
 </template>
 
 <script>
 import { checkArrHasElArr } from '@/helpers/arrayHandler'
 import BreadCrumbProperty from '../../components/BreadCrumbProperty/BreadCrumbProperty.vue'
-import {PROPSSALETYPE, PROPSRENTTYPE} from '../../consts/propstype'
+import { PROPSSALETYPE, PROPSRENTTYPE } from '../../consts/propstype'
 import PropertiesSkeleton from '../../components/Properties/PropertyCardSkeleton.vue'
-import {FILTER_RENT_OPTION, FILTER_SALE_OPTION} from '../../consts/label'
+import { FILTER_RENT_OPTION, FILTER_SALE_OPTION } from '../../consts/label'
 export default {
   components: { PropertiesSkeleton, BreadCrumbProperty },
-  data () {
+  data() {
     return {
       city: '',
       district: [],
@@ -40,25 +41,25 @@ export default {
   },
   computed: {
     isLoading: {
-      get () {
+      get() {
         return this.$store.getters['properties/isLoading']
       }
     },
     properties: {
-      get () {
+      get() {
         return this.$store.getters['properties/propertiesList']
       }
     }
   },
   watch: {
-    async '$route' () {
+    async '$route'() {
       this.handleGetRouterQuery()
     }
   },
-  async created () {
+  async created() {
     if (this.$route.query.category) {
       const category = await this.handleCategory()
-      await this.$store.dispatch('properties/filterChange', {data: category, filterId: this.$route.query.category.split(',')})
+      await this.$store.dispatch('properties/filterChange', { data: category, filterId: this.$route.query.category.split(',') })
     }
     await this.$route.query.k && this.$store.dispatch('properties/searchChange', this.$route.query.k)
     await this.$route.query.city && this.$store.dispatch('properties/setFilterCity', this.$route.query.city)
@@ -126,37 +127,43 @@ export default {
 </script>
 
 <style scoped>
-  .wrapper{
-    display: flex;
-    margin-top: 129px !important;
-    margin: 0 auto;
-    max-width: 1140px;
-  }
-  .title-property{
-    font-size: 24px;
-    line-height: 32px;
-    font-weight: 600;
-    letter-spacing: -0.2px;
-    color: #2C2C2C;
-  }
-  .content{
-    width: 848px;
-    margin-top: 24px
-  }
-  .filter{
-    width: 262px
-  }
-  .content-breadcrumb{
-    margin: 0 0 8px 0;
-  }
-  .subtitle{
-    font-size: 14px;
-    line-height: 20px;
-    color: #2C2C2C;
-    display: inline-block;
-    margin: 6px 0 0 0;
-  }
-  .properties-list >:not(:last-child){
-    margin-bottom: 16px;
-  }
+.wrapper {
+  display: flex;
+  margin-top: 129px !important;
+  margin: 0 auto;
+  max-width: 1140px;
+}
+
+.title-property {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: #2C2C2C;
+}
+
+.content {
+  width: 848px;
+  margin-top: 24px
+}
+
+.filter {
+  width: 262px
+}
+
+.content-breadcrumb {
+  margin: 0 0 8px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  line-height: 20px;
+  color: #2C2C2C;
+  display: inline-block;
+  margin: 6px 0 0 0;
+}
+
+.properties-list>:not(:last-child) {
+  margin-bottom: 16px;
+}
 </style>

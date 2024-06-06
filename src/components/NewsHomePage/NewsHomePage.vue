@@ -1,10 +1,10 @@
 <template>
   <div>
-    <news-tab-header class="tab-header"/>
+    <news-tab-header class="tab-header" />
     <div class="wrapper">
-      <news-preview v-for="item in news" v-bind:key="item.id" v-bind:data="item"/>
+      <news-preview v-for="item in news" v-bind:key="item.id" v-bind:data="item" />
       <ul>
-          <news-item v-for="item in news" v-bind:key="item.id" v-bind:data="item"/>
+        <news-item v-for="item in news" v-bind:key="item.id" v-bind:data="item" />
       </ul>
     </div>
   </div>
@@ -23,36 +23,39 @@ export default {
   },
   computed: {
     news: {
-      get () {
+      get() {
         return this.$store.getters['news/newsList']
       }
     }
   },
-  async created () {
+  async created() {
     await this.$store.dispatch('news/getNewsList')
   }
 }
 </script>
 
 <style scoped>
-  .tab-header{
-    margin-bottom: 24px;
-    border-bottom: 1px solid #F2F2F2;
-    max-width: 848px;
-  }
-  .wrapper{
-    display: flex;
-    max-width: 1140px;
-  }
-  ul{
-    max-width: 360px;
-    margin: 0;
-    margin-left: 30px;
-    padding: 0;
-  }
-  ul > li:first-of-type{
-    padding-top: 0;
-    padding-bottom: 14px;
-    border-top: none;
-  }
+.tab-header {
+  margin-bottom: 24px;
+  border-bottom: 1px solid #F2F2F2;
+  max-width: 848px;
+}
+
+.wrapper {
+  display: flex;
+  max-width: 1140px;
+}
+
+ul {
+  max-width: 360px;
+  margin: 0;
+  margin-left: 30px;
+  padding: 0;
+}
+
+ul>li:first-of-type {
+  padding-top: 0;
+  padding-bottom: 14px;
+  border-top: none;
+}
 </style>

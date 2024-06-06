@@ -3,14 +3,15 @@
     <v-progress-circular indeterminate class="loading" v-if="isLoading"></v-progress-circular>
     <div class="wrapper" v-else>
       <div class="content">
-        <carousel :imageList="data.images"/>
-        <bread-crumb-property :city="data.city" :district="data.district" class="breadcrumb-property"/>
+        <carousel :imageList="data.images" />
+        <bread-crumb-property :city="data.city" :district="data.district" class="breadcrumb-property" />
         <h3>{{ data.title }}</h3>
-        <p class="address-txt">{{ `${data.project? `${data.project}, `: ''} ${data.ward}, ${data.district}, ${data.city}` }}</p>
+        <p class="address-txt">{{ `${data.project ? `${data.project}, ` : ''} ${data.ward}, ${data.district},
+          ${data.city}` }}</p>
         <div class="detail-section">
           <div class="detail-child">
             <p class="detail-title">Mức giá</p>
-            <p class="detail-value">{{ formatCurrency }}<span v-if="data.type==='rent'">/tháng</span></p>
+            <p class="detail-value">{{ formatCurrency }}<span v-if="data.type === 'rent'">/tháng</span></p>
           </div>
           <div class="detail-child">
             <p class="detail-title">Diện tích</p>
@@ -29,13 +30,13 @@
         </div>
       </div>
       <div class="user-info">
-        <img :src="data.avatar" alt="avatar"  class="avatar-img" v-if="data.avatar">
+        <img :src="data.avatar" alt="avatar" class="avatar-img" v-if="data.avatar">
         <v-avatar color="rgb(255, 236, 235)" size="64" v-else>
           <span class="text-h6 avt-text">{{ data.name.split(' ').reverse()[0][0].toUpperCase() }}</span>
         </v-avatar>
         <p class="txt-name">{{ data.name }}</p>
         <button class="btn-reveal" @click="handleReveal">
-          <icon-phone/>{{ phoneReveal? data.phoneNumber : phoneNumber }}
+          <icon-phone />{{ phoneReveal ? data.phoneNumber : phoneNumber }}
         </button>
       </div>
     </div>
@@ -43,21 +44,21 @@
 </template>
 
 <script>
-import {formatCurrency, formatDate} from '@/helpers/formater'
+import { formatCurrency, formatDate } from '@/helpers/formater'
 export default {
-  data () {
+  data() {
     return {
       phoneReveal: false
     }
   },
   computed: {
     isLoading: {
-      get () {
+      get() {
         return this.$store.getters['properties/isLoading']
       }
     },
     data: {
-      get () {
+      get() {
         return this.$store.getters['properties/data']
       }
     },
@@ -74,7 +75,7 @@ export default {
       return `${this.data.phoneNumber.slice(0, -3)}*** Hiện số`
     }
   },
-  async created () {
+  async created() {
     await this.$store.dispatch('properties/getPropertiesDetail', {
       id: this.$route.path.split('/')[2]
     })
@@ -88,7 +89,7 @@ export default {
 </script>
 
 <style scoped>
-.wrapper{
+.wrapper {
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -96,21 +97,25 @@ export default {
   max-width: 1140px;
   margin-top: 16px;
 }
-.content{
+
+.content {
   width: 848px;
   /* margin-right: 30px */
 }
-.content h3{
+
+.content h3 {
   font-size: 24px;
   line-height: 32px;
   letter-spacing: -0.2px;
   color: #2C2C2C;
 }
-.breadcrumb-property{
+
+.breadcrumb-property {
   margin-top: 24px;
   margin-bottom: 8px;
 }
-.address-txt{
+
+.address-txt {
   font-size: 14px;
   line-height: 20px;
   font-weight: normal !important;
@@ -118,9 +123,10 @@ export default {
   margin-top: 8px;
   margin-bottom: 0;
 }
-.user-info{
+
+.user-info {
   width: 262px;
-  height:fit-content ;
+  height: fit-content;
   border: 1px solid #F2F2F2;
   border-radius: 8px;
   padding: 15px;
@@ -129,24 +135,27 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-.loading{
+
+.loading {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%)
+  transform: translate(-50%, -50%)
 }
-.avt-text{
+
+.avt-text {
   font-weight: 500;
   color: rgb(116, 21, 15);
 }
 
-.avatar-img{
+.avatar-img {
   border-radius: 100%;
   width: 64px;
   height: 64px;
   object-fit: cover;
 }
-.txt-name{
+
+.txt-name {
   font-size: 16px;
   line-height: 24px;
   letter-spacing: -.2px;
@@ -159,7 +168,8 @@ export default {
   margin-top: 4px;
   margin-bottom: 16px;
 }
-.btn-reveal{
+
+.btn-reveal {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -172,7 +182,8 @@ export default {
   padding: 14px 16px;
   border-radius: 4px;
 }
-.detail-section{
+
+.detail-section {
   margin: 16px 0;
   padding: 15px 0;
   border-top: 1px solid #F2F2F2;
@@ -180,31 +191,36 @@ export default {
   display: flex;
   gap: 64px;
 }
-.detail-title{
+
+.detail-title {
   font-size: 14px;
   line-height: 20px;
   font-weight: normal !important;
   color: #999;
   margin: 0;
 }
-.detail-value{
+
+.detail-value {
   font-size: 18px;
   line-height: 28px;
   color: #2C2C2C;
   font-weight: 600;
   margin: 4px 0 0 0;
 }
-.detail-description{
+
+.detail-description {
   font-size: 14px;
   line-height: 20px;
   color: #2C2C2C;
   font-weight: 600;
   margin: 4px 0 0 0;
 }
-.description-section{
+
+.description-section {
   margin: 40px 0;
 }
-.description-title{
+
+.description-title {
   margin-bottom: 16px;
   font-size: 18px;
   line-height: 28px;
@@ -212,7 +228,8 @@ export default {
   letter-spacing: -.2px;
   color: #2C2C2C;
 }
-.description-p{
+
+.description-p {
   white-space: pre-line;
   font-size: 14px;
   line-height: 24px;

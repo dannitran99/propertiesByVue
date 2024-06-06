@@ -1,7 +1,9 @@
 <template>
   <div>
-    <div class="wrapper-gallery" @mousemove="handleMouseMove" @mousedown="handleMouseDown" @mouseup="handleMouseLeave" @mouseleave="handleMouseLeave" ref="gallery">
-      <ul :style="{transform: `translate3d(${-858 * currentIdx + gallery.currentTranslateX}px, 0px, 0px)`, transitionDuration: `${isTrans?'300ms':'0ms'}`}">
+    <div class="wrapper-gallery" @mousemove="handleMouseMove" @mousedown="handleMouseDown" @mouseup="handleMouseLeave"
+      @mouseleave="handleMouseLeave" ref="gallery">
+      <ul
+        :style="{ transform: `translate3d(${-858 * currentIdx + gallery.currentTranslateX}px, 0px, 0px)`, transitionDuration: `${isTrans ? '300ms' : '0ms'}` }">
         <li v-for="item in imageList" :key="item.name">
           <div class="image-overlay">
             <img :src="item.url" alt="img" draggable="false" />
@@ -10,21 +12,22 @@
         </li>
       </ul>
       <div class="pagination">{{ `${currentIdx + 1} / ${imageList.length}` }}</div>
-      <button class="btn-nav go-right" @click="handleGoRight" v-if="currentIdx<imageList.length-1">
+      <button class="btn-nav go-right" @click="handleGoRight" v-if="currentIdx < imageList.length - 1">
         <div>
-          <icon-leftarrow/>
+          <icon-leftarrow />
         </div>
       </button>
-      <button class="btn-nav go-left" @click="handleGoLeft" v-if="currentIdx>0" >
+      <button class="btn-nav go-left" @click="handleGoLeft" v-if="currentIdx > 0">
         <div>
-          <icon-leftarrow/>
+          <icon-leftarrow />
         </div>
-      </button >
+      </button>
     </div>
-    <div @mousedown="handleDownSlick" @mousemove="handleMoveSlick" @mouseup="handleSlickLeave" @mouseleave="handleSlickLeave">
+    <div @mousedown="handleDownSlick" @mousemove="handleMoveSlick" @mouseup="handleSlickLeave"
+      @mouseleave="handleSlickLeave">
       <ul class="slick" ref="slick">
         <li v-for="(item, idx) in imageList" :key="item.name" @click="handleChangeSlide(idx)">
-          <img :src="item.url" alt="img" draggable="false" :class="[{'active' : idx === currentIdx}]"/>
+          <img :src="item.url" alt="img" draggable="false" :class="[{ 'active': idx === currentIdx }]" />
         </li>
       </ul>
     </div>
@@ -32,37 +35,42 @@
       <div class="navigate-btn">
         <div class="pagination-popup">{{ `${currentIdx + 1} / ${imageList.length}` }}</div>
         <div class="action-btn">
-          <button  @click="handleZoomOut">
-            <icon-zoomout/>
+          <button @click="handleZoomOut">
+            <icon-zoomout />
           </button>
           <button @click="scale++">
-            <icon-zoomin/>
+            <icon-zoomin />
           </button>
-          <button @click="popup=false">
-            <icon-closewb/>
+          <button @click="popup = false">
+            <icon-closewb />
           </button>
         </div>
       </div>
       <div class="content-popup">
         <div class="popup-wrapper" @click="clickOutSide">
           <div class="gallery-holder">
-            <ul class="gallery-popup" :style="{transform: `translate3d( calc(${ 100 * -currentIdx }% + ${galleryPopup.currentTranslateX}px), ${scale === 1? '0px':`${galleryPopup.currentTranslateY}px`}, 0px)`, transitionDuration: `${isTrans?'600ms':'0ms'}`}">
-              <li v-for="(item,idx) in imageList" :key="item.name">
-                <img :src="item.url" alt="img" draggable="false" v-if="scale===1 || idx === currentIdx" @click="clickImage" @mousemove="handleMouseMovePopup" @mousedown="handleMouseDownPopup" @mouseup="handleMouseLeavePopup" @mouseleave="handleMouseLeavePopup" :style="{transform: `scale3d(${idx === currentIdx ?scale:1}, ${idx === currentIdx ?scale:1}, 1)`}"/>
+            <ul class="gallery-popup"
+              :style="{ transform: `translate3d( calc(${100 * -currentIdx}% + ${galleryPopup.currentTranslateX}px), ${scale === 1 ? '0px' : `${galleryPopup.currentTranslateY}px`}, 0px)`, transitionDuration: `${isTrans ? '600ms' : '0ms'}` }">
+              <li v-for="(item, idx) in imageList" :key="item.name">
+                <img :src="item.url" alt="img" draggable="false" v-if="scale === 1 || idx === currentIdx"
+                  @click="clickImage" @mousemove="handleMouseMovePopup" @mousedown="handleMouseDownPopup"
+                  @mouseup="handleMouseLeavePopup" @mouseleave="handleMouseLeavePopup"
+                  :style="{ transform: `scale3d(${idx === currentIdx ? scale : 1}, ${idx === currentIdx ? scale : 1}, 1)` }" />
               </li>
             </ul>
           </div>
-          <button class="btn-nav-popup go-right" @click="handleGoRight" v-if="currentIdx<imageList.length-1">
-            <icon-leftarrow/>
+          <button class="btn-nav-popup go-right" @click="handleGoRight" v-if="currentIdx < imageList.length - 1">
+            <icon-leftarrow />
           </button>
-          <button class="btn-nav-popup go-left" @click="handleGoLeft" v-if="currentIdx>0" >
-            <icon-leftarrow/>
+          <button class="btn-nav-popup go-left" @click="handleGoLeft" v-if="currentIdx > 0">
+            <icon-leftarrow />
           </button>
         </div>
-        <div class="slick-popup fade-animation" @mousedown="handleDownSlickPopup" @mousemove="handleMoveSlickPopup" @mouseup="handleSlickLeavePopup" @mouseleave="handleSlickLeavePopup">
-          <ul class="slick slick-popup-gallery" ref="slick-popup" >
+        <div class="slick-popup fade-animation" @mousedown="handleDownSlickPopup" @mousemove="handleMoveSlickPopup"
+          @mouseup="handleSlickLeavePopup" @mouseleave="handleSlickLeavePopup">
+          <ul class="slick slick-popup-gallery" ref="slick-popup">
             <li v-for="(item, idx) in imageList" :key="item.name" @click="handleChangeSlide(idx)">
-              <img :src="item.url" alt="img" draggable="false" :class="[{'active-popup' : idx === currentIdx}]" />
+              <img :src="item.url" alt="img" draggable="false" :class="[{ 'active-popup': idx === currentIdx }]" />
             </li>
           </ul>
         </div>
@@ -78,7 +86,7 @@ export default {
       type: Array
     }
   },
-  data () {
+  data() {
     return {
       popup: false,
       isTrans: false,
@@ -234,31 +242,34 @@ export default {
 </script>
 
 <style scoped>
-.wrapper-gallery{
-    position: relative;
-    width: 848px;
-    height: calc(848px* 472 / 840);
-    margin-bottom: 8px;
-    border-radius: 4px;
-    cursor: pointer;
-    overflow: hidden;
-    list-style: none;
+.wrapper-gallery {
+  position: relative;
+  width: 848px;
+  height: calc(848px* 472 / 840);
+  margin-bottom: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  overflow: hidden;
+  list-style: none;
 }
-.wrapper-gallery ul{
+
+.wrapper-gallery ul {
   height: 100%;
   width: 100%;
   padding: 0;
   display: flex;
   list-style: none;
 }
-.wrapper-gallery li{
+
+.wrapper-gallery li {
   flex-shrink: 0;
   width: 848px;
   margin-right: 10px;
   height: 100%;
   position: relative;
 }
-.image-layout{
+
+.image-layout {
   position: absolute;
   top: 0;
   left: 0;
@@ -270,7 +281,8 @@ export default {
   background-repeat: no-repeat;
   z-index: 9;
 }
-.image-overlay{
+
+.image-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -282,13 +294,15 @@ export default {
   background: rgba(0, 0, 0, 0.65);
   text-align: center;
 }
-.image-overlay img{
+
+.image-overlay img {
   min-height: 100%;
   cursor: pointer;
   height: 100%;
   user-select: none;
 }
-.pagination{
+
+.pagination {
   position: absolute;
   right: 16px;
   bottom: 16px;
@@ -299,62 +313,74 @@ export default {
   font-size: 14px;
   line-height: 20px;
 }
-.btn-nav{
+
+.btn-nav {
 
   position: absolute;
   top: 0;
   height: 100%;
 }
-.btn-nav >div{
+
+.btn-nav>div {
   background-color: #fff;
   border: solid 1px #ccc;
-  padding: 8px ;
+  padding: 8px;
   border-radius: 4px;
   display: flex;
 }
-.btn-nav-popup{
+
+.btn-nav-popup {
   background-color: #fff;
   border: solid 1px #ccc;
-  padding: 11px ;
+  padding: 11px;
   border-radius: 4px;
   position: absolute;
   display: flex;
   top: 50%;
 }
-.btn-nav-popup svg{
+
+.btn-nav-popup svg {
   width: 25px;
   height: 25px;
 }
-.go-right{
+
+.go-right {
   right: 0;
-  transform: translate(-50%,0);
+  transform: translate(-50%, 0);
 }
-.go-left{
+
+.go-left {
   transform: translate(50%, 0);
   left: 0;
 
 }
-.go-right svg{
+
+.go-right svg {
   transform: rotate(180deg);
 }
-.slick{
+
+.slick {
   height: 80px;
   overflow: hidden;
   padding: 0;
   list-style: none;
   display: flex;
 }
-.slick-popup-gallery{
+
+.slick-popup-gallery {
   height: 64px;
 }
-.slick-popup-gallery img{
+
+.slick-popup-gallery img {
   width: 86px !important;
   opacity: 0.64;
 }
-.slick >:not(:last-child){
+
+.slick>:not(:last-child) {
   margin-right: 8px;
 }
-.slick img{
+
+.slick img {
   width: 111px;
   height: 100%;
   border-radius: 4px;
@@ -362,14 +388,17 @@ export default {
   cursor: pointer;
   transition: all .3s ease;
 }
-.active-popup{
+
+.active-popup {
   opacity: 1 !important;
   border: 2px solid #fff;
 }
-.active{
+
+.active {
   border: 2px solid #2C2C2C;
 }
-.popup{
+
+.popup {
   z-index: 1000;
   position: fixed;
   width: 100%;
@@ -378,7 +407,8 @@ export default {
   top: 0;
   left: 0;
 }
-.navigate-btn{
+
+.navigate-btn {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -391,39 +421,46 @@ export default {
   padding: 12px 0px;
   background-color: #000;
 }
-.pagination-popup{
+
+.pagination-popup {
   font-size: 14px;
   line-height: 20px;
   padding-left: 24px;
   color: #fff;
 }
-.action-btn{
+
+.action-btn {
   display: flex;
   gap: 10px;
   align-items: center;
   padding-right: 24px;
 }
-.action-btn svg{
+
+.action-btn svg {
   width: 24px;
   height: 24px;
 }
-.content-popup{
+
+.content-popup {
   position: fixed;
   height: calc(100vh - 56px);
   width: 100%;
   top: 56px;
 }
-.popup-wrapper{
+
+.popup-wrapper {
   position: relative;
   height: calc(100% - 112px);
 }
-.gallery-holder{
+
+.gallery-holder {
   height: 100%;
   opacity: 0;
   transform: scale(0.5);
   animation: fade-in 0.2s ease .3s forwards;
 }
-.gallery-popup{
+
+.gallery-popup {
   position: absolute;
   padding: 0;
   display: flex;
@@ -431,14 +468,16 @@ export default {
   width: 100%;
   height: 100%;
 }
-.gallery-popup li{
+
+.gallery-popup li {
   justify-content: center;
   flex-shrink: 0;
   width: 100%;
   display: flex;
   align-items: center;
 }
-.gallery-popup img{
+
+.gallery-popup img {
   display: inline-block;
   vertical-align: middle;
   max-width: 100%;
@@ -448,17 +487,20 @@ export default {
   cursor: grab;
   transition: all .2s ease;
 }
-.slick-popup{
+
+.slick-popup {
   height: 112px !important;
   padding: 24px 10px !important;
   background-color: #000;
 }
+
 @keyframes fade-in {
   100% {
     opacity: 1;
     transform: scale(1);
   }
 }
+
 .fade-animation {
   animation-name: fade-in-down;
   animation-iteration-count: 1;
@@ -472,6 +514,7 @@ export default {
     opacity: 0;
     transform: translate3d(0, 100%, 0);
   }
+
   100% {
     opacity: 1;
     transform: translate3d(0, 0, 0);

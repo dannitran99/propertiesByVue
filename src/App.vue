@@ -1,7 +1,7 @@
 <template>
   <v-app id="app">
-    <nav-bar class="nav-bar"/>
-    <router-view class="main-content"/>
+    <nav-bar class="nav-bar" />
+    <router-view class="main-content" />
     <footer-comp></footer-comp>
   </v-app>
 </template>
@@ -21,13 +21,16 @@ export default {
   /* text-align: center; */
   color: #2c3e50;
 }
-a{
+
+a {
   text-decoration: none;
 }
-.nav-bar{
+
+.nav-bar {
   z-index: 99;
 }
-.main-content{
+
+.main-content {
   min-height: calc(100vh - 72px - 56px);
   margin-top: 72px;
 }
