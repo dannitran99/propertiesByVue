@@ -18,7 +18,10 @@ export default {
     priceMax: null,
     squareMin: null,
     squareMax: null,
-    data: null
+    data: null,
+    totalItem: 0,
+    page: 1,
+    limit: 5
   },
   getters: {
     searchKeyword (state) {
@@ -59,6 +62,12 @@ export default {
     },
     data (state) {
       return state.data
+    },
+    totalItem (state) {
+      return state.totalItem
+    },
+    page (state) {
+      return state.page
     }
   },
   mutations: {
@@ -72,7 +81,8 @@ export default {
       state.propertiesList = []
     },
     GET_PROPERTIES_LIST (state, data) {
-      state.propertiesList = data
+      state.propertiesList = data.Data
+      state.totalItem = data.Total
     },
     GET_PROPERTIES_LIST_POSTED (state, data) {
       state.propertiesListPosted = data
@@ -112,6 +122,9 @@ export default {
       state.priceMax = null
       state.squareMin = null
       state.squareMax = null
+      state.page = 1
+      state.totalItem = 0
+      state.limit = 5
     },
     SUBMIT_FILTER (state, payload) {
       const query = {}
@@ -124,6 +137,8 @@ export default {
       state.priceMax && Object.assign(query, { maxPrice: state.priceMax })
       state.squareMin && Object.assign(query, { minSquare: state.squareMin })
       state.squareMax && Object.assign(query, { maxSquare: state.squareMax })
+      state.page > 1 && Object.assign(query, { p: state.page })
+      state.limit !== 5 && Object.assign(query, { l: state.limit })
       router.push({
         path: payload || router.path,
         query: query

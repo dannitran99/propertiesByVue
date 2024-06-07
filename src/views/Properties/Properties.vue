@@ -4,7 +4,7 @@
       <bread-crumb-property class="content-breadcrumb" :city="city" :district="district.length === 1 ? district[0] : ''"
         :current="`${type} ${at}`" />
       <h3 class="title-property">{{ `${typeTitle} ${at}` }}</h3>
-      <p class="subtitle">Hiện có {{ properties.length }} bất động sản.</p>
+      <p class="subtitle">Hiện có {{ totalItem }} bất động sản.</p>
       <div class="properties-list">
         <template v-if="isLoading">
           <properties-skeleton />
@@ -64,6 +64,11 @@ export default {
     properties: {
       get() {
         return this.$store.getters['properties/propertiesList']
+      }
+    },
+    totalItem: {
+      get() {
+        return this.$store.getters['properties/totalItem']
       }
     },
     priceMin: {
