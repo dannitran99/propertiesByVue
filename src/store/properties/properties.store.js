@@ -113,7 +113,7 @@ export default {
       state.squareMin = null
       state.squareMax = null
     },
-    SUBMIT_FILTER (state) {
+    SUBMIT_FILTER (state, payload) {
       const query = {}
       const codeList = router.history.current.path === '/nha-dat-ban' ? FILTER_SALE_ID : FILTER_RENT_ID
       state.categoryIdFilter.length && state.categoryIdFilter.length < codeList.length && Object.assign(query, { category: state.categoryIdFilter.join(',') })
@@ -125,7 +125,7 @@ export default {
       state.squareMin && Object.assign(query, { minSquare: state.squareMin })
       state.squareMax && Object.assign(query, { maxSquare: state.squareMax })
       router.push({
-        path: router.path,
+        path: payload || router.path,
         query: query
       })
     }
@@ -209,8 +209,8 @@ export default {
         return error
       }
     },
-    submitFilter (context) {
-      context.commit('SUBMIT_FILTER')
+    submitFilter (context, payload) {
+      context.commit('SUBMIT_FILTER', payload)
     }
   }
 }

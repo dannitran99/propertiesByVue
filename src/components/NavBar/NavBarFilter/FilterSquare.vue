@@ -1,10 +1,17 @@
 <template>
-  <div class="filter-price" v-on:click.self="onClickPopup" v-click-outside="handleClickOutside">
-    <div class="title-dv" v-on:click.self="onClickPopup">
-      <p v-on:click.self="onClickPopup">Diện tích</p>
-      <icon-downtriangle v-on:click.self="onClickPopup" />
-    </div>
-    <p v-on:click.self="onClickPopup" class="text-result">{{ squareLabel }}</p>
+  <div :class="[{ 'filter-price': !isHome }, { 'filter-home-price': isHome }]" v-on:click.self="onClickPopup"
+    v-click-outside="handleClickOutside">
+    <template v-if="isHome">
+      <p class="home-text-result" @click.self="onClickPopup">{{ squareLabel }}</p>
+      <icon-downtriangle @click.self="onClickPopup" />
+    </template>
+    <template v-else>
+      <div class="title-dv" v-on:click.self="onClickPopup">
+        <p v-on:click.self="onClickPopup">Diện tích</p>
+        <icon-downtriangle v-on:click.self="onClickPopup" />
+      </div>
+      <p v-on:click.self="onClickPopup" class="text-result">{{ squareLabel }}</p>
+    </template>
     <div v-if="isActive" class="popup-modal">
       <div class="modal-header">
         <div class="header-info">
@@ -30,8 +37,8 @@
           <span>Đặt lại</span>
         </button>
         <button class="btn-confirm" @click="submitFilter">
-          <icon-magnify />
-          <span>Tìm kiếm</span>
+          <icon-magnify v-if="!isHome" />
+          <span>{{ isHome ? 'Áp dụng' : 'Tìm kiếm' }}</span>
         </button>
       </div>
     </div>
@@ -41,6 +48,12 @@
 <script>
 import { FILTER_SQUARE } from '@/consts/squareFilter.js'
 export default {
+  props: {
+    isHome: {
+      type: Boolean,
+      default: null
+    }
+  },
   data() {
     return {
       isActive: false,
@@ -48,7 +61,7 @@ export default {
       range: [0, 500],
       timeoutMinId: null,
       timeoutMaxId: null,
-      squareLabel: 'Tất cả',
+      squareLabel: this.isHome ? 'Diện tích' : 'Tất cả',
       listFilter: FILTER_SQUARE
     }
   },
@@ -128,19 +141,19 @@ export default {
         } else if (!this.squareMax) {
           this.squareLabel = `≥ ${this.squareMin} m²`
         }
-      } else this.squareLabel = 'Tất cả'
+      } else this.squareLabel = this.isHome ? 'Diện tích' : 'Tất cả'
     },
     handleSelectRange: function (item) {
       this.$store.dispatch('properties/minSquareChange', item.min)
       this.$store.dispatch('properties/maxSquareChange', item.max)
-      this.$store.dispatch('properties/submitFilter')
+      !this.isHome && this.$store.dispatch('properties/submitFilter')
     },
     clearSelectSquare() {
       this.$store.dispatch('properties/minSquareChange', null)
       this.$store.dispatch('properties/maxSquareChange', null)
     },
     submitFilter() {
-      this.$store.dispatch('properties/submitFilter')
+      !this.isHome && this.$store.dispatch('properties/submitFilter')
       this.isActive = false
     }
   }
@@ -189,6 +202,41 @@ export default {
 .title-dv {
   display: flex;
   gap: 5px;
+}
+
+.filter-home-price {
+  position: relative;
+  height: 32px;
+  margin-top: 8px;
+  margin-right: 8px;
+  width: 210px;
+  padding: 0px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 4px;
+  background: 0;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.filter-home-price p {
+  margin: 0;
+}
+
+.filter-home-price>svg {
+  width: 20px;
+  height: 20px;
+  filter: invert(99%) sepia(0%) saturate(7500%) hue-rotate(212deg) brightness(101%) contrast(101%);
+}
+
+.home-text-result {
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .popup-modal {

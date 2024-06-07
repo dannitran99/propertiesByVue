@@ -1,10 +1,17 @@
 <template>
-  <div class="filter-price" v-on:click.self="onClickPopup" v-click-outside="handleClickOutside">
-    <div class="title-dv" v-on:click.self="onClickPopup">
-      <p v-on:click.self="onClickPopup">Mức giá</p>
-      <icon-downtriangle v-on:click.self="onClickPopup" />
-    </div>
-    <p v-on:click.self="onClickPopup" class="text-result">{{ priceLabel }}</p>
+  <div :class="[{ 'filter-price': !isHome }, { 'filter-home-price': isHome }]" v-on:click.self="onClickPopup"
+    v-click-outside="handleClickOutside">
+    <template v-if="isHome">
+      <p class="home-text-result" @click.self="onClickPopup">{{ priceLabel }}</p>
+      <icon-downtriangle @click.self="onClickPopup" />
+    </template>
+    <template v-else>
+      <div class="title-dv" v-on:click.self="onClickPopup">
+        <p v-on:click.self="onClickPopup">Mức giá</p>
+        <icon-downtriangle v-on:click.self="onClickPopup" />
+      </div>
+      <p v-on:click.self="onClickPopup" class="text-result">{{ priceLabel }}</p>
+    </template>
     <div v-if="isActive" class="popup-modal">
       <div class="modal-header">
         <div class="header-info">
@@ -30,8 +37,8 @@
           <span>Đặt lại</span>
         </button>
         <button class="btn-confirm" @click="submitFilter">
-          <icon-magnify />
-          <span>Tìm kiếm</span>
+          <icon-magnify v-if="!isHome" />
+          <span>{{ isHome ? 'Áp dụng' : 'Tìm kiếm' }}</span>
         </button>
       </div>
     </div>
@@ -43,6 +50,16 @@
 import { FILTER_SALE_PRICE, FILTER_RENT_PRICE } from '@/consts/priceFilter.js'
 import { formatCurrency } from '@/helpers/formater'
 export default {
+  props: {
+    isHome: {
+      type: Boolean,
+      default: null
+    },
+    isSale: {
+      type: Boolean,
+      default: null
+    }
+  },
   data() {
     return {
       isActive: false,
@@ -50,7 +67,7 @@ export default {
       range: [0, this.sliderMax],
       timeoutMinId: null,
       timeoutMaxId: null,
-      priceLabel: 'Tất cả',
+      priceLabel: this.isHome ? 'Mức giá' : 'Tất cả',
       sliderMax: 0,
       sliderStep: 0,
       selectList: []
@@ -70,18 +87,12 @@ export default {
   },
   watch: {
     '$route'() {
-      if (this.$route.path === '/nha-dat-ban') {
-        this.sliderMax = 60000
-        this.sliderStep = 100
-        this.range = [0, 60000]
-        this.selectList = FILTER_SALE_PRICE
-      }
-      if (this.$route.path === '/nha-dat-cho-thue') {
-        this.sliderMax = 100
-        this.sliderStep = 0.5
-        this.range = [0, 100]
-        this.selectList = FILTER_RENT_PRICE
-      }
+      this.handleLoadData()
+    },
+    isSale() {
+      this.$store.dispatch('properties/minPriceChange', null)
+      this.$store.dispatch('properties/maxPriceChange', null)
+      this.handleLoadData()
     },
     priceMin() {
       if (this.priceMin !== null) this.range = [this.priceMin, this.priceMax]
@@ -93,20 +104,28 @@ export default {
     }
   },
   created() {
-    if (this.$route.path === '/nha-dat-ban') {
+    this.handleLoadData()
+  },
+  methods: {
+    handleLoadData() {
+      this.$route.path === '/nha-dat-ban' && this.handleDataSale()
+      this.$route.path === '/nha-dat-cho-thue' && this.handleDataRent()
+      if (this.isHome) {
+        this.isSale ? this.handleDataSale() : this.handleDataRent()
+      }
+    },
+    handleDataSale() {
       this.sliderMax = 60000
       this.sliderStep = 100
       this.range = [0, 60000]
       this.selectList = FILTER_SALE_PRICE
-    }
-    if (this.$route.path === '/nha-dat-cho-thue') {
+    },
+    handleDataRent() {
       this.sliderMax = 100
       this.sliderStep = 0.5
       this.range = [0, 100]
       this.selectList = FILTER_RENT_PRICE
-    }
-  },
-  methods: {
+    },
     handleClickOutside() {
       if (this.isActive) {
         this.isActive = false
@@ -160,19 +179,19 @@ export default {
         } else if (!this.priceMax) {
           this.priceLabel = `≥ ${formatCurrency(this.priceMin * 1000000)}`
         }
-      } else this.priceLabel = 'Tất cả'
+      } else this.priceLabel = this.isHome ? 'Mức giá' : 'Tất cả'
     },
     handleSelectRange: function (item) {
       this.$store.dispatch('properties/minPriceChange', item.min)
       this.$store.dispatch('properties/maxPriceChange', item.max)
-      this.$store.dispatch('properties/submitFilter')
+      !this.isHome && this.$store.dispatch('properties/submitFilter')
     },
     clearSelectPrice() {
       this.$store.dispatch('properties/minPriceChange', null)
       this.$store.dispatch('properties/maxPriceChange', null)
     },
     submitFilter() {
-      this.$store.dispatch('properties/submitFilter')
+      !this.isHome && this.$store.dispatch('properties/submitFilter')
       this.isActive = false
     }
   }
@@ -221,6 +240,41 @@ export default {
 .title-dv {
   display: flex;
   gap: 5px;
+}
+
+.filter-home-price {
+  position: relative;
+  height: 32px;
+  margin-top: 8px;
+  margin-right: 8px;
+  width: 210px;
+  padding: 0px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 4px;
+  background: 0;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.filter-home-price p {
+  margin: 0;
+}
+
+.filter-home-price>svg {
+  width: 20px;
+  height: 20px;
+  filter: invert(99%) sepia(0%) saturate(7500%) hue-rotate(212deg) brightness(101%) contrast(101%);
+}
+
+.home-text-result {
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .popup-modal {

@@ -1,10 +1,17 @@
 <template>
-  <div class="filter-localtion" @click.self="onClickPopup" v-click-outside="handleClickOutside">
-    <div class="title-dv" @click.self="onClickPopup">
-      <p @click.self="onClickPopup">Khu vực & dự án</p>
+  <div :class="[{ 'filter-localtion': !isHome }, { 'filter-home-location': isHome }]" @click.self="onClickPopup"
+    v-click-outside="handleClickOutside">
+    <template v-if="isHome">
+      <p class="home-text-result" @click.self="onClickPopup">{{ citySelected || 'Trên toàn quốc' }}</p>
       <icon-downtriangle @click.self="onClickPopup" />
-    </div>
-    <p class="result-text" @click.self="onClickPopup">{{ citySelected || 'Toàn quốc' }}</p>
+    </template>
+    <template v-else>
+      <div class="title-dv" @click.self="onClickPopup">
+        <p @click.self="onClickPopup">Khu vực & dự án</p>
+        <icon-downtriangle @click.self="onClickPopup" />
+      </div>
+      <p class="result-text" @click.self="onClickPopup">{{ citySelected || 'Toàn quốc' }}</p>
+    </template>
     <div v-if="isActive" class="popup-modal">
       <div class="popup-content-wrapper">
         <div class="popup-content">
@@ -76,8 +83,8 @@
           <span>Đặt lại</span>
         </button>
         <button class="btn-confirm" @click="submitFilter">
-          <icon-magnify />
-          <span>Tìm kiếm</span>
+          <icon-magnify v-if="!isHome" />
+          <span>{{ isHome ? 'Áp dụng' : 'Tìm kiếm' }}</span>
         </button>
       </div>
     </div>
@@ -87,6 +94,12 @@
 <script>
 import { removeElFromArr } from '@/helpers/arrayHandler'
 export default {
+  props: {
+    isHome: {
+      type: Boolean,
+      default: null
+    }
+  },
   data() {
     return {
       isActive: false,
@@ -188,7 +201,7 @@ export default {
       this.$store.dispatch('properties/setFilterDistrict', tmp)
     },
     submitFilter() {
-      this.$store.dispatch('properties/submitFilter')
+      !this.isHome && this.$store.dispatch('properties/submitFilter')
       this.isActive = false
     }
   }
@@ -228,6 +241,41 @@ input {
   color: #2C2C2C;
   margin-bottom: 4px;
   flex-shrink: 0
+}
+
+.filter-home-location {
+  position: relative;
+  height: 32px;
+  margin-top: 8px;
+  margin-right: 8px;
+  width: 210px;
+  padding: 0px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 4px;
+  background: 0;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.filter-home-location p {
+  margin: 0;
+}
+
+.filter-home-location>svg {
+  width: 20px;
+  height: 20px;
+  filter: invert(99%) sepia(0%) saturate(7500%) hue-rotate(212deg) brightness(101%) contrast(101%);
+}
+
+.home-text-result {
+  color: #fff;
+  font-size: 14px;
+  line-height: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .result-text {

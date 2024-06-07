@@ -25,6 +25,14 @@ export default {
   src: url('../public/fonts/Roboto-Regular.ttf') format('truetype');
 }
 
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+}
+
 #app {
   font-family: 'Lexend-Medium', 'Roboto-Regular', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

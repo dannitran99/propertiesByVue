@@ -1,15 +1,24 @@
 <template>
-  <div class="filter" v-on:click.self="onClickPopup" v-click-outside="handleClickOutside">
-    <div class="title-dv" v-on:click.self="onClickPopup">
-      <p v-on:click.self="onClickPopup">Loại nhà đất</p>
+  <div :class="[{ 'filter': !isHome }, { 'filter-home': isHome }]" v-on:click.self="onClickPopup"
+    v-click-outside="handleClickOutside">
+    <template v-if="isHome">
+      <icon-home v-on:click.self="onClickPopup" />
+      <p v-if="categoryFilter.length" v-on:click.self="onClickPopup">{{ categoryFilter.join(', ') }}</p>
+      <p v-else v-on:click.self="onClickPopup">Loại nhà đất</p>
       <icon-downtriangle v-on:click.self="onClickPopup" />
-    </div>
-    <p class="result-text" v-on:click.self="onClickPopup" v-if="categoryFilter.length">{{ categoryFilter.join(', ') }}
-    </p>
-    <p v-else class="result-text" v-on:click.self="onClickPopup">Tất cả</p>
+    </template>
+    <template v-else>
+      <div class="title-dv" v-on:click.self="onClickPopup">
+        <p v-on:click.self="onClickPopup">Loại nhà đất</p>
+        <icon-downtriangle v-on:click.self="onClickPopup" />
+      </div>
+      <p class="result-text" v-on:click.self="onClickPopup" v-if="categoryFilter.length">{{ categoryFilter.join(', ') }}
+      </p>
+      <p v-else class="result-text" v-on:click.self="onClickPopup">Tất cả</p>
+    </template>
     <div v-if="isActive" class="popup-modal">
       <ul>
-        <filter-item v-for="item in selectOption" v-bind:key="item.label" v-bind:data="item"
+        <filter-item v-for=" item  in  selectOption " v-bind:key="item.label" v-bind:data="item"
           v-bind:filterLabel="filterLabel" v-bind:filterId="filterId" />
       </ul>
       <div class="filter-footer">
@@ -18,8 +27,8 @@
           <span>Đặt lại</span>
         </button>
         <button class="btn-confirm" @click="handleSearch">
-          <icon-magnify />
-          <span>Tìm kiếm</span>
+          <icon-magnify v-if="!isHome" />
+          <span>{{ isHome ? 'Áp dụng' : 'Tìm kiếm' }}</span>
         </button>
       </div>
     </div>
@@ -31,6 +40,16 @@ import FilterCategoryItem from './FilterCategoryItem.vue'
 import { removeElFromArr, cloneDeep } from '@/helpers/arrayHandler'
 import { FILTER_SALE_OPTION, FILTER_RENT_OPTION, FILTER_SALE_ID, FILTER_RENT_ID, FILTER_SALE_LABEL, FILTER_RENT_LABEL } from '@/consts/label.js'
 export default {
+  props: {
+    isHome: {
+      type: Boolean,
+      default: null
+    },
+    isSale: {
+      type: Boolean,
+      default: null
+    }
+  },
   components: {
     'filter-item': FilterCategoryItem
   },
@@ -63,29 +82,15 @@ export default {
   },
   watch: {
     '$route'() {
-      if (this.$route.path === '/nha-dat-ban') {
-        this.selectOption = FILTER_SALE_OPTION
-        this.filterLabel = FILTER_SALE_LABEL
-        this.filterId = FILTER_SALE_ID
-      }
-      if (this.$route.path === '/nha-dat-cho-thue') {
-        this.selectOption = FILTER_RENT_OPTION
-        this.filterLabel = FILTER_RENT_LABEL
-        this.filterId = FILTER_RENT_ID
-      }
+      this.handleLoadData()
+    },
+    isSale() {
+      this.$store.dispatch('properties/filterChange', { data: [], filterId: [] })
+      this.handleLoadData()
     }
   },
   created() {
-    if (this.$route.path === '/nha-dat-ban') {
-      this.selectOption = FILTER_SALE_OPTION
-      this.filterLabel = FILTER_SALE_LABEL
-      this.filterId = FILTER_SALE_ID
-    }
-    if (this.$route.path === '/nha-dat-cho-thue') {
-      this.selectOption = FILTER_RENT_OPTION
-      this.filterLabel = FILTER_RENT_LABEL
-      this.filterId = FILTER_RENT_ID
-    }
+    this.handleLoadData()
   },
   methods: {
     handleClickOutside() {
@@ -100,8 +105,25 @@ export default {
       this.$store.dispatch('properties/filterChange', { data: [], filterId: [] })
     },
     handleSearch() {
-      this.$store.dispatch('properties/submitFilter')
+      !this.isHome && this.$store.dispatch('properties/submitFilter')
       this.isActive = false
+    },
+    handleLoadData() {
+      this.$route.path === '/nha-dat-ban' && this.handleDataSale()
+      this.$route.path === '/nha-dat-cho-thue' && this.handleDataRent()
+      if (this.isHome) {
+        this.isSale ? this.handleDataSale() : this.handleDataRent()
+      }
+    },
+    handleDataSale() {
+      this.selectOption = FILTER_SALE_OPTION
+      this.filterLabel = FILTER_SALE_LABEL
+      this.filterId = FILTER_SALE_ID
+    },
+    handleDataRent() {
+      this.selectOption = FILTER_RENT_OPTION
+      this.filterLabel = FILTER_RENT_LABEL
+      this.filterId = FILTER_RENT_ID
     }
   }
 }
@@ -120,14 +142,6 @@ ul {
   overflow: auto;
 }
 
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #ccc;
-}
-
 .filter {
   position: relative;
   padding: 8px 16px;
@@ -135,6 +149,34 @@ ul {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.filter-home {
+  position: relative;
+  background: #fff;
+  border-radius: 8px 0 0 8px;
+  display: flex;
+  align-items: center;
+  width: 172px;
+  height: 48px;
+  cursor: pointer;
+  border-right: 1px solid #F2F2F2;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.filter-home>svg {
+  margin: 14px 10px 14px 14px;
+  width: 20px;
+  height: 20px;
+}
+
+.filter-home>p {
+  white-space: nowrap;
+  width: calc(100% - 24px - 12px - 8px - 24px - 12px - 7px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 14px 0px;
 }
 
 .filter:hover {

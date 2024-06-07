@@ -10,6 +10,7 @@ import NewsCard from '@/components/News/NewsCard'
 import Carousel from '@/components/Carousel'
 import ScrollToTop from '@/components/ScrollToTop'
 import NewsCardSkeleton from '@/components/News/NewsCard/NewsCardSkeleton.vue'
+import FilterHome from '@/components/FilterHome'
 const commonElements = {
   NavBar,
   FooterComp,
@@ -22,7 +23,8 @@ const commonElements = {
   NewsCard,
   Carousel,
   NewsCardSkeleton,
-  ScrollToTop
+  ScrollToTop,
+  FilterHome
 }
 
 export default {
