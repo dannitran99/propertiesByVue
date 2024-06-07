@@ -35,7 +35,7 @@ export default {
     }
   },
   async created() {
-    await this.$store.dispatch('properties/getPropertiesList', { type: 'sale' })
+    await this.$store.dispatch('properties/getPropertiesList', { type: 'sale', query: { p: 1, l: 8 } })
   }
 }
 </script>
