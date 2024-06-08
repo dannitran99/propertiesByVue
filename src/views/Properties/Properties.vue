@@ -13,6 +13,7 @@
           <properties-skeleton />
         </template>
         <properties v-for="item in properties" :key="item.ID" :data="item" v-else />
+        <pagination :total="totalItem" :page="page" :limit="limit" />
       </div>
     </div>
     <div class="filter" :style="{ 'min-height': `${minHeight}px` }">
@@ -71,6 +72,16 @@ export default {
         return this.$store.getters['properties/totalItem']
       }
     },
+    page: {
+      get() {
+        return this.$store.getters['properties/page']
+      }
+    },
+    limit: {
+      get() {
+        return this.$store.getters['properties/limit']
+      }
+    },
     priceMin: {
       get() {
         return this.$store.getters['properties/priceMin']
@@ -119,6 +130,8 @@ export default {
   },
   methods: {
     handleGetRouterQuery: async function () {
+      await this.$route.query.p && this.$store.dispatch('properties/pageChange', parseInt(this.$route.query.p) || 1)
+      await this.$route.query.l && this.$store.dispatch('properties/limitChange', parseInt(this.$route.query.l) || 5)
       this.handleScroll()
       this.selectPriceList = this.$route.path === '/nha-dat-ban' ? FILTER_SALE_PRICE : FILTER_RENT_PRICE
       this.minp = Number(this.$route.query.minPrice) || null

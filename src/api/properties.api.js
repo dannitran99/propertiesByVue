@@ -22,6 +22,15 @@ export const getPropertiesList = async (payload) => {
   }
 }
 
+export const getPropertiesListMain = async (payload) => {
+  try {
+    const { data } = await HTTP.get(`/api/propertiesMain?p=${payload.p}&l=${payload.l}`)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
 export const postProperties = async (dataPost) => {
   try {
     const { data } = await HTTP.post('/api/postProperties', dataPost)

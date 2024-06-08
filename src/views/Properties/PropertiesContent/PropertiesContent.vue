@@ -69,7 +69,7 @@ export default {
       return `${this.data.area} m²`
     },
     formatDate: function () {
-      return formatDate(this.data.date)
+      return formatDate(this.data.createdAt)
     },
     phoneNumber: function () {
       return `${this.data.phoneNumber.slice(0, -3)}*** Hiện số`

@@ -1,45 +1,48 @@
 <template>
-  <div :class="[{ 'filter-price': !isHome }, { 'filter-home-price': isHome }]" v-on:click.self="onClickPopup"
-    v-click-outside="handleClickOutside">
-    <template v-if="isHome">
-      <p class="home-text-result" @click.self="onClickPopup">{{ squareLabel }}</p>
-      <icon-downtriangle @click.self="onClickPopup" />
-    </template>
-    <template v-else>
-      <div class="title-dv" v-on:click.self="onClickPopup">
-        <p v-on:click.self="onClickPopup">Diện tích</p>
-        <icon-downtriangle v-on:click.self="onClickPopup" />
-      </div>
-      <p v-on:click.self="onClickPopup" class="text-result">{{ squareLabel }}</p>
-    </template>
-    <div v-if="isActive" class="popup-modal">
-      <div class="modal-header">
-        <div class="header-info">
-          <input class="input-info" autocomplete="off" placeholder="Từ" min="0" :max="maxRangeInput" :value="squareMin"
-            @input="handleMinChange" ref="minInputS" type="number" />
-          <icon-rightarrowsc class="ico" />
-          <input class="input-info" autocomplete="off" placeholder="Đến" min="0" :max="maxRangeInput" :value="squareMax"
-            @input="handleMaxChange" ref="maxInputS" type="number" />
+  <div v-click-outside="handleClickOutside">
+    <div :class="[{ 'filter-price': !isHome }, { 'filter-home-price': isHome }]" v-on:click.self="onClickPopup">
+      <template v-if="isHome">
+        <p class="home-text-result" @click.self="onClickPopup">{{ squareLabel }}</p>
+        <icon-downtriangle @click.self="onClickPopup" />
+      </template>
+      <template v-else>
+        <div class="title-dv" v-on:click.self="onClickPopup">
+          <p v-on:click.self="onClickPopup">Diện tích</p>
+          <icon-downtriangle v-on:click.self="onClickPopup" />
         </div>
-        <v-range-slider v-model="range" :max="500" :min="0" :step="5" class="align-center" hide-details color="#009ba1"
-          track-color="#F2F2F2" @end="handleEnd">
-        </v-range-slider>
-      </div>
-      <ul class="select-list">
-        <li v-for="item in listFilter" :key="item.label" @click="() => handleSelectRange(item)"
-          :class="[{ 'selector-active': item.min === squareMin && item.max === squareMax }]">
-          {{ item.label }}
-        </li>
-      </ul>
-      <div class="filter-footer">
-        <button @click="clearSelectSquare">
-          <icon-cached />
-          <span>Đặt lại</span>
-        </button>
-        <button class="btn-confirm" @click="submitFilter">
-          <icon-magnify v-if="!isHome" />
-          <span>{{ isHome ? 'Áp dụng' : 'Tìm kiếm' }}</span>
-        </button>
+        <p v-on:click.self="onClickPopup" class="text-result">{{ squareLabel }}</p>
+      </template>
+    </div>
+    <div class="popup-wrapper">
+      <div v-if="isActive" class="popup-modal">
+        <div class="modal-header">
+          <div class="header-info">
+            <input class="input-info" autocomplete="off" placeholder="Từ" min="0" :max="maxRangeInput"
+              :value="squareMin" @input="handleMinChange" ref="minInputS" type="number" />
+            <icon-rightarrowsc class="ico" />
+            <input class="input-info" autocomplete="off" placeholder="Đến" min="0" :max="maxRangeInput"
+              :value="squareMax" @input="handleMaxChange" ref="maxInputS" type="number" />
+          </div>
+          <v-range-slider v-model="range" :max="500" :min="0" :step="5" class="align-center" hide-details
+            color="#009ba1" track-color="#F2F2F2" @end="handleEnd">
+          </v-range-slider>
+        </div>
+        <ul class="select-list">
+          <li v-for="item in listFilter" :key="item.label" @click="() => handleSelectRange(item)"
+            :class="[{ 'selector-active': item.min === squareMin && item.max === squareMax }]">
+            {{ item.label }}
+          </li>
+        </ul>
+        <div class="filter-footer">
+          <button @click="clearSelectSquare">
+            <icon-cached />
+            <span>Đặt lại</span>
+          </button>
+          <button class="btn-confirm" @click="submitFilter">
+            <icon-magnify v-if="!isHome" />
+            <span>{{ isHome ? 'Áp dụng' : 'Tìm kiếm' }}</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -165,8 +168,12 @@ export default {
   font-family: 'Roboto-Regular', sans-serif;
 }
 
-.filter-price {
+.popup-wrapper {
+  cursor: pointer;
   position: relative;
+}
+
+.filter-price {
   padding: 8px 16px;
   cursor: pointer;
   display: flex;
@@ -241,7 +248,7 @@ export default {
 
 .popup-modal {
   position: absolute;
-  top: 65px;
+  top: 8px;
   left: 0px;
   z-index: 9;
   width: 280px;

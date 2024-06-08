@@ -1,4 +1,4 @@
-import { getPropertiesList, postProperties, getPostedProperty, getPropertiesDetail } from '@/api/properties.api'
+import { getPropertiesList, postProperties, getPostedProperty, getPropertiesDetail, getPropertiesListMain } from '@/api/properties.api'
 import {FILTER_SALE_ID, FILTER_RENT_ID} from '../../consts/label'
 import { postImg } from '@/api/cloudinary.api'
 import router from '@/router'
@@ -9,6 +9,7 @@ export default {
     searchKeyword: '',
     isLoading: false,
     propertiesList: [],
+    propertiesListMain: [],
     propertiesListPosted: [],
     categoryFilter: [],
     categoryIdFilter: [],
@@ -29,6 +30,9 @@ export default {
     },
     propertiesList (state) {
       return state.propertiesList
+    },
+    propertiesListMain (state) {
+      return state.propertiesListMain
     },
     propertiesListPosted (state) {
       return state.propertiesListPosted
@@ -68,6 +72,9 @@ export default {
     },
     page (state) {
       return state.page
+    },
+    limit (state) {
+      return state.limit
     }
   },
   mutations: {
@@ -83,6 +90,9 @@ export default {
     GET_PROPERTIES_LIST (state, data) {
       state.propertiesList = data.Data
       state.totalItem = data.Total
+    },
+    GET_PROPERTIES_LIST_MAIN (state, data) {
+      state.propertiesListMain = data
     },
     GET_PROPERTIES_LIST_POSTED (state, data) {
       state.propertiesListPosted = data
@@ -108,6 +118,12 @@ export default {
     },
     MAX_SQUARE_CHANGE (state, data) {
       state.squareMax = data
+    },
+    PAGE_CHANGE (state, data) {
+      state.page = data
+    },
+    LIMIT_CHANGE (state, data) {
+      state.limit = data
     },
     GET_PROPERTIES_DETAIL (state, data) {
       state.data = data
@@ -157,6 +173,16 @@ export default {
         context.commit('LOADING_STATE', false)
       }
     },
+    async getPropertiesListMain (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await getPropertiesListMain(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+        context.commit('GET_PROPERTIES_LIST_MAIN', response)
+      } else {
+        context.commit('LOADING_STATE', false)
+      }
+    },
     searchChange (context, payload) {
       context.commit('SEARCH_TYPING', payload)
     },
@@ -180,6 +206,12 @@ export default {
     },
     maxSquareChange (context, payload) {
       context.commit('MAX_SQUARE_CHANGE', payload)
+    },
+    pageChange (context, payload) {
+      context.commit('PAGE_CHANGE', payload)
+    },
+    limitChange (context, payload) {
+      context.commit('LIMIT_CHANGE', payload)
     },
     async postProperties (context, payload) {
       context.commit('LOADING_STATE', true)

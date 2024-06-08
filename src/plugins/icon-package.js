@@ -39,6 +39,7 @@ import Case from '@/components/icons/Case.vue'
 import Shop from '@/components/icons/Shop.vue'
 import RightArrowSC from '@/components/icons/RightArrowSC.vue'
 import ArrowUp from '@/components/icons/ArrowUp.vue'
+import Threedot from '@/components/icons/Threedot.vue'
 const iconElements = {
   RightArrow,
   Home,
@@ -80,7 +81,8 @@ const iconElements = {
   Case,
   Shop,
   RightArrowSC,
-  ArrowUp
+  ArrowUp,
+  Threedot
 }
 
 export default {
