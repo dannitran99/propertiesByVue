@@ -23,21 +23,21 @@ export default {
   props: {
     total: {
       type: Number
-    },
-    page: {
-      type: Number
-    },
-    limit: {
-      type: Number
     }
   },
   data() {
     return {
       totalPage: 0,
-      pageList: []
+      pageList: [],
+      page: 1,
+      limit: 5
     }
   },
   watch: {
+    '$route'() {
+      this.page = Number(this.$route.query.p) || 1
+      this.limit = Number(this.$route.query.limit) || 5
+    },
     total() {
       this.handleCalculateTotalPage()
       this.handleRenderPageList()
@@ -49,6 +49,8 @@ export default {
   created() {
     this.handleCalculateTotalPage()
     this.handleRenderPageList()
+    this.page = Number(this.$route.query.p) || 1
+    this.limit = Number(this.$route.query.limit) || 5
   },
   methods: {
     handleCalculateTotalPage: function () {

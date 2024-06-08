@@ -20,9 +20,7 @@ export default {
     squareMin: null,
     squareMax: null,
     data: null,
-    totalItem: 0,
-    page: 1,
-    limit: 5
+    totalItem: 0
   },
   getters: {
     searchKeyword (state) {
@@ -69,12 +67,6 @@ export default {
     },
     totalItem (state) {
       return state.totalItem
-    },
-    page (state) {
-      return state.page
-    },
-    limit (state) {
-      return state.limit
     }
   },
   mutations: {
@@ -86,6 +78,7 @@ export default {
     },
     RESET_LIST (state) {
       state.propertiesList = []
+      state.totalItem = 0
     },
     GET_PROPERTIES_LIST (state, data) {
       state.propertiesList = data.Data
@@ -119,12 +112,6 @@ export default {
     MAX_SQUARE_CHANGE (state, data) {
       state.squareMax = data
     },
-    PAGE_CHANGE (state, data) {
-      state.page = data
-    },
-    LIMIT_CHANGE (state, data) {
-      state.limit = data
-    },
     GET_PROPERTIES_DETAIL (state, data) {
       state.data = data
     },
@@ -138,9 +125,7 @@ export default {
       state.priceMax = null
       state.squareMin = null
       state.squareMax = null
-      state.page = 1
       state.totalItem = 0
-      state.limit = 5
     },
     SUBMIT_FILTER (state, payload) {
       const query = {}
@@ -153,8 +138,6 @@ export default {
       state.priceMax && Object.assign(query, { maxPrice: state.priceMax })
       state.squareMin && Object.assign(query, { minSquare: state.squareMin })
       state.squareMax && Object.assign(query, { maxSquare: state.squareMax })
-      state.page > 1 && Object.assign(query, { p: state.page })
-      state.limit !== 5 && Object.assign(query, { l: state.limit })
       router.push({
         path: payload || router.path,
         query: query
@@ -206,12 +189,6 @@ export default {
     },
     maxSquareChange (context, payload) {
       context.commit('MAX_SQUARE_CHANGE', payload)
-    },
-    pageChange (context, payload) {
-      context.commit('PAGE_CHANGE', payload)
-    },
-    limitChange (context, payload) {
-      context.commit('LIMIT_CHANGE', payload)
     },
     async postProperties (context, payload) {
       context.commit('LOADING_STATE', true)
