@@ -36,7 +36,7 @@ export default {
   watch: {
     '$route'() {
       this.page = Number(this.$route.query.p) || 1
-      this.limit = Number(this.$route.query.limit) || 5
+      this.limit = Number(this.$route.query.l) || 5
     },
     total() {
       this.handleCalculateTotalPage()
@@ -47,10 +47,10 @@ export default {
     }
   },
   created() {
+    this.page = Number(this.$route.query.p) || 1
+    this.limit = Number(this.$route.query.l) || 5
     this.handleCalculateTotalPage()
     this.handleRenderPageList()
-    this.page = Number(this.$route.query.p) || 1
-    this.limit = Number(this.$route.query.limit) || 5
   },
   methods: {
     handleCalculateTotalPage: function () {
@@ -60,7 +60,7 @@ export default {
     handleRenderPageList: function () {
       const t = Math.ceil(this.total / this.limit)
       const arrPage = []
-      if (t <= 6) {
+      if (t <= 10) {
         for (var i = 1; i <= t; i++) {
           arrPage.push({ label: i, value: i })
         }
@@ -78,7 +78,7 @@ export default {
           }
         }
         if (this.page > t - 5) {
-          for (var l = this.page - 2 > t - 5 ? t - 5 : this.page - 2; l <= t; l++) {
+          for (var l = this.page - 2 > t - 5 ? t - 4 : this.page - 2; l <= t; l++) {
             arrPage.push({ label: l, value: l })
           }
         } else {
