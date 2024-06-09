@@ -5,6 +5,9 @@
         :current="`${type} ${at}`" />
       <h3 class="title-property">{{ `${typeTitle} ${at}` }}</h3>
       <p class="subtitle">Hiện có {{ totalItem }} bất động sản.</p>
+      <div class="sort-filter">
+        <sort-box />
+      </div>
       <div class="properties-list">
         <template v-if="isLoading">
           <properties-skeleton />
@@ -218,6 +221,12 @@ export default {
   width: 848px;
   margin-top: 24px;
   margin-right: 30px;
+}
+
+.sort-filter {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
 }
 
 .filter {
