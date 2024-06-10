@@ -65,7 +65,7 @@
           <v-col class="col-form" cols="12" sm="8">
             <p class="txt-label">Mức giá <span>*</span></p>
             <v-text-field placeholder="Nhập giá, VD 12000000" dense outlined type="number" v-model="price"
-              hide-spin-buttons></v-text-field>
+              hide-spin-buttons :disabled="priceType === 'Thỏa thuận'"></v-text-field>
           </v-col>
           <v-col class="col-form" cols="12" sm="4">
             <p class="txt-label">Đơn vị</p>

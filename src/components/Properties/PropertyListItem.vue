@@ -97,7 +97,7 @@ export default {
   },
   computed: {
     formatCurrency: function () {
-      return formatCurrency(this.data.price)
+      return this.data.price ? formatCurrency(this.data.price) : 'Giá thỏa thuận'
     },
     formatArea: function () {
       return `${this.data.area} m²`

@@ -1,9 +1,9 @@
 import axios from 'axios'
 // import { API_URL } from "@/helpers/url";
-const url1 = 'http://192.168.1.3:5000/'
-// const url2 = 'http://10.89.30.67:5000/'
+// const url1 = 'http://192.168.1.3:5000/'
+const url2 = 'http://10.89.30.67:5000/'
 const HTTP = axios.create({
-  baseURL: url1
+  baseURL: url2
 })
 
 HTTP.interceptors.response.use(

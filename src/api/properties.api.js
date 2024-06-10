@@ -14,6 +14,7 @@ export const getPropertiesList = async (payload) => {
       payload.query.maxSquare && query.push(`maxs=${payload.query.maxSquare}`)
       query.push(`p=${payload.query.p || 1}`)
       query.push(`l=${payload.query.l || 5}`)
+      payload.query.sort && Number(payload.query.sort) !== 0 && query.push(`sort=${payload.query.sort}`)
     }
     const { data } = await HTTP.get(`/api/properties?${query.join('&')}`)
     return [null, data]
