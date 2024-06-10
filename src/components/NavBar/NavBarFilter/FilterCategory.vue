@@ -1,35 +1,39 @@
 <template>
-  <div :class="[{ 'filter': !isHome }, { 'filter-home': isHome }]" v-on:click.self="onClickPopup"
-    v-click-outside="handleClickOutside">
-    <template v-if="isHome">
-      <icon-home v-on:click.self="onClickPopup" />
-      <p v-if="categoryFilter.length" v-on:click.self="onClickPopup">{{ categoryFilter.join(', ') }}</p>
-      <p v-else v-on:click.self="onClickPopup">Loại nhà đất</p>
-      <icon-downtriangle v-on:click.self="onClickPopup" />
-    </template>
-    <template v-else>
-      <div class="title-dv" v-on:click.self="onClickPopup">
-        <p v-on:click.self="onClickPopup">Loại nhà đất</p>
+  <div v-click-outside="handleClickOutside">
+    <div :class="[{ 'filter': !isHome }, { 'filter-home': isHome }]" v-on:click.self="onClickPopup">
+      <template v-if="isHome">
+        <icon-home v-on:click.self="onClickPopup" />
+        <p v-if="categoryFilter.length" v-on:click.self="onClickPopup">{{ categoryFilter.join(', ') }}</p>
+        <p v-else v-on:click.self="onClickPopup">Loại nhà đất</p>
         <icon-downtriangle v-on:click.self="onClickPopup" />
-      </div>
-      <p class="result-text" v-on:click.self="onClickPopup" v-if="categoryFilter.length">{{ categoryFilter.join(', ') }}
-      </p>
-      <p v-else class="result-text" v-on:click.self="onClickPopup">Tất cả</p>
-    </template>
-    <div v-if="isActive" class="popup-modal">
-      <ul>
-        <filter-item v-for=" item  in  selectOption " v-bind:key="item.label" v-bind:data="item"
-          v-bind:filterLabel="filterLabel" v-bind:filterId="filterId" />
-      </ul>
-      <div class="filter-footer">
-        <button @click="handleReset">
-          <icon-cached />
-          <span>Đặt lại</span>
-        </button>
-        <button class="btn-confirm" @click="handleSearch">
-          <icon-magnify v-if="!isHome" />
-          <span>{{ isHome ? 'Áp dụng' : 'Tìm kiếm' }}</span>
-        </button>
+      </template>
+      <template v-else>
+        <div class="title-dv" v-on:click.self="onClickPopup">
+          <p v-on:click.self="onClickPopup">Loại nhà đất</p>
+          <icon-downtriangle v-on:click.self="onClickPopup" />
+        </div>
+        <p class="result-text" v-on:click.self="onClickPopup" v-if="categoryFilter.length">{{ categoryFilter.join(', ')
+          }}
+        </p>
+        <p v-else class="result-text" v-on:click.self="onClickPopup">Tất cả</p>
+      </template>
+    </div>
+    <div class="popup-wrapper">
+      <div v-if="isActive" class="popup-modal">
+        <ul>
+          <filter-item v-for=" item in selectOption " v-bind:key="item.label" v-bind:data="item"
+            v-bind:filterLabel="filterLabel" v-bind:filterId="filterId" />
+        </ul>
+        <div class="filter-footer">
+          <button @click="handleReset">
+            <icon-cached />
+            <span>Đặt lại</span>
+          </button>
+          <button class="btn-confirm" @click="handleSearch">
+            <icon-magnify v-if="!isHome" />
+            <span>{{ isHome ? 'Áp dụng' : 'Tìm kiếm' }}</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -143,12 +147,16 @@ ul {
 }
 
 .filter {
-  position: relative;
   padding: 8px 16px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.popup-wrapper {
+  position: relative;
+  cursor: pointer;
 }
 
 .filter-home {
@@ -215,7 +223,7 @@ ul {
 
 .popup-modal {
   position: absolute;
-  top: 65px;
+  top: 8px;
   left: 0px;
   z-index: 9;
   width: 280px;

@@ -1,91 +1,94 @@
 <template>
-  <div :class="[{ 'filter-localtion': !isHome }, { 'filter-home-location': isHome }]" @click.self="onClickPopup"
-    v-click-outside="handleClickOutside">
-    <template v-if="isHome">
-      <p class="home-text-result" @click.self="onClickPopup">{{ citySelected || 'Trên toàn quốc' }}</p>
-      <icon-downtriangle @click.self="onClickPopup" />
-    </template>
-    <template v-else>
-      <div class="title-dv" @click.self="onClickPopup">
-        <p @click.self="onClickPopup">Khu vực & dự án</p>
+  <div v-click-outside="handleClickOutside">
+    <div :class="[{ 'filter-localtion': !isHome }, { 'filter-home-location': isHome }]" @click.self="onClickPopup">
+      <template v-if="isHome">
+        <p class="home-text-result" @click.self="onClickPopup">{{ citySelected || 'Trên toàn quốc' }}</p>
         <icon-downtriangle @click.self="onClickPopup" />
-      </div>
-      <p class="result-text" @click.self="onClickPopup">{{ citySelected || 'Toàn quốc' }}</p>
-    </template>
-    <div v-if="isActive" class="popup-modal">
-      <div class="popup-content-wrapper">
-        <div class="popup-content">
-          <div class="selector" :class="[{ 'selector-selected': citySelected }]" @click="selectProvince(true)">
-            <div class="selector-title">
-              <p :class="[{ 'selector-selected-title': citySelected }]">Tỉnh/Thành</p>
-              <p v-if="citySelected" class="selector-selected-detail">{{ citySelected }} </p>
-            </div>
-            <icon-righttriangle v-if="!citySelected" />
-            <button v-else @click="clearSelectCity">
-              <icon-closewb />
-            </button>
-          </div>
-          <div class="selector" @click="selectProvince(false)"
-            :class="[{ 'disable-selector': !citySelected }, { 'selector-selected': districtSelected.length }]">
-            <div class="selector-title">
-              <p :class="[{ 'selector-selected-title': districtSelected.length }]">Quận/Huyện</p>
-              <p v-if="districtSelected.length" class="selector-selected-detail">{{ districtSelected.join(',') }} </p>
-            </div>
-            <icon-righttriangle v-if="!districtSelected.length" />
-            <button v-else @click="clearSelectDistrict">
-              <icon-closewb />
-            </button>
-          </div>
+      </template>
+      <template v-else>
+        <div class="title-dv" @click.self="onClickPopup">
+          <p @click.self="onClickPopup">Khu vực & dự án</p>
+          <icon-downtriangle @click.self="onClickPopup" />
         </div>
-        <div class="sub-selector" v-if="isActiveSub">
-          <div class="sub-selector-header">
-            <button @click="handleCloseSubSelector">
-              <icon-leftarrow />
-            </button>
-            <p>Chọn {{ selectorProvince ? 'Tỉnh/Thành' : 'Quận/Huyện' }}</p>
+        <p class="result-text" @click.self="onClickPopup">{{ citySelected || 'Toàn quốc' }}</p>
+      </template>
+    </div>
+    <div class="popup-wrapper">
+      <div v-if="isActive" class="popup-modal">
+        <div class="popup-content-wrapper">
+          <div class="popup-content">
+            <div class="selector" :class="[{ 'selector-selected': citySelected }]" @click="selectProvince(true)">
+              <div class="selector-title">
+                <p :class="[{ 'selector-selected-title': citySelected }]">Tỉnh/Thành</p>
+                <p v-if="citySelected" class="selector-selected-detail">{{ citySelected }} </p>
+              </div>
+              <icon-righttriangle v-if="!citySelected" />
+              <button v-else @click="clearSelectCity">
+                <icon-closewb />
+              </button>
+            </div>
+            <div class="selector" @click="selectProvince(false)"
+              :class="[{ 'disable-selector': !citySelected }, { 'selector-selected': districtSelected.length }]">
+              <div class="selector-title">
+                <p :class="[{ 'selector-selected-title': districtSelected.length }]">Quận/Huyện</p>
+                <p v-if="districtSelected.length" class="selector-selected-detail">{{ districtSelected.join(',') }} </p>
+              </div>
+              <icon-righttriangle v-if="!districtSelected.length" />
+              <button v-else @click="clearSelectDistrict">
+                <icon-closewb />
+              </button>
+            </div>
           </div>
-          <div class="sub-selector-search">
-            <icon-magnify />
-            <input v-if="selectorProvince" type="text" v-model="keywordCity" placeholder="Tìm Tỉnh/Thành phố" />
-            <input v-else type="text" v-model="keywordWard" placeholder="Tìm Quận/Huyện" />
-          </div>
-          <ul v-if="selectorProvince" class="sub-selector-content">
-            <li @click="clearSelectCity" :class="[{ 'selector-active': citySelected === '' }]">Tất cả Tỉnh/Thành</li>
-            <li v-for="item in cityList" :key="item.id" @click="(e) => handleSelectCity(e, item)"
-              :class="[{ 'selector-active': citySelected === item.name }]">
-              {{ item.name }}
-              <icon-righttriangle />
-            </li>
-          </ul>
-          <template v-else>
-            <ul class="sub-selector-content district-selector">
-              <li v-for="item in districtList" :key="item.id" @click="(e) => handleSelectDistrict(e, item)"
-                :class="[{ 'selector-active': districtSelected.includes(item.name) }]">
+          <div class="sub-selector" v-if="isActiveSub">
+            <div class="sub-selector-header">
+              <button @click="handleCloseSubSelector">
+                <icon-leftarrow />
+              </button>
+              <p>Chọn {{ selectorProvince ? 'Tỉnh/Thành' : 'Quận/Huyện' }}</p>
+            </div>
+            <div class="sub-selector-search">
+              <icon-magnify />
+              <input v-if="selectorProvince" type="text" v-model="keywordCity" placeholder="Tìm Tỉnh/Thành phố" />
+              <input v-else type="text" v-model="keywordWard" placeholder="Tìm Quận/Huyện" />
+            </div>
+            <ul v-if="selectorProvince" class="sub-selector-content">
+              <li @click="clearSelectCity" :class="[{ 'selector-active': citySelected === '' }]">Tất cả Tỉnh/Thành</li>
+              <li v-for="item in cityList" :key="item.id" @click="(e) => handleSelectCity(e, item)"
+                :class="[{ 'selector-active': citySelected === item.name }]">
                 {{ item.name }}
-                <input type="checkbox" v-model="districtSelected" :value="item.name" />
+                <icon-righttriangle />
               </li>
             </ul>
-            <div class="filter-footer">
-              <button @click="clearSelectDistrict">
-                <icon-cached />
-                <span>Đặt lại</span>
-              </button>
-              <button class="outlined-btn" @click="handleCloseSubSelector">
-                <span>Áp dụng {{ districtSelected.length ? ` ・ ${districtSelected.length} lựa chọn` : '' }}</span>
-              </button>
-            </div>
-          </template>
+            <template v-else>
+              <ul class="sub-selector-content district-selector">
+                <li v-for="item in districtList" :key="item.id" @click="(e) => handleSelectDistrict(e, item)"
+                  :class="[{ 'selector-active': districtSelected.includes(item.name) }]">
+                  {{ item.name }}
+                  <input type="checkbox" v-model="districtSelected" :value="item.name" />
+                </li>
+              </ul>
+              <div class="filter-footer">
+                <button @click="clearSelectDistrict">
+                  <icon-cached />
+                  <span>Đặt lại</span>
+                </button>
+                <button class="outlined-btn" @click="handleCloseSubSelector">
+                  <span>Áp dụng {{ districtSelected.length ? ` ・ ${districtSelected.length} lựa chọn` : '' }}</span>
+                </button>
+              </div>
+            </template>
+          </div>
         </div>
-      </div>
-      <div class="filter-footer">
-        <button @click="clearSelectCity">
-          <icon-cached />
-          <span>Đặt lại</span>
-        </button>
-        <button class="btn-confirm" @click="submitFilter">
-          <icon-magnify v-if="!isHome" />
-          <span>{{ isHome ? 'Áp dụng' : 'Tìm kiếm' }}</span>
-        </button>
+        <div class="filter-footer">
+          <button @click="clearSelectCity">
+            <icon-cached />
+            <span>Đặt lại</span>
+          </button>
+          <button class="btn-confirm" @click="submitFilter">
+            <icon-magnify v-if="!isHome" />
+            <span>{{ isHome ? 'Áp dụng' : 'Tìm kiếm' }}</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -218,8 +221,12 @@ input {
   accent-color: #961b12
 }
 
-.filter-localtion {
+.popup-wrapper {
   position: relative;
+  cursor: pointer;
+}
+
+.filter-localtion {
   padding: 8px 16px;
   cursor: pointer;
   display: flex;
@@ -231,7 +238,7 @@ input {
   background: #F2F2F2;
 }
 
-.filter-localtion p {
+p {
   margin: 0;
 }
 
@@ -294,7 +301,7 @@ input {
 
 .popup-modal {
   position: absolute;
-  top: 65px;
+  top: 8px;
   left: 0px;
   z-index: 9;
   width: 360px;

@@ -11,6 +11,8 @@ import Carousel from '@/components/Carousel'
 import ScrollToTop from '@/components/ScrollToTop'
 import NewsCardSkeleton from '@/components/News/NewsCard/NewsCardSkeleton.vue'
 import FilterHome from '@/components/FilterHome'
+import Pagination from '@/components/Pagination'
+import SortBox from '@/components/SortBox'
 const commonElements = {
   NavBar,
   FooterComp,
@@ -24,7 +26,9 @@ const commonElements = {
   Carousel,
   NewsCardSkeleton,
   ScrollToTop,
-  FilterHome
+  FilterHome,
+  Pagination,
+  SortBox
 }
 
 export default {

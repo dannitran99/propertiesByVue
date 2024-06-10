@@ -16,7 +16,9 @@
       <property-item v-for="item in properties" v-bind:key="item.ID" v-bind:data="item" />
     </div>
     <div class="foot-btn">
-      <button>Mở rộng</button>
+      <button @click="handleExpand">{{ expand ? 'Mở rộng' : 'Xem tiếp' }}
+        <icon-downtriangle v-if="expand" />
+      </button>
     </div>
   </div>
 </template>
@@ -27,15 +29,30 @@ export default {
   components: {
     'property-item': PropertyItem
   },
+  data() {
+    return {
+      expand: true
+    }
+  },
   computed: {
     properties: {
       get() {
-        return this.$store.getters['properties/propertiesList']
+        return this.$store.getters['properties/propertiesListMain']
       }
     }
   },
   async created() {
-    await this.$store.dispatch('properties/getPropertiesList', { type: 'sale', query: { p: 1, l: 8 } })
+    await this.$store.dispatch('properties/getPropertiesListMain', { p: 1, l: 8 })
+  },
+  methods: {
+    handleExpand: async function () {
+      if (this.expand) {
+        await this.$store.dispatch('properties/getPropertiesListMain', { p: 1, l: 16 })
+        this.expand = false
+      } else {
+        this.$router.push('/nha-dat-ban')
+      }
+    }
   }
 }
 </script>
@@ -97,6 +114,10 @@ p {
   padding: 13px 15px;
   border-radius: 8px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 }
 
 .foot-btn button:hover {
