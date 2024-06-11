@@ -61,28 +61,28 @@ export default {
       const t = Math.ceil(this.total / this.limit)
       const arrPage = []
       if (t <= 10) {
-        for (var i = 1; i <= t; i++) {
+        for (let i = 1; i <= t; i++) {
           arrPage.push({ label: i, value: i })
         }
       } else {
         if (this.page <= 5) {
-          for (var j = 1; j <= (this.page + 2 < 5 ? 5 : this.page + 2); j++) {
+          for (let j = 1; j <= (this.page + 2 < 5 ? 5 : this.page + 2); j++) {
             arrPage.push({ label: j, value: j })
           }
         } else {
           arrPage.push({ label: 1, value: 1 }, { label: 0 })
         }
         if (this.page > 5 && this.page <= t - 5) {
-          for (var k = this.page - 2; k <= this.page + 2; k++) {
+          for (let k = this.page - 2; k <= this.page + 2; k++) {
             arrPage.push({ label: k, value: k })
           }
         }
         if (this.page > t - 5) {
-          for (var l = this.page - 2 > t - 5 ? t - 4 : this.page - 2; l <= t; l++) {
+          for (let l = this.page - 2 > t - 5 ? t - 4 : this.page - 2; l <= t; l++) {
             arrPage.push({ label: l, value: l })
           }
         } else {
-          arrPage.push({ label: 0 }, { label: t, value: t })
+          arrPage.push({ label: -1 }, { label: t, value: t })
         }
       }
       this.pageList = arrPage

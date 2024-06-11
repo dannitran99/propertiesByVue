@@ -108,21 +108,23 @@ export default {
     window.removeEventListener('scroll', this.handleScroll)
   },
   async created() {
-    if (this.$route.query.category) {
-      const category = await this.handleCategory()
-      await this.$store.dispatch('properties/filterChange', { data: category, filterId: this.$route.query.category.split(',') })
-    }
-    await this.$route.query.k && this.$store.dispatch('properties/searchChange', this.$route.query.k)
-    await this.$route.query.city && this.$store.dispatch('properties/setFilterCity', this.$route.query.city)
-    await this.$route.query.district && this.$store.dispatch('properties/setFilterDistrict', this.$route.query.district.split(','))
-    await this.$route.query.minPrice && this.$store.dispatch('properties/minPriceChange', parseInt(this.$route.query.minPrice) || null)
-    await this.$route.query.maxPrice && this.$store.dispatch('properties/maxPriceChange', parseInt(this.$route.query.maxPrice) || null)
-    await this.$route.query.minSquare && this.$store.dispatch('properties/minSquareChange', parseInt(this.$route.query.minSquare) || null)
-    await this.$route.query.maxSquare && this.$store.dispatch('properties/maxSquareChange', parseInt(this.$route.query.maxSquare) || null)
     this.handleGetRouterQuery()
   },
   methods: {
     handleGetRouterQuery: async function () {
+      if (this.$route.query.category) {
+        const category = await this.handleCategory()
+        await this.$store.dispatch('properties/filterChange', { data: category, filterId: this.$route.query.category.split(',') })
+      } else {
+        this.$store.dispatch('properties/filterChange', { data: [], filterId: [] })
+      }
+      await this.$route.query.k ? this.$store.dispatch('properties/searchChange', this.$route.query.k) : this.$store.dispatch('properties/searchChange', '')
+      await this.$route.query.city ? this.$store.dispatch('properties/setFilterCity', this.$route.query.city) : this.$store.dispatch('properties/setFilterCity', '')
+      await this.$route.query.district ? this.$store.dispatch('properties/setFilterDistrict', this.$route.query.district.split(',')) : this.$store.dispatch('properties/setFilterDistrict', [])
+      await this.$route.query.minPrice ? this.$store.dispatch('properties/minPriceChange', parseInt(this.$route.query.minPrice) || null) : this.$store.dispatch('properties/minPriceChange', null)
+      await this.$route.query.maxPrice ? this.$store.dispatch('properties/maxPriceChange', parseInt(this.$route.query.maxPrice) || null) : this.$store.dispatch('properties/maxPriceChange', null)
+      await this.$route.query.minSquare ? this.$store.dispatch('properties/minSquareChange', parseInt(this.$route.query.minSquare) || null) : this.$store.dispatch('properties/minSquareChange', null)
+      await this.$route.query.maxSquare ? this.$store.dispatch('properties/maxSquareChange', parseInt(this.$route.query.maxSquare) || null) : this.$store.dispatch('properties/maxSquareChange', null)
       this.handleScroll()
       this.selectPriceList = this.$route.path === '/nha-dat-ban' ? FILTER_SALE_PRICE : FILTER_RENT_PRICE
       this.minp = Number(this.$route.query.minPrice) || null

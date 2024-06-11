@@ -69,10 +69,6 @@ export default {
   font-family: 'Roboto-Regular', sans-serif;
 }
 
-p {
-  margin: 0;
-}
-
 .wrapper-sort {
   width: 192px;
   display: flex;
@@ -85,12 +81,17 @@ p {
   line-height: 20px;
   color: #999;
   padding: 5px 16px;
+  cursor: pointer;
+}
+
+.wrapper-sort p {
+  margin: 0;
+  max-width: 130px;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  cursor: pointer;
 }
 
 .container-sort {

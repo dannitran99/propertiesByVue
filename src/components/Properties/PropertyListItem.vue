@@ -45,7 +45,7 @@
     <div class="article">
       <p class="card-title"><b>{{ data.title }}</b></p>
       <div class="info-txt">
-        <p class="txt-ct">{{ formatCurrency }}<span v-if="data.type === 'rent'">/tháng</span></p>
+        <p class="txt-ct">{{ formatCurrency }}</p>
         <p>·</p>
         <p class="txt-ct">{{ formatArea }}</p>
         <p>·</p>
@@ -56,7 +56,8 @@
     <v-divider></v-divider>
     <div class="info-div" v-if="!hideInfo">
       <div class="info-user">
-        <img :src="data.avatar" alt="avatar" class="avatar-img" v-if="data.avatar">
+        <img :src="data.relatedUser && data.relatedUser[0].avatar" alt="avatar" class="avatar-img"
+          v-if="data.relatedUser && data.relatedUser[0].avatar">
         <v-avatar color="rgb(255, 236, 235)" size="32" v-else>
           <span class="text-h6 avt-text">{{ data.name.split(' ').reverse()[0][0].toUpperCase() }}</span>
         </v-avatar>
@@ -97,7 +98,7 @@ export default {
   },
   computed: {
     formatCurrency: function () {
-      return this.data.price ? formatCurrency(this.data.price) : 'Giá thỏa thuận'
+      return `${this.data.price ? formatCurrency(this.data.price) : 'Giá thỏa thuận'}${this.type === 'rent' ? '/tháng' : ''}`
     },
     formatArea: function () {
       return `${this.data.area} m²`

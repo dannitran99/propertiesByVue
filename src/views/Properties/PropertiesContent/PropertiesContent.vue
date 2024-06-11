@@ -11,7 +11,7 @@
         <div class="detail-section">
           <div class="detail-child">
             <p class="detail-title">Mức giá</p>
-            <p class="detail-value">{{ formatCurrency }}<span v-if="data.type === 'rent'">/tháng</span></p>
+            <p class="detail-value">{{ formatCurrency }}</p>
           </div>
           <div class="detail-child">
             <p class="detail-title">Diện tích</p>
@@ -30,7 +30,8 @@
         </div>
       </div>
       <div class="user-info">
-        <img :src="data.avatar" alt="avatar" class="avatar-img" v-if="data.avatar">
+        <img :src="data.relatedUser && data.relatedUser[0].avatar" alt="avatar" class="avatar-img"
+          v-if="data.relatedUser && data.relatedUser[0].avatar">
         <v-avatar color="rgb(255, 236, 235)" size="64" v-else>
           <span class="text-h6 avt-text">{{ data.name.split(' ').reverse()[0][0].toUpperCase() }}</span>
         </v-avatar>
@@ -63,7 +64,7 @@ export default {
       }
     },
     formatCurrency: function () {
-      return this.data.price ? formatCurrency(this.data.price) : 'Giá thỏa thuận'
+      return `${this.data.price ? formatCurrency(this.data.price) : 'Giá thỏa thuận'}${this.type === 'rent' ? '/tháng' : ''}`
     },
     formatArea: function () {
       return `${this.data.area} m²`
