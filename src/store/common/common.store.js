@@ -1,4 +1,5 @@
 import { getCity, getDistrict, getWard } from '@/api/common.api'
+import { checkVerifyToken } from '@/api/users.api'
 
 export default {
   namespaced: true,
@@ -57,6 +58,14 @@ export default {
       if (!error && response) {
         const wardName = response.data.map(item => ({name: item['full_name'], code: item['id']}))
         context.commit('GET_WARD_LIST', wardName)
+      } else {
+        console.error(error)
+      }
+    },
+    async checkVerifyToken () {
+      const [error, response] = await checkVerifyToken()
+      if (!error && response) {
+        localStorage.setItem('token', response)
       } else {
         console.error(error)
       }

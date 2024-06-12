@@ -10,7 +10,10 @@
 <script>
 
 export default {
-  name: 'App'
+  name: 'App',
+  created() {
+    localStorage.getItem('token') && this.$store.dispatch('common/checkVerifyToken')
+  }
 }
 </script>
 

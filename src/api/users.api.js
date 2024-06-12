@@ -72,6 +72,15 @@ export const changeInfo = async (dataPost) => {
   }
 }
 
+export const checkVerifyToken = async () => {
+  try {
+    const { data } = await HTTP.post(`/api/checkVerifyToken`)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
 export default {
   postLoginInfo
 }
