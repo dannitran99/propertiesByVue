@@ -32,6 +32,11 @@
                 <icon-lock />Thay đổi mật khẩu
               </router-link>
             </li>
+            <li>
+              <router-link to="/dang-ky-moi-gioi">
+                <icon-case />Môi giới chuyên nghiệp
+              </router-link>
+            </li>
             <div class="divider-li"></div>
             <li>
               <button @click="logout"><icon-logout />Đăng xuất</button>

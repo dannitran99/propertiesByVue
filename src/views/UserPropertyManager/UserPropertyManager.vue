@@ -51,9 +51,7 @@ export default {
     }
   },
   async created() {
-    await this.$store.dispatch('properties/getPostedProperty', {
-      user: localStorage.getItem('username')
-    })
+    await this.$store.dispatch('properties/getPostedProperty')
   }
 }
 </script>

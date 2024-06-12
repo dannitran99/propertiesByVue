@@ -211,9 +211,9 @@ export default {
         return error
       }
     },
-    async getPostedProperty (context, payload) {
+    async getPostedProperty (context) {
       context.commit('LOADING_STATE', true)
-      const [error, response] = await getPostedProperty(payload)
+      const [error, response] = await getPostedProperty()
       if (!error && response) {
         context.commit('LOADING_STATE', false)
         context.commit('GET_PROPERTIES_LIST_POSTED', response)

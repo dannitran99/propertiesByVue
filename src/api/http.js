@@ -6,9 +6,20 @@ const HTTP = axios.create({
   baseURL: url2
 })
 
+const token = localStorage.getItem('token')
+
+HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
 HTTP.interceptors.response.use(
   res => res,
   err => {
+    if (err.response.statusText === 'Unauthorized') {
+      alert('Vui lòng đăng nhập lại!')
+      localStorage.removeItem('token')
+      localStorage.removeItem('username')
+      localStorage.removeItem('avatar')
+      location.href('/')
+    }
     throw err
   }
 )

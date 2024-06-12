@@ -142,6 +142,7 @@
 import { PROPSSALETYPE, PROPSRENTTYPE } from '../../consts/propstype'
 import SideBar from '../../components/SideBar'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import { UPLOAD_PRESET, CLOUD_NAME } from '@/consts/cloudinary'
 import * as Yup from 'yup'
 export default {
   components: {
@@ -320,8 +321,8 @@ export default {
         if (!this.images.some(e => e.name === element.name)) {
           const post = new FormData()
           post.append('file', element)
-          post.append('upload_preset', 'nucez74c')
-          post.append('cloud_name', 'dadyvbcci')
+          post.append('upload_preset', UPLOAD_PRESET)
+          post.append('cloud_name', CLOUD_NAME)
           this.$store.dispatch('properties/postImg', post).then(
             (res) => {
               this.images.push({ name: element.name, url: res.url, description: '' })
@@ -351,8 +352,8 @@ export default {
         if (!this.images.some(e => e.name === element.name)) {
           const post = new FormData()
           post.append('file', element)
-          post.append('upload_preset', 'nucez74c')
-          post.append('cloud_name', 'dadyvbcci')
+          post.append('upload_preset', UPLOAD_PRESET)
+          post.append('cloud_name', CLOUD_NAME)
           this.$store.dispatch('properties/postImg', post).then(
             (res) => {
               this.images.push({ name: element.name, url: res.url, description: '' })
@@ -425,7 +426,6 @@ export default {
             name: this.name,
             phoneNumber: this.phoneNumber,
             email: this.email,
-            user: localStorage.getItem('username'),
             createdAt: new Date()
           })
           // .then(() => {

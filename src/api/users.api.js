@@ -36,9 +36,9 @@ export const disableAccount = async (dataPost) => {
   }
 }
 
-export const deleteAccount = async (dataPost) => {
+export const deleteAccount = async () => {
   try {
-    const { data } = await HTTP.post('/api/deleteAccount', dataPost)
+    const { data } = await HTTP.post('/api/deleteAccount')
     return [null, data]
   } catch (error) {
     return [error]
@@ -54,9 +54,9 @@ export const changeAvatar = async (dataPost) => {
   }
 }
 
-export const getInfoUser = async (dataPost) => {
+export const getInfoUser = async () => {
   try {
-    const { data } = await HTTP.get(`/api/getInfoUser?name=${dataPost.user}`)
+    const { data } = await HTTP.get(`/api/getInfoUser`)
     return [null, data]
   } catch (error) {
     return [error]

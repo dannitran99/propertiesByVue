@@ -9,12 +9,18 @@
         <p class="txt-user">{{ username }}</p>
       </div>
       <v-list>
-        <v-list-item v-for="(item, i) in items" :key="i" @click="navigate(item)" class="list-item"
-          :class="[{ 'active': current.includes(item.path) }]">
-          <v-list-item-content>
-            <v-list-item-title class="txt-item">{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+        <div v-for="(item, i) in items" :key="i">
+          <v-list-item class="list-sub-header" name="asdasd">
+            <component :is="item.icon" />
+            {{ item.subHeader }}
+          </v-list-item>
+          <v-list-item v-for="(subitem, j) in item.sub" :key="j" @click="navigate(subitem)" class="list-item"
+            :class="[{ 'active': current.includes(subitem.path) }]">
+            <v-list-item-content>
+              <v-list-item-title class="txt-item">{{ subitem.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </div>
       </v-list>
     </v-navigation-drawer>
     <div class="btn-hide" :class="[{ 'active-hide': !drawer }]" @click="hideDrawer">
@@ -27,9 +33,25 @@
 export default {
   data: () => ({
     items: [
-      { title: 'Đăng mới', path: '/dang-tin' },
-      { title: 'Danh sách tin', path: '/danh-sach' },
-      { title: 'Quản lý tài khoản', path: '/tai-khoan' }
+      {
+        subHeader: 'Quản lý tin đăng',
+        icon: 'icon-menulist',
+        sub: [
+          { title: 'Đăng mới', path: '/dang-tin' },
+          { title: 'Danh sách tin', path: '/danh-sach' }
+        ],
+        open: true
+      },
+      {
+        subHeader: 'Quản lý TK Cá nhân',
+        icon: 'icon-person',
+        sub: [
+          { title: 'Chỉnh sửa thông tin cá nhân', path: '/tai-khoan' },
+          { title: 'Cài đặt tài khoản', path: '/doi-mat-khau' },
+          { title: 'Môi giới chuyên nghiệp', path: '/dang-ky-moi-gioi' }
+        ],
+        open: true
+      }
     ],
     username: undefined,
     current: ''
@@ -52,6 +74,11 @@ export default {
     },
     hideDrawer() {
       this.$store.dispatch('user/toggleDrawer')
+    }
+  },
+  watch: {
+    '$route'() {
+      this.current = this.$route.path
     }
   },
   created() {
@@ -151,5 +178,18 @@ export default {
   width: 64px;
   height: 64px;
   object-fit: cover;
+}
+
+.list-sub-header {
+  width: 100%;
+  height: 48px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  user-select: none;
 }
 </style>

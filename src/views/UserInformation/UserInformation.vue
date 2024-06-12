@@ -2,13 +2,15 @@
   <div class="content">
     <side-bar />
     <div class="main-area" :class="[{ 'hide': !drawer }]">
-      <div :class="[{ 'point-event': isLoading }, 'paper']">
+      <div :class="[{ 'point-event': isLoading || isLoadingContact }, 'paper']">
         <h2 class="px-5">Quản lý tài khoản</h2>
         <div class="tab">
           <button @click="navigate('tai-khoan')" :class="[{ 'active': tab === 'tai-khoan' }]">Chỉnh sửa thông
             tin</button>
           <button @click="navigate('doi-mat-khau')" :class="[{ 'active': tab === 'doi-mat-khau' }]">Cài đặt tài
             khoản</button>
+          <button @click="navigate('dang-ky-moi-gioi')" :class="[{ 'active': tab === 'dang-ky-moi-gioi' }]">Đăng ký Môi
+            giới chuyên nghiệp</button>
         </div>
         <div v-if="tab === 'tai-khoan'">
           <form @submit.prevent="handleChangeInfo">
@@ -111,6 +113,9 @@
             </v-expansion-panel>
           </v-expansion-panels>
         </div>
+        <div v-if="tab === 'dang-ky-moi-gioi'">
+          <agency-form />
+        </div>
       </div>
     </div>
     <v-snackbar v-model="snackbar" right>
@@ -138,13 +143,15 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-progress-circular indeterminate class="loading" v-if="isLoading"></v-progress-circular>
+    <v-progress-circular indeterminate class="loading" v-if="isLoading || isLoadingContact"></v-progress-circular>
   </div>
 </template>
 
 <script>
-import SideBar from '../../components/SideBar'
+import SideBar from '@/components/SideBar'
+import AgencyForm from '@/components/AgencyForm'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import { UPLOAD_PRESET, CLOUD_NAME } from '@/consts/cloudinary'
 import * as Yup from 'yup'
 
 const schema = Yup.object().shape({
@@ -163,7 +170,8 @@ export default {
   components: {
     SideBar,
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
+    AgencyForm
   },
   data() {
     return {
@@ -209,6 +217,11 @@ export default {
         return this.$store.getters['user/isLoading']
       }
     },
+    isLoadingContact: {
+      get() {
+        return this.$store.getters['contact/isLoading']
+      }
+    },
     avatar: {
       get() {
         return this.$store.getters['user/avatar']
@@ -226,9 +239,7 @@ export default {
     }
   },
   async created() {
-    await this.$store.dispatch('user/getInfoUser', {
-      user: localStorage.getItem('username')
-    })
+    await this.$store.dispatch('user/getInfoUser')
     this.tab = this.$route.path.slice(1)
   },
   watch: {
@@ -257,7 +268,6 @@ export default {
       schema.validate(this.values, { abortEarly: false })
         .then(() => {
           this.$store.dispatch('user/changePassword', {
-            user: localStorage.getItem('username'),
             currentPassword: this.values.currentPassword,
             newPassword: this.values.newPassword
           })
@@ -281,7 +291,6 @@ export default {
     handleChangeInfo() {
       schemaInfo.validate(this.valuesInfo, { abortEarly: false }).then(() => {
         this.$store.dispatch('user/changeInfo', {
-          user: localStorage.getItem('username'),
           name: this.valuesInfo.name,
           phoneNumber: this.valuesInfo.phoneNumber,
           email: this.valuesInfo.email
@@ -293,26 +302,22 @@ export default {
     },
     handleDisableAccount() {
       this.$store.dispatch('user/disableAccount', {
-        user: localStorage.getItem('username'),
         currentPassword: this.currentPassDisable
       })
     },
     handleDeleteAccount() {
-      this.$store.dispatch('user/deleteAccount', {
-        user: localStorage.getItem('username')
-      })
+      this.$store.dispatch('user/deleteAccount')
     },
     onFileSelected(event) {
       const files = event.target.files
       if (files[0].type.split('/')[0] === 'image') {
         const post = new FormData()
         post.append('file', files[0])
-        post.append('upload_preset', 'nucez74c')
-        post.append('cloud_name', 'dadyvbcci')
+        post.append('upload_preset', UPLOAD_PRESET)
+        post.append('cloud_name', CLOUD_NAME)
         this.$store.dispatch('user/postImg', post).then(
           (res) => {
             this.$store.dispatch('user/changeAvatar', {
-              user: localStorage.getItem('username'),
               avatar: res.url
             })
           }
@@ -321,7 +326,6 @@ export default {
     },
     handleDeleteAvatar() {
       this.$store.dispatch('user/changeAvatar', {
-        user: localStorage.getItem('username'),
         avatar: ''
       })
     },
@@ -345,12 +349,11 @@ export default {
         if (element.type.split('/')[0] !== 'image') continue
         const post = new FormData()
         post.append('file', files[0])
-        post.append('upload_preset', 'nucez74c')
-        post.append('cloud_name', 'dadyvbcci')
+        post.append('upload_preset', UPLOAD_PRESET)
+        post.append('cloud_name', CLOUD_NAME)
         this.$store.dispatch('user/postImg', post).then(
           (res) => {
             this.$store.dispatch('user/changeAvatar', {
-              user: localStorage.getItem('username'),
               avatar: res.url
             })
           }

@@ -22,6 +22,11 @@ export default new Router({
       component: () => import('@/views/UserInformation')
     },
     {
+      path: '/dang-ky-moi-gioi',
+      name: 'AgencyRegister',
+      component: () => import('@/views/UserInformation')
+    },
+    {
       path: '/dang-tin',
       name: 'PostProperty',
       component: () => import('@/views/PostProperty')

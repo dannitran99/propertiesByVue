@@ -148,9 +148,9 @@ export default {
         context.commit('LOADING_STATE', false)
       }
     },
-    async deleteAccount (context, payload) {
+    async deleteAccount (context) {
       context.commit('LOADING_STATE', true)
-      const [error, response] = await deleteAccount(payload)
+      const [error, response] = await deleteAccount()
       if (!error && response) {
         context.commit('LOADING_STATE', false)
         localStorage.removeItem('token')
@@ -181,9 +181,9 @@ export default {
         return error
       }
     },
-    async getInfoUser (context, payload) {
+    async getInfoUser (context) {
       context.commit('LOADING_STATE', true)
-      const [error, response] = await getInfoUser(payload)
+      const [error, response] = await getInfoUser()
       if (!error && response) {
         context.commit('LOADING_STATE', false)
         context.commit('GET_USER_INFO', response)
