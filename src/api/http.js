@@ -6,7 +6,7 @@ const HTTP = axios.create({
   baseURL: url2
 })
 
-const token = localStorage.getItem('token')
+const token = localStorage.token
 
 HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
 

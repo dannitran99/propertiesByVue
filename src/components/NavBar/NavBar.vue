@@ -134,7 +134,7 @@ export default {
     }
   },
   created() {
-    this.login = !!localStorage.getItem('token')
+    this.login = !!localStorage.token
     this.username = localStorage.getItem('username')
   },
   watch: {

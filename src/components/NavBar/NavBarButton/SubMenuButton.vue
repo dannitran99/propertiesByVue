@@ -1,5 +1,6 @@
 <template>
-  <router-link :to="{ name: navLink, query: { category: query } }" v-if="query">
+  <router-link :to="hrefName ? { path: hrefName } : { name: navLink, query: { category: query } }"
+    v-if="query || hrefName">
     <li :class="[{ 'active': isActive }]">
       {{ label }}
     </li>
@@ -28,13 +29,17 @@ export default {
       default: ''
     },
     path: {
+      type: Array,
+      default: null
+    },
+    hrefName: {
       type: String,
       default: ''
     }
   },
   watch: {
     '$route'() {
-      this.isActive = !!(this.path && this.$route.query.category && this.$route.path.includes(this.path) && this.$route.query.category === this.query)
+      this.isActive = !!(this.path && this.$route.query.category && this.$route.path.includes(this.path) && this.$route.query.category === this.query) || !!(this.hrefName && this.$route.path.includes(this.hrefName))
     }
   }
 }

@@ -2,6 +2,9 @@
   <form @submit.prevent="handleAgencyForm">
     <div class="form">
       <div class="agency-wrapper">
+        <div class="status-notify" v-if="status === 'pending'">
+          <p>Mẫu đã được gửi, vui lòng chờ phê duyệt</p>
+        </div>
         <div class="notice-container">
           <p class="notice-title">Để đăng ký Môi giới chuyên nghiệp, bạn cần thực hiện theo các bước sau:</p>
           <p class="notice-content">
@@ -58,7 +61,8 @@
       </v-row>
     </div>
     <div class="paper sticky-wrapper">
-      <button type="submit" class="btn-submit">Đăng ký</button>
+      <button type="submit" class="btn-submit" :class="[{ 'disabled-btn': status === 'pending' }]"
+        :disabled="status === 'pending'">Đăng ký</button>
     </div>
   </form>
 </template>
@@ -92,7 +96,23 @@ export default {
         avatar: '',
         name: '',
         phoneNumber: ''
+      },
+      status: ''
+    }
+  },
+  computed: {
+    contactUser: {
+      get() {
+        return this.$store.getters['contact/contactUser']
       }
+    }
+  },
+  watch: {
+    contactUser() {
+      this.valuesAgency.avatar = this.contactUser.avatar
+      this.valuesAgency.name = this.contactUser.name
+      this.valuesAgency.phoneNumber = this.contactUser.phoneNumber
+      this.status = this.contactUser.status
     }
   },
   async created() {
@@ -189,6 +209,23 @@ export default {
   margin: 24px;
 }
 
+.status-notify {
+  margin-bottom: 16px;
+  background-color: rgb(255, 248, 231);
+  padding: 12px 16px;
+  box-shadow: rgba(44, 44, 44, 0.04) 0px 4px 6px;
+  border-radius: 8px;
+  border: 1px solid rgb(252, 180, 10);
+}
+
+.status-notify p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: rgb(44, 44, 44);
+}
+
 .txt-label {
   margin-bottom: 8px;
   color: rgb(44, 44, 44);
@@ -272,6 +309,10 @@ export default {
 }
 
 .btn-submit:hover {
+  opacity: .7;
+}
+
+.disabled-btn {
   opacity: .7;
 }
 

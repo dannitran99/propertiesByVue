@@ -12,7 +12,10 @@
 export default {
   name: 'App',
   created() {
-    localStorage.getItem('token') && this.$store.dispatch('common/checkVerifyToken')
+    if (localStorage.token && !sessionStorage.getItem('Entry')) {
+      this.$store.dispatch('common/checkVerifyToken')
+      sessionStorage.setItem('Entry', true)
+    }
   }
 }
 </script>

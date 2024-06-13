@@ -10,16 +10,18 @@
       </div>
       <v-list>
         <div v-for="(item, i) in items" :key="i">
-          <v-list-item class="list-sub-header" name="asdasd">
-            <component :is="item.icon" />
-            {{ item.subHeader }}
-          </v-list-item>
-          <v-list-item v-for="(subitem, j) in item.sub" :key="j" @click="navigate(subitem)" class="list-item"
-            :class="[{ 'active': current.includes(subitem.path) }]">
-            <v-list-item-content>
-              <v-list-item-title class="txt-item">{{ subitem.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+          <template v-if="item.role ? item.role.includes(role) : true">
+            <v-list-item class="list-sub-header" name="asdasd">
+              <component :is="item.icon" />
+              {{ item.subHeader }}
+            </v-list-item>
+            <v-list-item v-for="(subitem, j) in item.sub" :key="j" @click="navigate(subitem)" class="list-item"
+              :class="[{ 'active': current.includes(subitem.path) }]">
+              <v-list-item-content>
+                <v-list-item-title class="txt-item">{{ subitem.title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
         </div>
       </v-list>
     </v-navigation-drawer>
@@ -30,6 +32,7 @@
 </template>
 
 <script>
+import { parseJwt } from '@/helpers/JWTVerify'
 export default {
   data: () => ({
     items: [
@@ -39,8 +42,7 @@ export default {
         sub: [
           { title: 'Đăng mới', path: '/dang-tin' },
           { title: 'Danh sách tin', path: '/danh-sach' }
-        ],
-        open: true
+        ]
       },
       {
         subHeader: 'Quản lý TK Cá nhân',
@@ -49,12 +51,21 @@ export default {
           { title: 'Chỉnh sửa thông tin cá nhân', path: '/tai-khoan' },
           { title: 'Cài đặt tài khoản', path: '/doi-mat-khau' },
           { title: 'Môi giới chuyên nghiệp', path: '/dang-ky-moi-gioi' }
+        ]
+      },
+      {
+        subHeader: 'Quản trị viên',
+        icon: 'icon-person',
+        sub: [
+          { title: 'Yêu cầu đăng ký môi giới', path: '/yeu-cau-moi-gioi' },
+          { title: 'Yêu cầu xóa tài khoản', path: '/yeu-cau-xoa-tai-khoan' }
         ],
-        open: true
+        role: ['admin']
       }
     ],
     username: undefined,
-    current: ''
+    current: '',
+    role: undefined
   }),
   computed: {
     avatar: {
@@ -84,9 +95,8 @@ export default {
   created() {
     this.current = this.$route.path
     this.username = localStorage.getItem('username')
-    if (!localStorage.getItem('token')) {
-      this.$router.push('/')
-    }
+    const parseToken = parseJwt(localStorage.token)
+    this.role = parseToken.role
   }
 }
 </script>

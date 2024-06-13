@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import {beforeRouteEnter} from '@/helpers/JWTVerify'
 
 Vue.use(Router)
 
@@ -14,27 +15,58 @@ export default new Router({
     {
       path: '/tai-khoan',
       name: 'UserInformation',
-      component: () => import('@/views/UserInformation')
+      component: () => import('@/views/UserInformation'),
+      beforeEnter: (to, from, next) => {
+        beforeRouteEnter() ? next() : next('/')
+      }
     },
     {
       path: '/doi-mat-khau',
       name: 'ChangePassword',
-      component: () => import('@/views/UserInformation')
+      component: () => import('@/views/UserInformation'),
+      beforeEnter: (to, from, next) => {
+        beforeRouteEnter() ? next() : next('/')
+      }
     },
     {
       path: '/dang-ky-moi-gioi',
       name: 'AgencyRegister',
-      component: () => import('@/views/UserInformation')
+      component: () => import('@/views/UserInformation'),
+      beforeEnter: (to, from, next) => {
+        beforeRouteEnter() ? next() : next('/')
+      }
     },
     {
       path: '/dang-tin',
       name: 'PostProperty',
-      component: () => import('@/views/PostProperty')
+      component: () => import('@/views/PostProperty'),
+      beforeEnter: (to, from, next) => {
+        beforeRouteEnter() ? next() : next('/')
+      }
     },
     {
       path: '/danh-sach',
       name: 'UserPropertyManager',
-      component: () => import('@/views/UserPropertyManager')
+      component: () => import('@/views/UserPropertyManager'),
+      beforeEnter: (to, from, next) => {
+        beforeRouteEnter() ? next() : next('/')
+      }
+    },
+    {
+      path: '/yeu-cau-moi-gioi',
+      name: 'RequestAgency',
+      component: () => import('@/views/Admin/RequestAgency'),
+      beforeEnter: (to, from, next) => {
+        beforeRouteEnter(['admin']) ? next() : next('/')
+      }
+    },
+    {
+      path: '/yeu-cau-xoa-tai-khoan',
+      name: 'RequestDisableAccount',
+      component: () => import('@/views/Admin/RequestDisableAccount'),
+      beforeEnter: (to, from, next) => {
+        beforeRouteEnter(['admin']) ? next() : next('/')
+      }
     },
     {
       path: '/tin-tuc',
@@ -65,6 +97,11 @@ export default new Router({
       path: '/nha-dat-cho-thue',
       name: 'PropertiesForRent',
       component: () => import('@/views/Properties')
+    },
+    {
+      path: '/nha-moi-gioi',
+      name: 'ContactAgency',
+      component: () => import('@/views/ContactAgency')
     }
   ]
 })

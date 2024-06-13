@@ -1,12 +1,15 @@
 <template>
   <li class="menu-button">
-    <router-link :to="{ name: href }" class="route-link">
+    <router-link :to="{ name: href }" class="route-link" v-if="href">
       {{ label }}
     </router-link>
+    <div class="route-link" v-else>
+      {{ label }}
+    </div>
     <div class="divider" :class="[{ 'active': isActive }]"></div>
     <ul v-if="submenu" class="sub-menu">
       <sub-menu-button v-for="item in submenu" v-bind:key="item.label" v-bind:label="item.label" v-bind:navLink="href"
-        v-bind:query="item.path" v-bind:path="path" />
+        v-bind:query="item.path" v-bind:path="path" :hrefName="item.href" />
     </ul>
   </li>
 </template>
@@ -37,8 +40,8 @@ export default {
       default: null
     },
     path: {
-      type: String,
-      default: ''
+      type: Array,
+      default: null
     }
   },
   watch: {
@@ -61,6 +64,7 @@ export default {
   font-weight: normal !important;
   letter-spacing: -.2px;
   cursor: pointer;
+  user-select: none;
 }
 
 .menu-button:hover .divider {

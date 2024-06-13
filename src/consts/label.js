@@ -182,7 +182,7 @@ export const MENU_ITEM = [
   {
     label: 'Nhà đất bán',
     href: 'PropertiesForSale',
-    path: 'nha-dat-ban',
+    path: ['nha-dat-ban'],
     sub: [
       {
         label: PROPSSALETYPE.canho.primaryLabel,
@@ -221,7 +221,7 @@ export const MENU_ITEM = [
   {
     label: 'Nhà đất cho thuê',
     href: 'PropertiesForRent',
-    path: 'nha-dat-cho-thue',
+    path: ['nha-dat-cho-thue'],
     sub: [
       {
         label: PROPSRENTTYPE.canho.primaryLabel,
@@ -276,7 +276,7 @@ export const MENU_ITEM = [
       { label: 'Dự án khác' }
     ]
   },
-  { label: 'Tin tức', href: 'News', path: 'tin-tuc' },
+  { label: 'Tin tức', href: 'News', path: ['tin-tuc'] },
   {
     label: 'Wiki BĐS',
     sub: [
@@ -301,6 +301,10 @@ export const MENU_ITEM = [
   },
   {
     label: 'Danh bạ',
-    sub: [{ label: 'Nhà môi giới' }, { label: 'Doanh nghiệp' }]
+    path: ['nha-moi-gioi'],
+    sub: [
+      { label: 'Nhà môi giới', href: 'nha-moi-gioi' },
+      { label: 'Doanh nghiệp' }
+    ]
   }
 ]

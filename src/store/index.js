@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import admin from './admin'
 import newsStore from './news'
 import propertiesStore from './properties'
 import usersStore from './users'
@@ -11,6 +12,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
+    admin: admin,
     news: newsStore,
     properties: propertiesStore,
     user: usersStore,
