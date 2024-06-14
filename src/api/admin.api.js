@@ -20,9 +20,27 @@ export const getRequestDisableAccount = async () => {
   }
 }
 
-export const acceptRequestAgency = async (dataPost) => {
+export const responseRequestAgency = async (dataPost) => {
   try {
-    const { data } = await HTTP.post(`${URL}acceptRequestAgency`, dataPost)
+    const { data } = await HTTP.post(`${URL}responseRequestAgency`, dataPost)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
+export const deleteAccount = async (dataPost) => {
+  try {
+    const { data } = await HTTP.post(`${URL}deleteAccount`, dataPost)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
+export const cancelDeleteAccount = async (dataPost) => {
+  try {
+    const { data } = await HTTP.post(`${URL}cancelDeleteAccount`, dataPost)
     return [null, data]
   } catch (error) {
     return [error]

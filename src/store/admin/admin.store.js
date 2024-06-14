@@ -1,4 +1,4 @@
-import { getRequestAgency, getRequestDisableAccount, acceptRequestAgency } from '@/api/admin.api'
+import { getRequestAgency, getRequestDisableAccount, responseRequestAgency, deleteAccount, cancelDeleteAccount } from '@/api/admin.api'
 
 export default {
   namespaced: true,
@@ -27,6 +27,12 @@ export default {
     },
     GET_REQUEST_DISABLE_ACCOUNT (state, payload) {
       state.requestDisableAccount = payload
+    },
+    RESPONSE_REQUEST_SUCCESS (state, payload) {
+      state.requestAgency.splice(state.requestAgency.findIndex(item => item.field === payload.username), 1)
+    },
+    RESPONSE_DISABLE_ACCOUNT_SUCCESS (state, payload) {
+      state.requestDisableAccount.splice(state.requestDisableAccount.findIndex(item => item.field === payload.username), 1)
     }
   },
   actions: {
@@ -36,6 +42,8 @@ export default {
       if (!error && response) {
         context.commit('LOADING_STATE', false)
         context.commit('GET_REQUEST_AGENCY', response)
+      } else {
+        context.commit('LOADING_STATE', false)
       }
     },
     async getRequestDisableAccount (context) {
@@ -44,12 +52,37 @@ export default {
       if (!error && response) {
         context.commit('LOADING_STATE', false)
         context.commit('GET_REQUEST_DISABLE_ACCOUNT', response)
+      } else {
+        context.commit('LOADING_STATE', false)
       }
     },
-    async acceptRequestAgency (context, payload) {
+    async responseRequestAgency (context, payload) {
       context.commit('LOADING_STATE', true)
-      const [error, response] = await acceptRequestAgency(payload)
+      const [error, response] = await responseRequestAgency(payload)
       if (!error && response) {
+        context.commit('LOADING_STATE', false)
+        context.commit('RESPONSE_REQUEST_SUCCESS', payload)
+      } else {
+        context.commit('LOADING_STATE', false)
+      }
+    },
+    async deleteAccount (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await deleteAccount(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+        context.commit('RESPONSE_DISABLE_ACCOUNT_SUCCESS', payload)
+      } else {
+        context.commit('LOADING_STATE', false)
+      }
+    },
+    async cancelDeleteAccount (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await cancelDeleteAccount(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+        context.commit('RESPONSE_DISABLE_ACCOUNT_SUCCESS', payload)
+      } else {
         context.commit('LOADING_STATE', false)
       }
     }
