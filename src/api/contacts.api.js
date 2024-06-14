@@ -17,3 +17,12 @@ export const getContactUser = async () => {
     return [error]
   }
 }
+
+export const deleteRequestAgency = async () => {
+  try {
+    const { data } = await HTTP.delete('/api/deleteRequestAgency')
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}

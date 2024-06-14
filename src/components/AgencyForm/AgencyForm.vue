@@ -5,6 +5,9 @@
         <div class="status-notify" v-if="status === 'pending'">
           <p>Mẫu đã được gửi, vui lòng chờ phê duyệt</p>
         </div>
+        <div class="status-notify alert" v-if="status === 'refused'">
+          <p>Mẫu của bạn đã không được phê duyệt! <span @click="handleDeleteRequest">Gửi lại mẫu khác</span></p>
+        </div>
         <div class="notice-container">
           <p class="notice-title">Để đăng ký Môi giới chuyên nghiệp, bạn cần thực hiện theo các bước sau:</p>
           <p class="notice-content">
@@ -61,8 +64,9 @@
       </v-row>
     </div>
     <div class="paper sticky-wrapper">
-      <button type="submit" class="btn-submit" :class="[{ 'disabled-btn': status === 'pending' }]"
-        :disabled="status === 'pending'">Đăng ký</button>
+      <button type="submit" class="btn-submit"
+        :class="[{ 'disabled-btn': status === 'pending' || status === 'refused' }]"
+        :disabled="status === 'pending' || status === 'refused'">Đăng ký</button>
     </div>
   </form>
 </template>
@@ -199,6 +203,9 @@ export default {
         )
         return
       }
+    },
+    handleDeleteRequest() {
+      this.$store.dispatch('contact/deleteRequestAgency')
     }
   }
 }
@@ -379,5 +386,16 @@ export default {
   line-height: 16px;
   font-weight: 400;
   text-align: center;
+}
+
+.alert {
+  border: 1px solid red;
+  background: #FFECEB;
+}
+
+.alert span {
+  color: red;
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>

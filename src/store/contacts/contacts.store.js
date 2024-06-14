@@ -1,4 +1,4 @@
-import { registerAgency, getContactUser } from '@/api/contacts.api'
+import { registerAgency, getContactUser, deleteRequestAgency } from '@/api/contacts.api'
 
 export default {
   namespaced: true,
@@ -38,6 +38,14 @@ export default {
       if (!error && response) {
         context.commit('LOADING_STATE', false)
         context.commit('GET_CONTACT_USER', response)
+      }
+    },
+    async deleteRequestAgency (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await deleteRequestAgency(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+        location.reload()
       }
     }
   }
