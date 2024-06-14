@@ -3,41 +3,33 @@
     <side-bar />
     <div class="main-area" :class="[{ 'hide': !drawer }]">
       <div class="header">
-        <div class="content-main">
+        <div class="content-main fl-bw">
           <h2>Yêu cầu đăng ký môi giới</h2>
+          <div class="input-search">
+            <icon-magnify />
+            <input v-model="search" type="text" placeholder="Tìm kiếm..." />
+          </div>
         </div>
       </div>
       <div class="content-main txt-format">
-        <v-table>
-          <thead>
-            <tr>
-              <th class="text-left" id="stt">
-                STT
-              </th>
-              <th class="text-left" id="user">
-                Tài khoản
-              </th>
-              <th class="text-left" id="name">
-                Họ và tên
-              </th>
-              <th class="text-left" id="phone">
-                Số điện thoại
-              </th>
-              <th class="text-left" id="time">
-                Thời gian tạo
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, idx) in requestAgency" :key="item.ID">
-              <td>{{ idx + 1 }}</td>
-              <td>{{ item.username }}</td>
-              <td>{{ item.name }}</td>
-              <td>{{ item.phoneNumber }}</td>
-              <td>{{ formatTime(item.createdAt) }}</td>
-            </tr>
-          </tbody>
-        </v-table>
+        <v-card flat>
+          <v-data-table :search="search" :items="requestAgency" :headers="headers" hide-default-footer
+            no-data-text="Không có dữ liệu" :loading="isLoading" loading-text="Đang tải dữ liệu"
+            no-results-text="Không có dữ liệu">
+            <template v-slot:[`item.avatar`]="{ item }">
+              <v-img :src="item.avatar" height="80" width="100px" cover></v-img>
+            </template>
+            <template v-slot:[`item.create`]="{ item }">
+              {{ formatTime(item.createdAt) }}
+            </template>
+            <template v-slot:[`item.action`]="{ item }">
+              <div>
+                <button class="btn-submit outlined-btn" @click="() => handleDelete(item)">Từ chối</button>
+                <button class="btn-submit" @click="() => handleAccepct(item)">Phê duyệt</button>
+              </div>
+            </template>
+          </v-data-table>
+        </v-card>
       </div>
     </div>
   </div>
@@ -48,10 +40,28 @@ import SideBar from '@/components/SideBar'
 import { formatDateTime } from '@/helpers/formater'
 export default {
   components: { SideBar },
+  data() {
+    return {
+      search: '',
+      headers: [
+        { text: 'Tài khoản', value: 'username', width: 100 },
+        { text: 'Họ và tên', value: 'name', width: 150 },
+        { text: 'Số điện thoại', value: 'phoneNumber', width: 100 },
+        { text: 'Ngày tạo', value: 'create', width: 150 },
+        { text: 'Ảnh đại diện', value: 'avatar', width: 80 },
+        { text: '', value: 'action', width: 50 }
+      ]
+    }
+  },
   computed: {
     drawer: {
       get() {
         return this.$store.getters['user/drawer']
+      }
+    },
+    isLoading: {
+      get() {
+        return this.$store.getters['admin/isLoading']
       }
     },
     requestAgency: {
@@ -66,6 +76,12 @@ export default {
   methods: {
     formatTime(timestamp) {
       return formatDateTime(timestamp)
+    },
+    async handleAccepct(item) {
+      await this.$store.dispatch('admin/acceptRequestAgency', { username: item.username })
+    },
+    handleDelete(item) {
+      console.log(item)
     }
   }
 }
@@ -109,5 +125,58 @@ h2 {
 .content-main {
   width: 1320px;
   margin: 20px auto 0;
+}
+
+.fl-bw {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-submit {
+  height: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  width: fit-content;
+  letter-spacing: -0.2px;
+  background-color: rgb(224, 60, 49);
+  padding: 6px 12px;
+  color: rgb(255, 255, 255);
+  opacity: 1;
+  transition: all .3s ease;
+}
+
+.btn-submit:hover {
+  opacity: .7;
+}
+
+.outlined-btn {
+  border: solid 1px #E03C31 !important;
+  background: #fff !important;
+  color: #E03C31 !important;
+}
+
+.outlined-btn:hover {
+  background: #FFECEB !important;
+}
+
+.input-search {
+  width: 200px;
+  padding: 5px 10px;
+  background: #F2F2F2;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.input-search input {
+  background: #F2F2F2;
+  border: none;
+  font-size: 14px;
+  line-height: 20px;
+  text-overflow: ellipsis;
+  outline: none;
+  width: 100%;
 }
 </style>

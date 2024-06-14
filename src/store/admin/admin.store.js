@@ -1,4 +1,4 @@
-import { getRequestAgency, getRequestDisableAccount } from '@/api/admin.api'
+import { getRequestAgency, getRequestDisableAccount, acceptRequestAgency } from '@/api/admin.api'
 
 export default {
   namespaced: true,
@@ -44,6 +44,13 @@ export default {
       if (!error && response) {
         context.commit('LOADING_STATE', false)
         context.commit('GET_REQUEST_DISABLE_ACCOUNT', response)
+      }
+    },
+    async acceptRequestAgency (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await acceptRequestAgency(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
       }
     }
   }

@@ -19,3 +19,12 @@ export const getRequestDisableAccount = async () => {
     return [error]
   }
 }
+
+export const acceptRequestAgency = async (dataPost) => {
+  try {
+    const { data } = await HTTP.post(`${URL}acceptRequestAgency`, dataPost)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}

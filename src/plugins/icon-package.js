@@ -42,6 +42,7 @@ import ArrowUp from '@/components/icons/ArrowUp.vue'
 import Threedot from '@/components/icons/Threedot.vue'
 import MenuList from '@/components/icons/MenuList.vue'
 import Person from '@/components/icons/Person.vue'
+import Box from '@/components/icons/Box.vue'
 const iconElements = {
   RightArrow,
   Home,
@@ -86,7 +87,8 @@ const iconElements = {
   ArrowUp,
   Threedot,
   MenuList,
-  Person
+  Person,
+  Box
 }
 
 export default {

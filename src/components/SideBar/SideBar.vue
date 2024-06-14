@@ -55,7 +55,7 @@ export default {
       },
       {
         subHeader: 'Quản trị viên',
-        icon: 'icon-person',
+        icon: 'icon-box',
         sub: [
           { title: 'Yêu cầu đăng ký môi giới', path: '/yeu-cau-moi-gioi' },
           { title: 'Yêu cầu xóa tài khoản', path: '/yeu-cau-xoa-tai-khoan' }
