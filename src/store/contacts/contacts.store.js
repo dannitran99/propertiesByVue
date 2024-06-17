@@ -1,10 +1,11 @@
-import { registerAgency, getContactUser, deleteRequestAgency } from '@/api/contacts.api'
+import { registerAgency, getContactUser, deleteRequestAgency, getAllContact } from '@/api/contacts.api'
 
 export default {
   namespaced: true,
   state: {
     isLoading: false,
-    contactUser: null
+    contactUser: null,
+    contactList: []
   },
   getters: {
     isLoading (state) {
@@ -12,6 +13,9 @@ export default {
     },
     contactUser(state) {
       return state.contactUser
+    },
+    contactList(state) {
+      return state.contactList
     }
   },
   mutations: {
@@ -22,6 +26,9 @@ export default {
       if (!payload.message) {
         state.contactUser = payload
       }
+    },
+    GET_ALL_CONTACT (state, payload) {
+      state.contactList = payload
     }
   },
   actions: {
@@ -46,6 +53,14 @@ export default {
       if (!error && response) {
         context.commit('LOADING_STATE', false)
         location.reload()
+      }
+    },
+    async getAllContact (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await getAllContact(payload)
+      if (response) {
+        context.commit('LOADING_STATE', false)
+        context.commit('GET_ALL_CONTACT', response)
       }
     }
   }

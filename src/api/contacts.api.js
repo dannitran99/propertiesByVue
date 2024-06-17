@@ -26,3 +26,13 @@ export const deleteRequestAgency = async () => {
     return [error]
   }
 }
+
+export const getAllContact = async (payload) => {
+  let query = [`contactType=${payload.query.contactType || 'doanh-nghiep'}`]
+  try {
+    const { data } = await HTTP.get(`/api/getAllContact?${query.join('&')}`)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}

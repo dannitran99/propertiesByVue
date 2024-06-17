@@ -13,6 +13,7 @@ import NewsCardSkeleton from '@/components/News/NewsCard/NewsCardSkeleton.vue'
 import FilterHome from '@/components/FilterHome'
 import Pagination from '@/components/Pagination'
 import SortBox from '@/components/SortBox'
+import FilterContact from '@/components/FilterContact'
 const commonElements = {
   NavBar,
   FooterComp,
@@ -28,7 +29,8 @@ const commonElements = {
   ScrollToTop,
   FilterHome,
   Pagination,
-  SortBox
+  SortBox,
+  FilterContact
 }
 
 export default {
