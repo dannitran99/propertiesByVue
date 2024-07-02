@@ -18,7 +18,7 @@ HTTP.interceptors.response.use(
       localStorage.removeItem('token')
       localStorage.removeItem('username')
       localStorage.removeItem('avatar')
-      location.href('/')
+      location.reload('/')
     }
     throw err
   }

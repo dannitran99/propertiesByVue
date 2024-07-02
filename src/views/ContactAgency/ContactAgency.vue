@@ -13,15 +13,26 @@
       </router-link>
     </div>
     <div class="contact-list">
-      <contact-card v-for="item in contactList" :key="item.ID" :data="item" />
+      <template v-if="isLoading">
+        <contact-card-skeleton />
+        <contact-card-skeleton />
+        <contact-card-skeleton />
+        <contact-card-skeleton />
+        <contact-card-skeleton />
+        <contact-card-skeleton />
+      </template>
+      <template v-else>
+        <contact-card v-for="item in contactList" :key="item.ID" :data="item" />
+      </template>
     </div>
   </div>
 </template>
 
 <script>
 import ContactCard from '../../components/ContactCard/ContactCard.vue'
+import ContactCardSkeleton from '../../components/ContactCard/ContactCardSkeleton.vue'
 export default {
-  components: { ContactCard },
+  components: { ContactCard, ContactCardSkeleton },
   data() {
     return {
       isEnterpriseContact: true
@@ -31,6 +42,11 @@ export default {
     contactList: {
       get() {
         return this.$store.getters['contact/contactList']
+      }
+    },
+    isLoading: {
+      get() {
+        return this.$store.getters['contact/isLoading']
       }
     }
   },

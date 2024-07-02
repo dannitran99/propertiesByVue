@@ -62,6 +62,13 @@ export default {
         console.error(error)
       }
     },
+    async getFlexibleDistrict (context, payload) {
+      const [error, response] = await getDistrict(payload)
+      if (!error && response) {
+        const districtName = response.data.map(item => ({name: item['full_name'], code: item['id']}))
+        return districtName
+      }
+    },
     async checkVerifyToken () {
       const [error, response] = await checkVerifyToken()
       if (!error && response) {

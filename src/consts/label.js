@@ -301,9 +301,9 @@ export const MENU_ITEM = [
   },
   {
     label: 'Danh bạ',
-    path: ['nha-moi-gioi'],
+    path: ['/nha-moi-gioi'],
     sub: [
-      { label: 'Nhà môi giới', href: 'nha-moi-gioi' },
+      { label: 'Nhà môi giới', href: '/nha-moi-gioi' },
       { label: 'Doanh nghiệp' }
     ]
   }

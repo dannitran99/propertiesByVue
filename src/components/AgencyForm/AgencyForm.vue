@@ -1,6 +1,7 @@
 <template>
-  <form @submit.prevent="handleAgencyForm">
-    <div class="form">
+  <agency-edit-form v-if="status === 'active'" :data="contactUser" />
+  <form @submit.prevent="handleAgencyForm" v-else>
+    <div class="form-create">
       <div class="agency-wrapper">
         <div class="status-notify" v-if="status === 'pending'">
           <p>Mẫu đã được gửi, vui lòng chờ phê duyệt</p>
@@ -73,7 +74,7 @@
 
 <script>
 import { UPLOAD_PRESET, CLOUD_NAME } from '@/consts/cloudinary'
-
+import AgencyEditForm from './AgencyEditForm'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import * as Yup from 'yup'
 
@@ -86,7 +87,8 @@ const schema = Yup.object().shape({
 export default {
   components: {
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
+    AgencyEditForm
   },
   data() {
     return {
@@ -212,7 +214,7 @@ export default {
 </script>
 
 <style scoped>
-.form {
+.form-create {
   margin: 24px;
 }
 

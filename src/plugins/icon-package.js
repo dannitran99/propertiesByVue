@@ -43,6 +43,9 @@ import Threedot from '@/components/icons/Threedot.vue'
 import MenuList from '@/components/icons/MenuList.vue'
 import Person from '@/components/icons/Person.vue'
 import Box from '@/components/icons/Box.vue'
+import Plus from '@/components/icons/Plus.vue'
+import Minus from '@/components/icons/Minus.vue'
+import CellPhone from '@/components/icons/CellPhone.vue'
 const iconElements = {
   RightArrow,
   Home,
@@ -66,6 +69,8 @@ const iconElements = {
   Warehouse,
   Logout,
   LeftArrow,
+  Plus,
+  Minus,
   ImageUploader,
   CloseWB,
   RightArrowWC,
@@ -75,6 +80,7 @@ const iconElements = {
   Lock,
   Camera,
   Phone,
+  CellPhone,
   ZoomIn,
   ZoomOut,
   Villa,

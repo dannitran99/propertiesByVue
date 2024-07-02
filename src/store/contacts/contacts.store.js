@@ -1,11 +1,12 @@
-import { registerAgency, getContactUser, deleteRequestAgency, getAllContact } from '@/api/contacts.api'
+import { registerAgency, getContactUser, deleteRequestAgency, getAllContact, updateAgency, getContactDetail } from '@/api/contacts.api'
 
 export default {
   namespaced: true,
   state: {
     isLoading: false,
     contactUser: null,
-    contactList: []
+    contactList: [],
+    contactData: {}
   },
   getters: {
     isLoading (state) {
@@ -16,6 +17,9 @@ export default {
     },
     contactList(state) {
       return state.contactList
+    },
+    contactData(state) {
+      return state.contactData
     }
   },
   mutations: {
@@ -29,6 +33,9 @@ export default {
     },
     GET_ALL_CONTACT (state, payload) {
       state.contactList = payload
+    },
+    GET_CONTACT_DATA(state, payload) {
+      state.contactData = payload
     }
   },
   actions: {
@@ -47,6 +54,13 @@ export default {
         context.commit('GET_CONTACT_USER', response)
       }
     },
+    async updateAgency (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await updateAgency(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+      }
+    },
     async deleteRequestAgency (context, payload) {
       context.commit('LOADING_STATE', true)
       const [error, response] = await deleteRequestAgency(payload)
@@ -58,9 +72,17 @@ export default {
     async getAllContact (context, payload) {
       context.commit('LOADING_STATE', true)
       const [error, response] = await getAllContact(payload)
-      if (response) {
+      if (!error) {
         context.commit('LOADING_STATE', false)
         context.commit('GET_ALL_CONTACT', response)
+      }
+    },
+    async getContactDetail (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await getContactDetail(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+        context.commit('GET_CONTACT_DATA', response)
       }
     }
   }

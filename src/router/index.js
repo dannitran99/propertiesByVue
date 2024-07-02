@@ -102,6 +102,11 @@ export default new Router({
       path: '/nha-moi-gioi',
       name: 'ContactAgency',
       component: () => import('@/views/ContactAgency')
+    },
+    {
+      path: '/nha-moi-gioi/:contactId',
+      name: 'ContactAgencyDetail',
+      component: () => import('@/views/ContactAgency/ContactAgencyDetail')
     }
   ]
 })

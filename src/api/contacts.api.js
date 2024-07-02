@@ -9,6 +9,15 @@ export const registerAgency = async (dataPost) => {
   }
 }
 
+export const updateAgency = async (dataPost) => {
+  try {
+    const { data } = await HTTP.post('/api/updateAgency', dataPost)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
 export const getContactUser = async () => {
   try {
     const { data } = await HTTP.get('/api/getContactUser')
@@ -31,6 +40,15 @@ export const getAllContact = async (payload) => {
   let query = [`contactType=${payload.query.contactType || 'doanh-nghiep'}`]
   try {
     const { data } = await HTTP.get(`/api/getAllContact?${query.join('&')}`)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
+export const getContactDetail = async (payload) => {
+  try {
+    const { data } = await HTTP.get(`/api/contact/${payload.id}`)
     return [null, data]
   } catch (error) {
     return [error]
