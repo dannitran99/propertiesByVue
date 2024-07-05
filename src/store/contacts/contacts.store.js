@@ -6,7 +6,10 @@ export default {
     isLoading: false,
     contactUser: null,
     contactList: [],
-    contactData: {}
+    contactData: {},
+    searchKeyword: '',
+    type: { id: 0, label: 'Loại giao dịch', value: '' },
+    typeProperty: { id: 0, label: 'Loại nhà đất', value: '' }
   },
   getters: {
     isLoading (state) {
@@ -20,9 +23,27 @@ export default {
     },
     contactData(state) {
       return state.contactData
+    },
+    searchKeyword (state) {
+      return state.searchKeyword
+    },
+    type (state) {
+      return state.type
+    },
+    typeProperty (state) {
+      return state.typeProperty
     }
   },
   mutations: {
+    SEARCH_TYPING (state, payload) {
+      state.searchKeyword = payload
+    },
+    CHANGE_TYPE(state, payload) {
+      state.type = payload
+    },
+    CHANGE_TYPE_PROPERTY(state, payload) {
+      state.typeProperty = payload
+    },
     LOADING_STATE (state, payload) {
       state.isLoading = payload
     },
@@ -39,6 +60,15 @@ export default {
     }
   },
   actions: {
+    searchChange (context, payload) {
+      context.commit('SEARCH_TYPING', payload)
+    },
+    typeChange(context, payload) {
+      context.commit('CHANGE_TYPE', payload)
+    },
+    typePropertyChange(context, payload) {
+      context.commit('CHANGE_TYPE_PROPERTY', payload)
+    },
     async registerAgency (context, payload) {
       context.commit('LOADING_STATE', true)
       const [error, response] = await registerAgency(payload)

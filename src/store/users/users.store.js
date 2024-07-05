@@ -186,7 +186,7 @@ export default {
       const [error, response] = await getInfoUser()
       if (!error && response) {
         context.commit('LOADING_STATE', false)
-        context.commit('GET_USER_INFO', response)
+        context.commit('GET_USER_INFO', response[0])
       } else {
         context.commit('LOADING_STATE', false)
         return error

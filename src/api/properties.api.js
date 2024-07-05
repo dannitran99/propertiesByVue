@@ -12,6 +12,7 @@ export const getPropertiesList = async (payload) => {
       payload.query.maxPrice && query.push(`maxp=${payload.query.maxPrice}`)
       payload.query.minSquare && query.push(`mins=${payload.query.minSquare}`)
       payload.query.maxSquare && query.push(`maxs=${payload.query.maxSquare}`)
+      payload.query.f && query.push(`f=${payload.query.f}`)
       query.push(`p=${payload.query.p || 1}`)
       query.push(`l=${payload.query.l || 5}`)
       payload.query.sort && Number(payload.query.sort) !== 0 && query.push(`sort=${payload.query.sort}`)

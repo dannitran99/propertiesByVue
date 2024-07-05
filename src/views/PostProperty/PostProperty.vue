@@ -115,12 +115,12 @@
         <v-row class="row-pos">
           <v-col class="col-form" cols="12" sm="6">
             <p class="txt-label mt-4">Tên liên hệ <span>*</span></p>
-            <v-text-field placeholder="Nhập tên" dense outlined v-model="name"></v-text-field>
+            <v-text-field placeholder="Nhập tên" dense outlined v-model="name" :disabled="agency"></v-text-field>
           </v-col>
           <v-col class="col-form" cols="12" sm="6">
             <p class="txt-label mt-4">Số điện thoại <span>*</span></p>
             <v-text-field placeholder="Nhập số điện thoại" dense outlined type="number" v-model="phoneNumber"
-              hide-spin-buttons></v-text-field>
+              hide-spin-buttons :disabled="agency"></v-text-field>
           </v-col>
         </v-row>
         <v-row class="row-pos">
@@ -172,6 +172,7 @@ export default {
       phoneNumber: '',
       isDragging: false,
       errorMessage: '',
+      agency: false,
       saleItem: [
         {
           label: PROPSSALETYPE.canho.primaryLabel,
@@ -287,10 +288,28 @@ export default {
       get() {
         return this.$store.getters['user/drawer']
       }
+    },
+    userInfo: {
+      get() {
+        return this.$store.getters['user/userInfo']
+      }
+    }
+  },
+  watch: {
+    userInfo: function () {
+      this.name = this.userInfo.fullname
+      this.phoneNumber = this.userInfo.phoneNumber
+      this.email = this.userInfo.email
+      if (this.userInfo.agencyInfo && this.userInfo.agencyInfo[0]) {
+        this.name = this.userInfo.agencyInfo[0].name
+        this.phoneNumber = this.userInfo.agencyInfo[0].phoneNumber
+        this.agency = true
+      }
     }
   },
   async created() {
     await this.$store.dispatch('common/getCity')
+    await this.$store.dispatch('user/getInfoUser')
   },
   methods: {
     onChangeType(typechange) {

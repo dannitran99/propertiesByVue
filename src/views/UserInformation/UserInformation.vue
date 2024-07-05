@@ -247,7 +247,7 @@ export default {
       this.tab = this.$route.path.slice(1)
     },
     userInfo: function () {
-      this.valuesInfo.name = this.userInfo.name
+      this.valuesInfo.name = this.userInfo.fullname
       this.valuesInfo.phoneNumber = this.userInfo.phoneNumber
       this.valuesInfo.email = this.userInfo.email
     }

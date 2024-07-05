@@ -1,18 +1,25 @@
 <template>
-  <div class="container-sort">
-    <div class="wrapper-sort" @click="onClickPopup" v-click-outside="handleClickOutside">
-      <p>{{ selected.label }}</p>
-      <icon-downtriangle />
-
+  <div class="f-wrapper">
+    <div class="switch-container">
+      <p :class="[{ 'active-t': verify }]">Môi giới chuyên nghiệp</p>
+      <v-switch v-model="verify" inset color="#07A35D" class="switch" dense outlined hide-details
+        @change="handleChangeSwitch"></v-switch>
     </div>
-    <ul class="sort-selector" v-if="isShow">
-      <li v-for="item in itemsSort" :key="item.id">
-        <router-link class="item-page icon right" :class="[{ 'active-selector': item.id === selected.id }]"
-          :to="{ path: $route.path, query: { ...query, sort: item.id } }">
-          {{ item.label }}
-        </router-link>
-      </li>
-    </ul>
+    <div class="container-sort">
+      <div class="wrapper-sort" @click="onClickPopup" v-click-outside="handleClickOutside">
+        <p>{{ selected.label }}</p>
+        <icon-downtriangle />
+
+      </div>
+      <ul class="sort-selector" v-if="isShow">
+        <li v-for="item in itemsSort" :key="item.id">
+          <router-link class="item-page icon right" :class="[{ 'active-selector': item.id === selected.id }]"
+            :to="{ path: $route.path, query: { ...query, sort: item.id } }">
+            {{ item.label }}
+          </router-link>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -32,12 +39,14 @@ export default {
         { label: 'Diện tích lớn đến bé', id: 6 }
       ],
       selected: { label: 'Thông thường', id: 0 },
-      query: {}
+      query: {},
+      verify: false
     }
   },
   watch: {
     '$route'() {
       this.selected = this.$route.query.sort ? this.itemsSort.find(item => item.id === Number(this.$route.query.sort)) : { label: 'Thông thường', id: 0 }
+      this.verify = this.$route.query.f
       const { p, l, ...rest } = this.$route.query
       this.query = rest
     },
@@ -51,6 +60,7 @@ export default {
   },
   created() {
     this.selected = this.$route.query.sort ? this.itemsSort.find(item => item.id === Number(this.$route.query.sort)) : { label: 'Thông thường', id: 0 }
+    this.verify = this.$route.query.f
     const { p, l, ...rest } = this.$route.query
     this.query = rest
   },
@@ -60,6 +70,11 @@ export default {
     },
     onClickPopup() {
       this.isShow = !this.isShow
+    },
+    handleChangeSwitch() {
+      const { f, ...rest } = this.query
+      const query = this.verify ? { ...rest, f: 'agency' } : { ...rest }
+      this.$router.push({ path: this.$route.path, query })
     }
   }
 }
@@ -67,6 +82,38 @@ export default {
 <style scoped>
 * {
   font-family: 'Roboto-Regular', sans-serif;
+}
+
+.f-wrapper {
+  display: flex;
+  gap: 8px;
+}
+
+.active-t {
+  color: #2C2C2C !important;
+  font-weight: 600;
+}
+
+.switch-container {
+  display: flex;
+  border: 1px solid #ccc;
+  align-items: center;
+  border-radius: 4px;
+  height: 32px;
+  background-image: url('../../assets/ic_agent_verification.svg');
+  background-position: 12px;
+}
+
+.switch-container p {
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0 0 0 32px;
+  color: #999;
+}
+
+.switch {
+  margin: 0 0 0 11px;
+  padding: 0;
 }
 
 .wrapper-sort {
