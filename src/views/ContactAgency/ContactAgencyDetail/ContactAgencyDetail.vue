@@ -26,9 +26,10 @@
           </li>
         </ul>
         <h4>Nhà môi giới tự giới thiệu</h4>
-        <p class="detail-txt">{{ contactData.description }}</p>
+        <p class="detail-txt last-p">{{ contactData.description }}</p>
+        <h3>Danh sách tin đăng</h3>
+        <pagination :total="totalPropertiesItem" />
       </div>
-
     </div>
   </div>
 </template>
@@ -46,14 +47,33 @@ export default {
       get() {
         return this.$store.getters['contact/isLoading']
       }
+    },
+    propertiesist: {
+      get() {
+        return this.$store.getters['contact/propertiesist']
+      }
+    },
+    totalPropertiesItem: {
+      get() {
+        return this.$store.getters['contact/totalPropertiesItem']
+      }
     }
   },
-  async created() {
-    await this.$store.dispatch('contact/getContactDetail', {
-      id: this.$route.params.contactId
-    })
+  watch: {
+    '$route'() {
+      this.handleRequest()
+    }
+  },
+  created() {
+    this.handleRequest()
   },
   methods: {
+    async handleRequest() {
+      await this.$store.dispatch('contact/getContactDetail', {
+        id: this.$route.params.contactId,
+        query: this.$route.query
+      })
+    },
     handleTypeProperty(item) {
       const listLabel = item.typeProperty === 'sale' ? PROPSSALETYPE : PROPSRENTTYPE
       const entries = Object.entries(listLabel)
@@ -151,5 +171,9 @@ li {
   margin-bottom: 8px;
   font-size: 12px;
   line-height: 16px;
+}
+
+.last-p {
+  margin-bottom: 40px;
 }
 </style>

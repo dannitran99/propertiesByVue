@@ -72,6 +72,7 @@ export default {
   width: 20px;
   height: 20px;
   opacity: .5;
+  flex-shrink: 0;
 }
 
 .sort-selector {
@@ -79,12 +80,14 @@ export default {
   left: 0;
   position: absolute;
   width: 100%;
+  max-height: 300px;
   padding: 8px 0;
   list-style: none;
   border-radius: 8px;
   box-shadow: 0px 8px 20px rgba(182, 182, 182, 0.3);
   background: #fff;
   z-index: 50;
+  overflow: auto;
 }
 
 .sort-selector li {

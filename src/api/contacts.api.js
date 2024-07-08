@@ -38,6 +38,15 @@ export const deleteRequestAgency = async () => {
 
 export const getAllContact = async (payload) => {
   let query = [`contactType=${payload.query.contactType || 'doanh-nghiep'}`]
+  if (payload.query) {
+    payload.query.k && query.push(`k=${payload.query.k}`)
+    payload.query.type && query.push(`type=${payload.query.type}`)
+    payload.query.typeProperty && query.push(`typeProperty=${payload.query.typeProperty}`)
+    payload.query.city && query.push(`city=${payload.query.city}`)
+    payload.query.district && query.push(`district=${payload.query.district}`)
+    query.push(`p=${payload.query.p || 1}`)
+    query.push(`l=${payload.query.l || 5}`)
+  }
   try {
     const { data } = await HTTP.get(`/api/getAllContact?${query.join('&')}`)
     return [null, data]
@@ -47,8 +56,14 @@ export const getAllContact = async (payload) => {
 }
 
 export const getContactDetail = async (payload) => {
+  let query = []
+  if (payload.query) {
+    query.push(`p=${payload.query.p || 1}`)
+    query.push(`l=${payload.query.l || 5}`)
+  }
+
   try {
-    const { data } = await HTTP.get(`/api/contact/${payload.id}`)
+    const { data } = await HTTP.get(`/api/contact/${payload.id}?${query.join('&')}`)
     return [null, data]
   } catch (error) {
     return [error]

@@ -24,6 +24,7 @@
       <template v-else>
         <contact-card v-for="item in contactList" :key="item.ID" :data="item" />
       </template>
+      <pagination :total="totalItem" />
     </div>
   </div>
 </template>
@@ -48,21 +49,28 @@ export default {
       get() {
         return this.$store.getters['contact/isLoading']
       }
+    },
+    totalItem: {
+      get() {
+        return this.$store.getters['contact/totalItem']
+      }
     }
   },
   watch: {
-    async '$route'() {
+    '$route'() {
+      this.handleRequest()
+    }
+  },
+  created() {
+    this.handleRequest()
+  },
+  methods: {
+    async handleRequest() {
       this.isEnterpriseContact = this.$route.query.contactType === 'doanh-nghiep' || !this.$route.query.contactType
       await this.$store.dispatch('contact/getAllContact', {
         query: this.$route.query
       })
     }
-  },
-  async created() {
-    this.isEnterpriseContact = this.$route.query.contactType === 'doanh-nghiep' || !this.$route.query.contactType
-    await this.$store.dispatch('contact/getAllContact', {
-      query: this.$route.query
-    })
   }
 }
 </script>
