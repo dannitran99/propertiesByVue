@@ -1,7 +1,8 @@
 <template>
   <div>
     <news-tab-header class="tab-header" />
-    <div class="wrapper">
+    <news-skeleton v-if="isLoading" />
+    <div class="wrapper" v-else>
       <news-preview v-for="item in news" v-bind:key="item.id" v-bind:data="item" />
       <ul>
         <news-item v-for="item in news" v-bind:key="item.id" v-bind:data="item" />
@@ -12,6 +13,7 @@
 
 <script>
 import NewsItem from './NewsItem.vue'
+import NewsSkeleton from './NewsSkeleton.vue'
 import NewsPreview from './NewsPreview.vue'
 import NewsTabHeader from './NewsTabHeader.vue'
 export default {
@@ -19,12 +21,18 @@ export default {
   components: {
     'news-item': NewsItem,
     'news-preview': NewsPreview,
-    'news-tab-header': NewsTabHeader
+    'news-tab-header': NewsTabHeader,
+    'news-skeleton': NewsSkeleton
   },
   computed: {
     news: {
       get() {
         return this.$store.getters['news/newsList']
+      }
+    },
+    isLoading: {
+      get() {
+        return this.$store.getters['news/isLoading']
       }
     }
   },

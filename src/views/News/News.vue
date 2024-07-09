@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import NewsCard from '../../components/News/NewsCard/NewsCard.vue'
-import NewsCardSkeleton from '../../components/News/NewsCard/NewsCardSkeleton.vue'
+import NewsCard from '@/components/News/NewsCard/NewsCard.vue'
+import NewsCardSkeleton from '@/components/News/NewsCard/NewsCardSkeleton.vue'
 export default {
   components: { NewsCard, NewsCardSkeleton },
   data() {
@@ -36,7 +36,7 @@ export default {
   computed: {
     isLoading: {
       get() {
-        return this.$store.getters['news/loading']
+        return this.$store.getters['news/isLoading']
       }
     },
     news: {

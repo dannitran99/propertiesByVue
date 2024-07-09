@@ -28,6 +28,7 @@
         <h4>Nhà môi giới tự giới thiệu</h4>
         <p class="detail-txt last-p">{{ contactData.description }}</p>
         <h3>Danh sách tin đăng</h3>
+        <property-item v-for="item in propertiesist" :key="item.ID" :data="item" :row="true" />
         <pagination :total="totalPropertiesItem" />
       </div>
     </div>
@@ -35,8 +36,12 @@
 </template>
 
 <script>
+import PropertyItem from '@/components/PropertiesHomePage/PropertyItem'
 import { PROPSSALETYPE, PROPSRENTTYPE } from '@/consts/propstype'
 export default {
+  components: {
+    'property-item': PropertyItem
+  },
   computed: {
     contactData: {
       get() {

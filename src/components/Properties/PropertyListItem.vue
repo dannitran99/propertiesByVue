@@ -5,40 +5,40 @@
       class="navigate-link" :class="[{ 'hide': hideInfo }]"></router-link>
     <v-row class="img-gallery" no-gutters>
       <template v-if="data.images.length > 1">
-        <v-col cols="8">
-          <img v-bind:src="data.images[0].url" :alt="data.images[0].name" class="img-1" />
+        <v-col cols="8" class="height-100">
+          <img v-bind:src="data.images[0].url" :alt="data.images[0].name" class="height-100 border-tl p-r" />
         </v-col>
-        <v-col cols="4">
-          <v-row no-gutters class="grid-gallery">
+        <v-col cols="4" class="height-100">
+          <v-row no-gutters class="height-100">
             <template v-if="data.images.length > 2">
-              <v-col cols="12">
-                <img v-bind:src="data.images[1].url" :alt="data.images[1].name" class="img-0" />
+              <v-col cols="12" class="height-50">
+                <img v-bind:src="data.images[1].url" :alt="data.images[1].name" class="height-100 border-tr p-l p-b" />
               </v-col>
               <template v-if="data.images.length > 3">
-                <v-col cols="6">
-                  <img v-bind:src="data.images[2].url" :alt="data.images[2].name" class="img-0" />
+                <v-col cols="6" class="height-50">
+                  <img v-bind:src="data.images[2].url" :alt="data.images[2].name" class="height-100 p-l p-t p-r" />
                 </v-col>
-                <v-col cols="6">
-                  <img v-bind:src="data.images[3].url" :alt="data.images[3].name" class="img-0" />
+                <v-col cols="6" class="height-50">
+                  <img v-bind:src="data.images[3].url" :alt="data.images[3].name" class="height-100 p-t p-l" />
                 </v-col>
               </template>
               <template v-else>
-                <v-col cols="12">
-                  <img v-bind:src="data.images[2].url" :alt="data.images[2].name" class="img-0" />
+                <v-col cols="12" class="height-50">
+                  <img v-bind:src="data.images[2].url" :alt="data.images[2].name" class="height-100 p-l p-t" />
                 </v-col>
               </template>
             </template>
             <template v-else>
-              <v-col cols="12">
-                <img v-bind:src="data.images[1].url" :alt="data.images[1].name" class="img-1" />
+              <v-col cols="12" class="height-100">
+                <img v-bind:src="data.images[1].url" :alt="data.images[1].name" class="height-100 border-tr p-l" />
               </v-col>
             </template>
           </v-row>
         </v-col>
       </template>
       <template v-else>
-        <v-col cols="12">
-          <img v-bind:src="data.images[0].url" :alt="data.images[0].name" class="img-1" />
+        <v-col cols="12" class="height-100 ">
+          <img v-bind:src="data.images[0].url" :alt="data.images[0].name" class="height-100 border-tl border-tr" />
         </v-col>
       </template>
     </v-row>
@@ -137,16 +137,8 @@ export default {
   box-shadow: 0px 4px 16px 0px rgba(44, 44, 44, 0.08);
 }
 
-.img-gallery>* {
-  padding: 2px !important;
-}
-
-.img-1 {
-  height: 200px;
-}
-
-.img-0 {
-  height: 98px;
+.img-gallery {
+  height: 284px;
 }
 
 .img-gallery img {
@@ -154,20 +146,8 @@ export default {
   object-fit: cover;
 }
 
-.grid-gallery>:first-child {
-  padding-bottom: 2px !important;
-}
-
-.grid-gallery>:nth-child(2) {
-  padding: 2px 2px 0 0;
-}
-
-.grid-gallery>:nth-child(3) {
-  padding: 2px 0 0 2px;
-}
-
 .article {
-  padding: 0 16px;
+  padding: 16px 16px 0 16px;
 }
 
 .card-title {
@@ -293,5 +273,37 @@ export default {
 
 .hide {
   height: 100%;
+}
+
+.height-100 {
+  height: 100%;
+}
+
+.height-50 {
+  height: 50%;
+}
+
+.border-tl {
+  border-top-left-radius: 4px;
+}
+
+.border-tr {
+  border-top-right-radius: 4px;
+}
+
+.p-l {
+  padding-left: 2px;
+}
+
+.p-t {
+  padding-top: 2px;
+}
+
+.p-r {
+  padding-right: 2px;
+}
+
+.p-b {
+  padding-bottom: 2px;
 }
 </style>

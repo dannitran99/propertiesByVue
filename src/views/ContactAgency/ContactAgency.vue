@@ -21,9 +21,15 @@
         <contact-card-skeleton />
         <contact-card-skeleton />
       </template>
-      <template v-else>
+      <template v-else-if="contactList">
         <contact-card v-for="item in contactList" :key="item.ID" :data="item" />
       </template>
+      <div class="empty-article" v-else>
+        <div class="background"></div>
+        <p>Rất tiếc! Chúng tôi không tìm thấy kết quả liên quan.
+          <br />Vui lòng thử lại hoặc quay về trang trước đó.
+        </p>
+      </div>
       <pagination :total="totalItem" />
     </div>
   </div>
@@ -114,6 +120,22 @@ h1 {
   border-bottom-right-radius: 4px;
 }
 
+.empty-article {
+  text-align: center;
+  font-size: 12px;
+  line-height: 16px;
+  color: #999;
+}
+
+.background {
+  width: 240px;
+  height: 240px;
+  background-image: url('../../assets/articles-empty.svg');
+  background-size: contain;
+  margin: 0 auto;
+  margin-bottom: 24px;
+}
+
 .btn-tab a {
   display: block;
   height: 32px;
@@ -137,5 +159,6 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin-bottom: 16px;
 }
 </style>

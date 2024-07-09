@@ -10,7 +10,7 @@ export default {
     newContent: {}
   },
   getters: {
-    loading (state) {
+    isLoading (state) {
       return state.isLoading
     },
     newsList (state) {

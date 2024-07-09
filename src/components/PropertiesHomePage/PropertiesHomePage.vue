@@ -13,7 +13,17 @@
       </div>
     </div>
     <div class="item-list">
-      <property-item v-for="item in properties" v-bind:key="item.ID" v-bind:data="item" />
+      <template v-if="isLoading && !properties.length">
+        <property-skeleton />
+        <property-skeleton />
+        <property-skeleton />
+        <property-skeleton />
+        <property-skeleton />
+        <property-skeleton />
+        <property-skeleton />
+        <property-skeleton />
+      </template>
+      <property-item v-for="item in properties" v-bind:key="item.ID" v-bind:data="item" v-else />
     </div>
     <div class="foot-btn">
       <button @click="handleExpand">{{ expand ? 'Mở rộng' : 'Xem tiếp' }}
@@ -25,9 +35,11 @@
 
 <script>
 import PropertyItem from './PropertyItem.vue'
+import PropertySkeleton from './PropertySkeleton.vue'
 export default {
   components: {
-    'property-item': PropertyItem
+    'property-item': PropertyItem,
+    PropertySkeleton
   },
   data() {
     return {
@@ -38,6 +50,11 @@ export default {
     properties: {
       get() {
         return this.$store.getters['properties/propertiesListMain']
+      }
+    },
+    isLoading: {
+      get() {
+        return this.$store.getters['properties/isLoading']
       }
     }
   },

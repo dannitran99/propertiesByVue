@@ -15,7 +15,11 @@
           <properties-skeleton />
           <properties-skeleton />
         </template>
-        <properties v-for="item in properties" :key="item.ID" :data="item" v-else />
+        <properties v-for="item in properties" :key="item.ID" :data="item" v-else-if="properties" />
+        <div class="empty-list" v-else>
+          <div class="background"></div>
+          <p>Không có kết quả nào phù hợp</p>
+        </div>
         <pagination :total="totalItem" />
       </div>
     </div>
@@ -217,6 +221,23 @@ export default {
   font-weight: 400;
   letter-spacing: -0.2px;
   color: #2C2C2C;
+}
+
+.empty-list {
+  font-family: 'Roboto-Regular', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #999;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.background {
+  width: 130px;
+  height: 130px;
+  background-image: url('../../assets/listing-empty.svg');
+  background-size: contain;
+  margin: 24px auto 24px auto;
 }
 
 .content {

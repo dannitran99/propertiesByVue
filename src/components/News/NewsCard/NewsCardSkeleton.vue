@@ -1,6 +1,6 @@
 <template>
   <div class="card-new">
-    <v-skeleton-loader class="img" type="image" />
+    <v-skeleton-loader class="img" type="image" height="150px" />
     <v-skeleton-loader class="card-info" type="article" />
   </div>
 </template>

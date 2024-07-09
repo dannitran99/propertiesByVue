@@ -2,18 +2,18 @@
   <div class="wrapper-skeleton">
     <v-row class="img-gallery" no-gutters>
       <v-col cols="8">
-        <v-skeleton-loader type="image" height="100%" />
+        <v-skeleton-loader type="image" height="284" />
       </v-col>
       <v-col cols="4">
         <v-row no-gutters class="grid-gallery">
           <v-col cols="12">
-            <v-skeleton-loader type="image" height="98" />
+            <v-skeleton-loader type="image" height="140" />
           </v-col>
           <v-col cols="6">
-            <v-skeleton-loader type="image" height="98" />
+            <v-skeleton-loader type="image" height="140" />
           </v-col>
           <v-col cols="6">
-            <v-skeleton-loader type="image" height="98" />
+            <v-skeleton-loader type="image" height="140" />
           </v-col>
         </v-row>
       </v-col>
