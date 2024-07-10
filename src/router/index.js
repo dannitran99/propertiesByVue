@@ -107,6 +107,11 @@ export default new Router({
       path: '/nha-moi-gioi/:contactId',
       name: 'ContactAgencyDetail',
       component: () => import('@/views/ContactAgency/ContactAgencyDetail')
-    }
+    },
+    { path: '/404',
+      name: 'NotFound',
+      component: () => import('@/views/404')
+    },
+    { path: '*', beforeEnter: (to, from, next) => { next('/404') } }
   ]
 })

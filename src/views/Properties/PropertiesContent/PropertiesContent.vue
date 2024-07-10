@@ -28,6 +28,10 @@
             <p class="detail-description">{{ formatDate }}</p>
           </div>
         </div>
+        <div v-if="history.length" class="carousel-section">
+          <h4 class="description-title">Tin đăng đã xem</h4>
+          <carousel-card :data="history" />
+        </div>
       </div>
       <div class="user-info">
         <img :src="data.relatedUser && data.relatedUser[0].avatar" alt="avatar" class="avatar-img"
@@ -45,11 +49,18 @@
 </template>
 
 <script>
+import CarouselCard from '@/components/CarouselCard'
 import { formatCurrency, formatDate } from '@/helpers/formater'
+import { handleViewedProperties } from '@/helpers/localData'
+import { HISTORY_PROPERTY_ITEM_KEY } from '@/consts/common'
 export default {
+  components: {
+    CarouselCard
+  },
   data() {
     return {
-      phoneReveal: false
+      phoneReveal: false,
+      history: JSON.parse(localStorage.getItem(HISTORY_PROPERTY_ITEM_KEY)) || []
     }
   },
   computed: {
@@ -80,6 +91,7 @@ export default {
     await this.$store.dispatch('properties/getPropertiesDetail', {
       id: this.$route.path.split('/')[2]
     })
+    handleViewedProperties(this.data)
   },
   methods: {
     handleReveal: function () {
@@ -242,5 +254,9 @@ export default {
   font-size: 14px;
   line-height: 24px;
   margin: 0;
+}
+
+.carousel-section {
+  margin-top: 40px;
 }
 </style>

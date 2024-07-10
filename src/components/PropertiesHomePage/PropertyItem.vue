@@ -1,7 +1,7 @@
 <template>
   <router-link
     :to="{ name: data.type === 'sale' ? 'PropertiesSaleDetail' : 'PropertiesRentDetail', params: { propertiesId: data.ID, } }"
-    class="wrapper-item-property" :class="[{ 'row-wrapper': row }]">
+    class="wrapper-item-property" :class="[{ 'row-wrapper': row }, { 'small-wrapper': small }]">
     <div class="thumbnail" :class="[{ 'row-thumbnail': row }]">
       <img v-bind:src="data.images[0].url" :alt="data.images[0].name" />
       <div class="img-holder">
@@ -40,6 +40,10 @@ export default {
     row: {
       type: Boolean,
       default: false
+    },
+    small: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -75,6 +79,7 @@ export default {
   box-sizing: content-box;
   background: #fff;
   cursor: pointer;
+  -webkit-user-drag: none;
 }
 
 .row-wrapper {
@@ -82,6 +87,11 @@ export default {
   width: 100%;
   height: 188px;
   margin-bottom: 16px;
+}
+
+.small-wrapper {
+  width: 218px;
+  height: 293px;
 }
 
 p {
@@ -113,6 +123,7 @@ p {
 .thumbnail img {
   width: 100%;
   height: 100%;
+  -webkit-user-drag: none;
 }
 
 .img-holder {
