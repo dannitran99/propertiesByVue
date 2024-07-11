@@ -22,16 +22,18 @@
           <h4 class="description-title">Thông tin mô tả</h4>
           <p class="description-p">{{ data.description }}</p>
         </div>
+        <div v-if="data.url">
+          <iframe :src="handleLink(data.url)" title="link" width="100%" height="450"></iframe>
+        </div>
         <div class="detail-section">
           <div class="detail-child">
             <p class="detail-title">Ngày đăng</p>
             <p class="detail-description">{{ formatDate }}</p>
           </div>
         </div>
-        <div v-if="history.length" class="carousel-section">
+        <carousel-card :data="history" v-if="history.length" class="carousel-section">
           <h4 class="description-title">Tin đăng đã xem</h4>
-          <carousel-card :data="history" />
-        </div>
+        </carousel-card>
       </div>
       <div class="user-info">
         <img :src="data.relatedUser && data.relatedUser[0].avatar" alt="avatar" class="avatar-img"
@@ -87,15 +89,26 @@ export default {
       return `${this.data.phoneNumber.slice(0, -3)}*** Hiện số`
     }
   },
-  async created() {
-    await this.$store.dispatch('properties/getPropertiesDetail', {
-      id: this.$route.path.split('/')[2]
-    })
-    handleViewedProperties(this.data)
+  watch: {
+    '$route'() {
+      this.handleFetchData()
+    }
+  },
+  created() {
+    this.handleFetchData()
   },
   methods: {
     handleReveal: function () {
       this.phoneReveal = true
+    },
+    async handleFetchData() {
+      await this.$store.dispatch('properties/getPropertiesDetail', {
+        id: this.$route.path.split('/')[2]
+      })
+      handleViewedProperties(this.data)
+    },
+    handleLink(input) {
+      return input.replace('watch?v=', 'embed/')
     }
   }
 }

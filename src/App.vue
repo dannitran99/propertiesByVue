@@ -48,6 +48,7 @@ export default {
 
 a {
   text-decoration: none;
+  -webkit-user-drag: none;
 }
 
 .nav-bar {

@@ -1,13 +1,29 @@
 <template>
-  <div class="carousel-c-wrapper">
-    <div class="carousel-c-container" @mousemove="handleMouseMove" @mousedown="handleMouseDown"
-      @mouseup="handleMouseLeave" @mouseleave="handleMouseLeave">
-      <div class="carousel-c-gallery"
-        :style="{ transform: `translate3d(${-235 * 3 * page + currentTranslateX + (page && page + 1 === total ? 143 + extra * 235 : 0)}px, 0px, 0px)`, transitionDuration: `${isTrans ? '300ms' : '0ms'}` }">
-        <property-item v-for="item in data" :key="item.ID" :data="item" :small="true" />
+  <div>
+    <div class="title-carousel-c">
+      <slot></slot>
+      <div class="button-container">
+        <button class="btn-carousel" :class="[{ 'disable-btn': page === 0 }]" :disabled="page === 0"
+          @click="() => handlePage(false)">
+          <icon-leftarrow />
+        </button>
+        <button class="btn-carousel go-right" :class="[{ 'disable-btn': page + 1 === total }]"
+          :disabled="page + 1 === total" @click="() => handlePage(true)">
+          <icon-leftarrow />
+        </button>
       </div>
     </div>
-    <div class="gradient-right" v-if="page !== total - 1"></div>
+    <div class="carousel-c-wrapper">
+      <div class="carousel-c-container" @mousemove="handleMouseMove" @mousedown="handleMouseDown"
+        @mouseup="handleMouseLeave" @mouseleave="handleMouseLeave">
+        <div class="carousel-c-gallery"
+          :style="{ transform: `translate3d(${-235 * 3 * page + currentTranslateX + (page && page + 1 === total ? 143 + extra * 235 : 0)}px, 0px, 0px)`, transitionDuration: `${isTrans ? '300ms' : '0ms'}` }">
+          <property-item v-for="item in data" :key="item.ID" :data="item" :small="true"
+            :class="[{ 'disable-link': preventAction }]" />
+        </div>
+      </div>
+      <div class="gradient-right" v-if="page + 1 !== total"></div>
+    </div>
   </div>
 </template>
 
@@ -29,8 +45,9 @@ export default {
       isDragging: false,
       startPosX: 0,
       currentTranslateX: 0,
-      total: Math.ceil((this.data.length + 1) / 4),
-      extra: this.data.length % 3 ? 3 - this.data.length % 3 : this.data.length % 3
+      total: Math.ceil((this.data.length) / 3),
+      extra: this.data.length % 3 ? 3 - this.data.length % 3 : 0,
+      preventAction: false
     }
   },
   methods: {
@@ -41,8 +58,10 @@ export default {
     handleMouseMove: function (e) {
       if (!this.isDragging) return
       this.currentTranslateX = e.clientX - this.startPosX
+      this.preventAction = !!this.currentTranslateX
     },
-    handleMouseLeave: function (e) {
+    handleMouseLeave: function () {
+      this.preventAction = false
       if (!this.isDragging) return
       this.isDragging = false
       if (this.currentTranslateX > 429 && this.page > 0) {
@@ -52,6 +71,11 @@ export default {
         this.page++
       }
       this.currentTranslateX = 0
+      this.isTrans = true
+      setTimeout(() => { this.isTrans = false }, 300)
+    },
+    handlePage(goRight) {
+      goRight ? this.page++ : this.page--
       this.isTrans = true
       setTimeout(() => { this.isTrans = false }, 300)
     }
@@ -87,5 +111,47 @@ export default {
   display: flex;
   gap: 15px;
   width: fit-content;
+  user-select: none;
+}
+
+.disable-link {
+  pointer-events: none;
+}
+
+.title-carousel-c {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.title-carousel-c h4 {
+  margin: 8px 0 0 0;
+}
+
+.button-container {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-carousel {
+  color: #2C2C2C;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.go-right svg {
+  transform: rotate(180deg);
+}
+
+.disable-btn {
+  color: #999;
 }
 </style>
