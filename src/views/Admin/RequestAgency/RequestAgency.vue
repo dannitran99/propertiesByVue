@@ -78,10 +78,10 @@ export default {
       return formatDateTime(timestamp)
     },
     async handleAccepct(item) {
-      await this.$store.dispatch('admin/responseRequestAgency', { username: item.username, action: 'active' })
+      await this.$store.dispatch('admin/responseRequestAgency', { username: item.username, action: 'active', role: item.type === 'ca-nhan' ? 'agency' : 'enterprise' })
     },
     async handleDelete(item) {
-      await this.$store.dispatch('admin/responseRequestAgency', { username: item.username, action: 'refused' })
+      await this.$store.dispatch('admin/responseRequestAgency', { username: item.username, action: 'refused', role: item.type === 'ca-nhan' ? 'agency' : 'enterprise' })
     }
   }
 }

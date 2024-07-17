@@ -115,10 +115,12 @@ export default {
   },
   watch: {
     contactUser() {
-      this.valuesAgency.avatar = this.contactUser.avatar
-      this.valuesAgency.name = this.contactUser.name
-      this.valuesAgency.phoneNumber = this.contactUser.phoneNumber
-      this.status = this.contactUser.status
+      if (this.contactUser.type === 'ca-nhan') {
+        this.valuesAgency.avatar = this.contactUser.avatar
+        this.valuesAgency.name = this.contactUser.name
+        this.valuesAgency.phoneNumber = this.contactUser.phoneNumber
+        this.status = this.contactUser.status
+      }
     }
   },
   async created() {

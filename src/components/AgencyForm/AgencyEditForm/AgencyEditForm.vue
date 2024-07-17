@@ -402,7 +402,6 @@ export default {
       }
       schema.validate(this.valuesAgency, { abortEarly: false })
         .then(() => {
-          console.log(this.valuesAgency.street)
           this.$store.dispatch('contact/updateAgency', {
             avatar: this.valuesAgency.avatar,
             name: this.valuesAgency.name,
@@ -501,7 +500,6 @@ h3 {
   position: relative;
   margin: auto;
   border: 1px dashed rgb(204, 204, 204);
-  ;
   border-radius: 100%;
   width: 128px;
   height: 128px;

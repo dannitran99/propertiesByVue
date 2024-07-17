@@ -14,7 +14,7 @@
         <p class="card-address" v-if="data.phoneNumber"><icon-cellphone />{{ data.phoneNumber }} </p>
       </div>
       <div class="sub-detail">
-        <h5>KHU VỰC CÁ NHÂN MÔI GIỚI</h5>
+        <h5>KHU VỰC {{ data.type === 'ca-nhan' ? 'CÁ NHÂN' : 'CÔNG TY' }} MÔI GIỚI</h5>
         <ul>
           <li v-for="(item, idx) in data.scope" :key="idx">
             {{ handleTypeProperty(item) }}

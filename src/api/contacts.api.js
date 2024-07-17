@@ -9,6 +9,15 @@ export const registerAgency = async (dataPost) => {
   }
 }
 
+export const registerEnterprise = async (dataPost) => {
+  try {
+    const { data } = await HTTP.post('/api/registerEnterprise', dataPost)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
 export const updateAgency = async (dataPost) => {
   try {
     const { data } = await HTTP.post('/api/updateAgency', dataPost)

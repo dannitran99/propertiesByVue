@@ -33,7 +33,15 @@ export default new Router({
       name: 'AgencyRegister',
       component: () => import('@/views/UserInformation'),
       beforeEnter: (to, from, next) => {
-        beforeRouteEnter() ? next() : next('/')
+        beforeRouteEnter(['user', 'agency']) ? next() : next('/')
+      }
+    },
+    {
+      path: '/dang-ky-doanh-nghiep',
+      name: 'EnterpriseRegister',
+      component: () => import('@/views/EnterpriseRegister'),
+      beforeEnter: (to, from, next) => {
+        beforeRouteEnter(['user', 'enterprise']) ? next() : next('/')
       }
     },
     {

@@ -18,14 +18,14 @@
           </div>
         </div>
         <h3>Giới thiệu</h3>
-        <h4>Khu vực môi giới</h4>
-        <p class="detail-txt">Nhà môi giới {{ contactData.name }} môi giới ở những khu vực sau:</p>
+        <h4>{{ contactData.type === 'ca-nhan' ? 'Khu vực' : 'Lĩnh vực công ty' }} môi giới</h4>
+        <p class="detail-txt"> {{ txtIntro }} </p>
         <ul>
           <li v-for="(item, idx) in contactData.scope" :key="idx">
             {{ handleTypeProperty(item) }}
           </li>
         </ul>
-        <h4>Nhà môi giới tự giới thiệu</h4>
+        <h4>{{ contactData.type === 'ca-nhan' ? 'Nhà môi giới tự giới thiệu' : 'Về chúng tôi' }}</h4>
         <p class="detail-txt last-p">{{ contactData.description }}</p>
         <h3>Danh sách tin đăng</h3>
         <property-item v-for="item in propertiesist" :key="item.ID" :data="item" :row="true" />
@@ -41,6 +41,11 @@ import { PROPSSALETYPE, PROPSRENTTYPE } from '@/consts/propstype'
 export default {
   components: {
     'property-item': PropertyItem
+  },
+  data() {
+    return {
+      txtIntro: ''
+    }
   },
   computed: {
     contactData: {
@@ -67,6 +72,9 @@ export default {
   watch: {
     '$route'() {
       this.handleRequest()
+    },
+    contactData() {
+      this.txtIntro = ` ${this.contactData.type === 'ca-nhan' ? 'Nhà môi giới' : ''} ${this.contactData.name}  môi giới ở những khu vực sau: `
     }
   },
   created() {

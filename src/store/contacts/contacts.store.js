@@ -1,4 +1,4 @@
-import { registerAgency, getContactUser, deleteRequestAgency, getAllContact, updateAgency, getContactDetail } from '@/api/contacts.api'
+import { registerAgency, getContactUser, deleteRequestAgency, getAllContact, updateAgency, getContactDetail, registerEnterprise } from '@/api/contacts.api'
 import router from '@/router'
 
 export default {
@@ -125,6 +125,13 @@ export default {
     async registerAgency (context, payload) {
       context.commit('LOADING_STATE', true)
       const [error, response] = await registerAgency(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+      }
+    },
+    async registerEnterprise (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await registerEnterprise(payload)
       if (!error && response) {
         context.commit('LOADING_STATE', false)
       }

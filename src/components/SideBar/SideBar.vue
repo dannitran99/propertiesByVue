@@ -15,12 +15,15 @@
               <component :is="item.icon" />
               {{ item.subHeader }}
             </v-list-item>
-            <v-list-item v-for="(subitem, j) in item.sub" :key="j" @click="navigate(subitem)" class="list-item"
-              :class="[{ 'active': current.includes(subitem.path) }]">
-              <v-list-item-content>
-                <v-list-item-title class="txt-item">{{ subitem.title }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+            <template v-for="(subitem, j) in item.sub">
+              <v-list-item @click="navigate(subitem)" class="list-item" :key="j"
+                :class="[{ 'active': current.includes(subitem.path) }]"
+                v-if="subitem.role ? subitem.role.includes(role) : true">
+                <v-list-item-content>
+                  <v-list-item-title class="txt-item">{{ subitem.title }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
           </template>
         </div>
       </v-list>
@@ -50,8 +53,16 @@ export default {
         sub: [
           { title: 'Chỉnh sửa thông tin cá nhân', path: '/tai-khoan' },
           { title: 'Cài đặt tài khoản', path: '/doi-mat-khau' },
-          { title: 'Môi giới chuyên nghiệp', path: '/dang-ky-moi-gioi' }
+          { title: 'Môi giới chuyên nghiệp', path: '/dang-ky-moi-gioi', role: ['user', 'agency'] }
         ]
+      },
+      {
+        subHeader: 'Quản lý TK Doanh nghiệp',
+        icon: 'icon-building',
+        sub: [
+          { title: 'Đăng ký tài khoản Doanh nghiệp', path: '/dang-ky-doanh-nghiep' }
+        ],
+        role: ['user', 'enterprise']
       },
       {
         subHeader: 'Quản trị viên',
