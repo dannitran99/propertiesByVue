@@ -32,7 +32,7 @@
                 <icon-lock />Thay đổi mật khẩu
               </router-link>
             </li>
-            <li>
+            <li v-if="beforeRouteEnter(['user', 'agency'])">
               <router-link to="/dang-ky-moi-gioi">
                 <icon-case />Môi giới chuyên nghiệp
               </router-link>
@@ -89,6 +89,7 @@
 </template>
 
 <script>
+import { beforeRouteEnter } from '@/helpers/JWTVerify'
 import { cloneDeep } from '@/helpers/arrayHandler'
 import { FILTER_SALE_ID, MENU_ITEM } from '@/consts/label.js'
 import NavBarButton from './NavBarButton'
@@ -147,6 +148,7 @@ export default {
     }
   },
   methods: {
+    beforeRouteEnter,
     logout: () => {
       localStorage.removeItem('token')
       localStorage.removeItem('username')

@@ -125,7 +125,7 @@
 import { UPLOAD_PRESET, CLOUD_NAME } from '@/consts/cloudinary'
 import * as Yup from 'yup'
 import { setNestedProperty } from '@/helpers/arrayHandler'
-import { PROPSSALETYPE, PROPSRENTTYPE } from '@/consts/propstype'
+import { SALE_ITEM, RENT_ITEM } from '@/consts/label'
 
 const scopeSchema = Yup.object().shape({
   typeProperty: Yup.string().required('Vui lòng chọn loại giao dịch'),
@@ -181,94 +181,8 @@ export default {
           value: ''
         }
       ],
-      saleItem: [
-        {
-          label: PROPSSALETYPE.canho.primaryLabel,
-          value: PROPSSALETYPE.canho.code
-        },
-        {
-          label: PROPSSALETYPE.nharieng.primaryLabel,
-          value: PROPSSALETYPE.nharieng.code
-        },
-        {
-          label: PROPSSALETYPE.bietthu.primaryLabel,
-          value: PROPSSALETYPE.bietthu.code
-        },
-        {
-          label: PROPSSALETYPE.nhamatpho.primaryLabel,
-          value: PROPSSALETYPE.nhamatpho.code
-        },
-        {
-          label: PROPSSALETYPE.shophouse.primaryLabel,
-          value: PROPSSALETYPE.shophouse.code
-        },
-        {
-          label: PROPSSALETYPE.duan.primaryLabel,
-          value: PROPSSALETYPE.duan.code
-        },
-        {
-          label: PROPSSALETYPE.dat.primaryLabel,
-          value: PROPSSALETYPE.dat.code
-        },
-        {
-          label: PROPSSALETYPE.trangtrai.primaryLabel,
-          value: PROPSSALETYPE.trangtrai.code
-        },
-        {
-          label: PROPSSALETYPE.condotel.primaryLabel,
-          value: PROPSSALETYPE.condotel.code
-        },
-        {
-          label: PROPSSALETYPE.kho.primaryLabel,
-          value: PROPSSALETYPE.kho.code
-        },
-        {
-          label: PROPSSALETYPE.khac.primaryLabel,
-          value: PROPSSALETYPE.khac.code
-        }
-      ],
-      rentItem: [
-        {
-          label: PROPSRENTTYPE.canho.primaryLabel,
-          value: PROPSRENTTYPE.canho.code
-        },
-        {
-          label: PROPSRENTTYPE.nharieng.primaryLabel,
-          value: PROPSRENTTYPE.nharieng.code
-        },
-        {
-          label: PROPSRENTTYPE.bietthu.primaryLabel,
-          value: PROPSRENTTYPE.bietthu.code
-        },
-        {
-          label: PROPSRENTTYPE.nhamatpho.primaryLabel,
-          value: PROPSRENTTYPE.nhamatpho.code
-        },
-        {
-          label: PROPSRENTTYPE.shophouse.primaryLabel,
-          value: PROPSRENTTYPE.shophouse.code
-        },
-        {
-          label: PROPSRENTTYPE.nhatro.primaryLabel,
-          value: PROPSRENTTYPE.nhatro.code
-        },
-        {
-          label: PROPSRENTTYPE.vanphong.primaryLabel,
-          value: PROPSRENTTYPE.vanphong.code
-        },
-        {
-          label: PROPSRENTTYPE.cuahang.primaryLabel,
-          value: PROPSRENTTYPE.cuahang.code
-        },
-        {
-          label: PROPSRENTTYPE.kho.primaryLabel,
-          value: PROPSRENTTYPE.kho.code
-        },
-        {
-          label: PROPSRENTTYPE.khac.primaryLabel,
-          value: PROPSRENTTYPE.khac.code
-        }
-      ],
+      saleItem: SALE_ITEM,
+      rentItem: RENT_ITEM,
       valuesAgency: {
         avatar: this.data.avatar,
         name: this.data.name,

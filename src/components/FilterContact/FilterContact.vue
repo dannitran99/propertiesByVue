@@ -23,7 +23,7 @@
 
 <script>
 import FilterSelector from './FilterSelector.vue'
-import { PROPSSALETYPE, PROPSRENTTYPE } from '@/consts/propstype'
+import { SALE_ITEM, RENT_ITEM } from '@/consts/label'
 export default {
   components: {
     FilterSelector
@@ -47,115 +47,8 @@ export default {
       itemProject: [
         { id: 0, label: 'Dự án', value: '' }
       ],
-      saleItem: [
-        {
-          id: 1,
-          label: PROPSSALETYPE.canho.primaryLabel,
-          value: PROPSSALETYPE.canho.code
-        },
-        {
-          id: 2,
-          label: PROPSSALETYPE.nharieng.primaryLabel,
-          value: PROPSSALETYPE.nharieng.code
-        },
-        {
-          id: 3,
-          label: PROPSSALETYPE.bietthu.primaryLabel,
-          value: PROPSSALETYPE.bietthu.code
-        },
-        {
-          id: 4,
-          label: PROPSSALETYPE.nhamatpho.primaryLabel,
-          value: PROPSSALETYPE.nhamatpho.code
-        },
-        {
-          id: 5,
-          label: PROPSSALETYPE.shophouse.primaryLabel,
-          value: PROPSSALETYPE.shophouse.code
-        },
-        {
-          id: 6,
-          label: PROPSSALETYPE.duan.primaryLabel,
-          value: PROPSSALETYPE.duan.code
-        },
-        {
-          id: 7,
-          label: PROPSSALETYPE.dat.primaryLabel,
-          value: PROPSSALETYPE.dat.code
-        },
-        {
-          id: 8,
-          label: PROPSSALETYPE.trangtrai.primaryLabel,
-          value: PROPSSALETYPE.trangtrai.code
-        },
-        {
-          id: 9,
-          label: PROPSSALETYPE.condotel.primaryLabel,
-          value: PROPSSALETYPE.condotel.code
-        },
-        {
-          id: 10,
-          label: PROPSSALETYPE.kho.primaryLabel,
-          value: PROPSSALETYPE.kho.code
-        },
-        {
-          id: 11,
-          label: PROPSSALETYPE.khac.primaryLabel,
-          value: PROPSSALETYPE.khac.code
-        }
-      ],
-      rentItem: [
-        {
-          id: 1,
-          label: PROPSRENTTYPE.canho.primaryLabel,
-          value: PROPSRENTTYPE.canho.code
-        },
-        {
-          id: 2,
-          label: PROPSRENTTYPE.nharieng.primaryLabel,
-          value: PROPSRENTTYPE.nharieng.code
-        },
-        {
-          id: 3,
-          label: PROPSRENTTYPE.bietthu.primaryLabel,
-          value: PROPSRENTTYPE.bietthu.code
-        },
-        {
-          id: 4,
-          label: PROPSRENTTYPE.nhamatpho.primaryLabel,
-          value: PROPSRENTTYPE.nhamatpho.code
-        },
-        {
-          id: 5,
-          label: PROPSRENTTYPE.shophouse.primaryLabel,
-          value: PROPSRENTTYPE.shophouse.code
-        },
-        {
-          id: 6,
-          label: PROPSRENTTYPE.nhatro.primaryLabel,
-          value: PROPSRENTTYPE.nhatro.code
-        },
-        {
-          id: 7,
-          label: PROPSRENTTYPE.vanphong.primaryLabel,
-          value: PROPSRENTTYPE.vanphong.code
-        },
-        {
-          id: 8,
-          label: PROPSRENTTYPE.cuahang.primaryLabel,
-          value: PROPSRENTTYPE.cuahang.code
-        },
-        {
-          id: 9,
-          label: PROPSRENTTYPE.kho.primaryLabel,
-          value: PROPSRENTTYPE.kho.code
-        },
-        {
-          id: 10,
-          label: PROPSRENTTYPE.khac.primaryLabel,
-          value: PROPSRENTTYPE.khac.code
-        }
-      ]
+      saleItem: SALE_ITEM,
+      rentItem: RENT_ITEM
     }
   },
   computed: {

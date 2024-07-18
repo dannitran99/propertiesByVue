@@ -69,7 +69,8 @@ export default {
         icon: 'icon-box',
         sub: [
           { title: 'Yêu cầu đăng ký môi giới', path: '/yeu-cau-moi-gioi' },
-          { title: 'Yêu cầu xóa tài khoản', path: '/yeu-cau-xoa-tai-khoan' }
+          { title: 'Yêu cầu xóa tài khoản', path: '/yeu-cau-xoa-tai-khoan' },
+          { title: 'Đăng tin tức', path: '/tao-tin' }
         ],
         role: ['admin']
       }

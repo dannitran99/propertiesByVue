@@ -13,12 +13,19 @@ HTTP.defaults.headers.common['Authorization'] = `Bearer ${token}`
 HTTP.interceptors.response.use(
   res => res,
   err => {
-    if (err.response.statusText === 'Unauthorized') {
-      alert('Vui lòng đăng nhập lại!')
-      localStorage.removeItem('token')
-      localStorage.removeItem('username')
-      localStorage.removeItem('avatar')
-      location.reload('/')
+    switch (err.response.statusText) {
+      case 'Unauthorized':
+        alert('Vui lòng đăng nhập lại!')
+        localStorage.removeItem('token')
+        localStorage.removeItem('username')
+        localStorage.removeItem('avatar')
+        location.reload('/')
+        break
+      case 'Not Found':
+        location.replace('/404')
+        break
+      default:
+        break
     }
     throw err
   }

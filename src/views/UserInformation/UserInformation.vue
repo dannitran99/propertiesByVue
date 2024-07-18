@@ -9,8 +9,8 @@
             tin</button>
           <button @click="navigate('doi-mat-khau')" :class="[{ 'active': tab === 'doi-mat-khau' }]">Cài đặt tài
             khoản</button>
-          <button @click="navigate('dang-ky-moi-gioi')" :class="[{ 'active': tab === 'dang-ky-moi-gioi' }]">Đăng ký Môi
-            giới chuyên nghiệp</button>
+          <button @click="navigate('dang-ky-moi-gioi')" :class="[{ 'active': tab === 'dang-ky-moi-gioi' }]"
+            v-if="beforeRouteEnter(['user', 'agency'])">Đăng ký Môi giới chuyên nghiệp</button>
         </div>
         <div v-if="tab === 'tai-khoan'">
           <form @submit.prevent="handleChangeInfo">
@@ -148,6 +148,7 @@
 </template>
 
 <script>
+import { beforeRouteEnter } from '@/helpers/JWTVerify'
 import SideBar from '@/components/SideBar'
 import AgencyForm from '@/components/AgencyForm'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
@@ -253,6 +254,7 @@ export default {
     }
   },
   methods: {
+    beforeRouteEnter,
     navigate(link) {
       link !== this.tab && this.$router.push(link)
     },

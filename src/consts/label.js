@@ -1,4 +1,5 @@
 import { PROPSSALETYPE, PROPSRENTTYPE } from './propstype'
+import { NEWS_CATEGORY_TYPE } from './newsCategory'
 
 export const FILTER_SALE_LABEL = [
   'Tất cả nhà đất',
@@ -56,6 +57,175 @@ export const FILTER_RENT_ID = [
   PROPSRENTTYPE.cuahang.code,
   PROPSRENTTYPE.kho.code,
   PROPSRENTTYPE.khac.code
+]
+
+export const NEWS_ITEM = [
+  {
+    id: 1,
+    label: NEWS_CATEGORY_TYPE.tintuc.primaryLabel,
+    value: NEWS_CATEGORY_TYPE.tintuc.code
+  },
+  {
+    id: 2,
+    label: NEWS_CATEGORY_TYPE.mua.primaryLabel,
+    value: NEWS_CATEGORY_TYPE.mua.code
+  },
+  {
+    id: 3,
+    label: NEWS_CATEGORY_TYPE.ban.primaryLabel,
+    value: NEWS_CATEGORY_TYPE.ban.code
+  },
+  {
+    id: 4,
+    label: NEWS_CATEGORY_TYPE.thue.primaryLabel,
+    value: NEWS_CATEGORY_TYPE.thue.code
+  },
+  {
+    id: 5,
+    label: NEWS_CATEGORY_TYPE.taichinh.primaryLabel,
+    value: NEWS_CATEGORY_TYPE.taichinh.code
+  },
+  {
+    id: 6,
+    label: NEWS_CATEGORY_TYPE.quyhoach.primaryLabel,
+    value: NEWS_CATEGORY_TYPE.quyhoach.code
+  },
+  {
+    id: 7,
+    label: NEWS_CATEGORY_TYPE.noithat.primaryLabel,
+    value: NEWS_CATEGORY_TYPE.noithat.code
+  },
+  {
+    id: 8,
+    label: NEWS_CATEGORY_TYPE.phongthuy.primaryLabel,
+    value: NEWS_CATEGORY_TYPE.phongthuy.code
+  },
+  {
+    id: 9,
+    label: NEWS_CATEGORY_TYPE.bieudo.primaryLabel,
+    value: NEWS_CATEGORY_TYPE.bieudo.code
+  },
+  {
+    id: 10,
+    label: NEWS_CATEGORY_TYPE.video.primaryLabel,
+    value: NEWS_CATEGORY_TYPE.video.code
+  },
+  {
+    id: 11,
+    label: NEWS_CATEGORY_TYPE.chuyengia.primaryLabel,
+    value: NEWS_CATEGORY_TYPE.chuyengia.code
+  }
+]
+
+export const SALE_ITEM = [
+  {
+    id: 1,
+    label: PROPSSALETYPE.canho.primaryLabel,
+    value: PROPSSALETYPE.canho.code
+  },
+  {
+    id: 2,
+    label: PROPSSALETYPE.nharieng.primaryLabel,
+    value: PROPSSALETYPE.nharieng.code
+  },
+  {
+    id: 3,
+    label: PROPSSALETYPE.bietthu.primaryLabel,
+    value: PROPSSALETYPE.bietthu.code
+  },
+  {
+    id: 4,
+    label: PROPSSALETYPE.nhamatpho.primaryLabel,
+    value: PROPSSALETYPE.nhamatpho.code
+  },
+  {
+    id: 5,
+    label: PROPSSALETYPE.shophouse.primaryLabel,
+    value: PROPSSALETYPE.shophouse.code
+  },
+  {
+    id: 6,
+    label: PROPSSALETYPE.duan.primaryLabel,
+    value: PROPSSALETYPE.duan.code
+  },
+  {
+    id: 7,
+    label: PROPSSALETYPE.dat.primaryLabel,
+    value: PROPSSALETYPE.dat.code
+  },
+  {
+    id: 8,
+    label: PROPSSALETYPE.trangtrai.primaryLabel,
+    value: PROPSSALETYPE.trangtrai.code
+  },
+  {
+    id: 9,
+    label: PROPSSALETYPE.condotel.primaryLabel,
+    value: PROPSSALETYPE.condotel.code
+  },
+  {
+    id: 10,
+    label: PROPSSALETYPE.kho.primaryLabel,
+    value: PROPSSALETYPE.kho.code
+  },
+  {
+    id: 11,
+    label: PROPSSALETYPE.khac.primaryLabel,
+    value: PROPSSALETYPE.khac.code
+  }
+]
+
+export const RENT_ITEM = [
+  {
+    id: 1,
+    label: PROPSRENTTYPE.canho.primaryLabel,
+    value: PROPSRENTTYPE.canho.code
+  },
+  {
+    id: 2,
+    label: PROPSRENTTYPE.nharieng.primaryLabel,
+    value: PROPSRENTTYPE.nharieng.code
+  },
+  {
+    id: 3,
+    label: PROPSRENTTYPE.bietthu.primaryLabel,
+    value: PROPSRENTTYPE.bietthu.code
+  },
+  {
+    id: 4,
+    label: PROPSRENTTYPE.nhamatpho.primaryLabel,
+    value: PROPSRENTTYPE.nhamatpho.code
+  },
+  {
+    id: 5,
+    label: PROPSRENTTYPE.shophouse.primaryLabel,
+    value: PROPSRENTTYPE.shophouse.code
+  },
+  {
+    id: 6,
+    label: PROPSRENTTYPE.nhatro.primaryLabel,
+    value: PROPSRENTTYPE.nhatro.code
+  },
+  {
+    id: 7,
+    label: PROPSRENTTYPE.vanphong.primaryLabel,
+    value: PROPSRENTTYPE.vanphong.code
+  },
+  {
+    id: 8,
+    label: PROPSRENTTYPE.cuahang.primaryLabel,
+    value: PROPSRENTTYPE.cuahang.code
+  },
+  {
+    id: 9,
+    label: PROPSRENTTYPE.kho.primaryLabel,
+    value: PROPSRENTTYPE.kho.code
+  },
+  {
+    id: 10,
+    label: PROPSRENTTYPE.khac.primaryLabel,
+    value: PROPSRENTTYPE.khac.code
+  }
 ]
 
 export const FILTER_RENT_OPTION = [
