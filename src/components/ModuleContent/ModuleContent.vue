@@ -1,20 +1,23 @@
 <template>
   <v-dialog v-model="dialog" width="500">
     <template v-slot:activator="{ on, attrs }">
-      <button class="btn-add" type="button" v-bind="attrs" v-on="on">
+      <button class="btn-add mt-3" type="button" v-bind="attrs" v-on="on" v-if="index === undefined">
         <icon-plus /> Thêm module bài viết
+      </button>
+      <button type="button" v-else v-bind="attrs" v-on="on">
+        <icon-plus />
       </button>
     </template>
     <v-sheet class="wrapper-model">
       <h3>Module bài viết</h3>
       <v-row class="mt-0">
         <v-col cols="12" sm="6" class="p-0">
-          <button class="btn-add" type="button" @click="() => $emit('addModule', moduleTitle)">
+          <button class="btn-add" type="button" @click="handleAddTitle">
             <icon-plus /> Tiêu đề
           </button>
         </v-col>
         <v-col cols="12" sm="6" class="p-0">
-          <button class="btn-add" type="button">
+          <button class="btn-add" type="button" @click="handleAddParagraph">
             <icon-plus /> Đoạn văn
           </button>
         </v-col>
@@ -24,17 +27,43 @@
 </template>
 
 <script>
+import { MODULE_TITLE, MODULE_PARAGRAPH } from '@/consts/contentNews'
 export default {
+  props: {
+    index: {
+      type: Number
+    }
+  },
   data() {
     return {
-      dialog: false,
-      moduleTitle: {
-        id: 'title',
-        content: ''
-      }
+      dialog: false
     }
   },
   methods: {
+    handleAddTitle() {
+      this.$emit('addModule', {
+        values: {
+          id: MODULE_TITLE,
+          content: '',
+          size: ''
+        },
+        errors: {
+          content: '',
+          size: ''
+        }
+      }, this.index)
+    },
+    handleAddParagraph() {
+      this.$emit('addModule', {
+        values: {
+          id: MODULE_PARAGRAPH,
+          content: ''
+        },
+        errors: {
+          content: ''
+        }
+      }, this.index)
+    }
   }
 }
 </script>

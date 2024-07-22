@@ -1,7 +1,7 @@
 <template>
   <li v-on:mouseenter="hoverPreviewNews">
     <router-link :to="{ name: 'NewsDetail', params: { newsId: data.ID, } }" class="route-link">
-      {{ data.name }}
+      {{ data.title }}
     </router-link>
   </li>
 </template>

@@ -11,6 +11,11 @@
               <v-select placeholder="Chọn" dense outlined :items="newsCategory" item-text="label" item-value="value"
                 v-model="values.category" :error-messages="errors.category"></v-select>
             </v-col>
+            <v-col cols="12" sm="6" class="pb-0">
+              <p class="txt-label txt-highlight">Thẻ</p>
+              <v-combobox placeholder="Chọn" dense outlined v-model="values.tags" :error-messages="errors.tags"
+                :items="tags" hide-details hide-no-data hide-selected multiple single-line small-chips></v-combobox>
+            </v-col>
           </v-row>
           <v-row class="mt-0">
             <v-col cols="12" class="pb-0">
@@ -53,8 +58,21 @@
       <div :class="[{ 'point-event': isLoading }, 'paper']">
         <h2 class="px-5">Nội dung bài viết</h2>
         <div class="paper-content">
+          <div template v-for="(item, idx) in values.content" :key="idx" :class="[{ 'mt-5': idx }]">
+            <div class="content-dynamic">
+              <h3>Module {{ idx + 1 }}</h3>
+              <div>
+                <button type="button" @click="() => handleRemove(idx)">
+                  <icon-minus />
+                </button>
+                <module-content @addModule="handleAddModule" :index="idx" />
+              </div>
+            </div>
+            <component :is="item.id" :dataForm="item" :errors="errors.content[idx]" />
+          </div>
           <module-content @addModule="handleAddModule" />
-          <p v-if="errors.content" class="warning-txt">{{ errors.content }}</p>
+          <p v-if="errors.content && typeof errors.content === 'string'" class="warning-txt">{{ errors.content }}
+          </p>
         </div>
       </div>
       <div class="paper sticky-wrapper">
@@ -67,23 +85,18 @@
 
 <script>
 import { UPLOAD_PRESET, CLOUD_NAME } from '@/consts/cloudinary'
-import ModuleContent from '@/components/ModuleContent'
+import { ModuleContent, ModuleTitle, ModuleParagraph } from '@/components/ModuleContent'
 import SideBar from '@/components/SideBar'
 import { NEWS_ITEM } from '@/consts/label'
 import { setNestedProperty } from '@/helpers/arrayHandler'
-import * as Yup from 'yup'
+import { schema, handleErrorContent } from './validate'
+import { DEFAULT_TAGS } from '@/consts/contentNews'
 
-const schema = Yup.object().shape({
-  category: Yup.string().required('Vui lòng chọn danh mục tin'),
-  title: Yup.string().required('Vui lòng điền tiêu đề bài viết'),
-  description: Yup.string().required('Vui lòng điền mô tả bài viết'),
-  thumbnail: Yup.string().required('Vui lòng chọn ảnh thu nhỏ bài viết'),
-  content: Yup.array().min(1, 'Nhập ít nhất 1 nội dung')
-})
 export default {
-  components: { SideBar, ModuleContent },
+  components: { SideBar, ModuleContent, ModuleTitle, ModuleParagraph },
   data() {
     return {
+      tags: DEFAULT_TAGS,
       isDragging: false,
       newsCategory: [
         {
@@ -95,6 +108,7 @@ export default {
       ],
       values: {
         category: '',
+        tags: [],
         title: '',
         description: '',
         thumbnail: '',
@@ -102,6 +116,7 @@ export default {
       },
       errors: {
         category: '',
+        tags: '',
         title: '',
         description: '',
         thumbnail: '',
@@ -122,20 +137,34 @@ export default {
     }
   },
   methods: {
-    handleAddModule(item) {
-      this.values.content.push(item)
+    handleAddModule(item, idx) {
+      const index = idx !== undefined ? idx : this.values.content.length
+      this.values.content.splice(index, 0, item.values)
+      if (typeof this.errors.content === 'object') this.errors.content.splice(index, 0, item.errors)
+      else this.errors.content = [item.errors]
     },
     handleForm() {
       this.errors = {
         category: '',
+        tags: '',
         title: '',
         description: '',
         thumbnail: '',
-        content: ''
+        content: handleErrorContent(this.values.content)
       }
       schema.validate(this.values, { abortEarly: false })
         .then(() => {
-          console.log(this.values)
+          this.$store.dispatch('news/postNews', {
+            category: this.values.category,
+            tags: this.values.tags,
+            title: this.values.title,
+            description: this.values.description,
+            thumbnail: this.values.thumbnail,
+            content: this.values.content,
+            createdAt: new Date()
+          })
+            .then(() => {
+            })
         })
         .catch((err) => {
           err.inner.forEach(error => {
@@ -159,6 +188,10 @@ export default {
     },
     handleDeleteThumbnail() {
       this.values.thumbnail = ''
+    },
+    handleRemove(idx) {
+      this.values.content.splice(idx, 1)
+      this.errors.content.splice(idx, 1)
     },
     selectFiles() {
       this.$refs.fileInput.click()
@@ -346,5 +379,11 @@ h2 {
   font-size: 12px;
   line-height: 16px;
   font-weight: 400;
+}
+
+.content-dynamic {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

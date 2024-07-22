@@ -1,3 +1,5 @@
-import index from './ModuleContent.vue'
+import ModuleContent from './ModuleContent.vue'
+import ModuleTitle from './ModuleTitle.vue'
+import ModuleParagraph from './ModuleParagraph.vue'
 
-export default index
+export {ModuleContent, ModuleTitle, ModuleParagraph}

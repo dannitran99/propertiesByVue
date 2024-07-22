@@ -2,7 +2,7 @@
   <router-link :to="{ name: 'NewsDetail', params: { newsId: data.ID, } }" class="wrapper"
     :class="[{ 'show': isDisplay }]">
     <img v-bind:src="data.thumbnail">
-    <p class="title">{{ data.name }}</p>
+    <p class="title">{{ data.title }}</p>
     <div class="time">
       <icon-clock />
       <p class="time">{{ moment() }}</p>

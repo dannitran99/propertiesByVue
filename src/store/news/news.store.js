@@ -1,4 +1,4 @@
-import { getNewsList, getNewById } from '@/api/news.api'
+import { getNewsList, getNewById, postNews } from '@/api/news.api'
 
 export default {
   namespaced: true,
@@ -45,6 +45,9 @@ export default {
     },
     SET_CURRENT_TAB (state, data) {
       state.currentTab = data
+    },
+    LOADING_STATE (state, payload) {
+      state.isLoading = payload
     }
   },
   actions: {
@@ -62,6 +65,15 @@ export default {
       const [error, response] = await getNewById(payload.id)
       if (!error && response) {
         context.commit('GET_NEW_DATA', response)
+      } else {
+        console.error(error)
+      }
+    },
+    async postNews (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await postNews(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
       } else {
         console.error(error)
       }

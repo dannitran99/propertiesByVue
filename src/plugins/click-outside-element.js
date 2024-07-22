@@ -1,6 +1,6 @@
 export default {
   install (Vue) {
-    Vue.directive('click-outside', {
+    Vue.directive('click-outside-ref', {
       bind: function (element, binding, vnode) {
         element.clickOutsideEvent = function (event) {
           if (!(element === event.target || element.contains(event.target))) {
