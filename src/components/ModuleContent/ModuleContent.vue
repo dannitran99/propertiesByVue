@@ -21,13 +21,18 @@
             <icon-plus /> Đoạn văn
           </button>
         </v-col>
+        <v-col cols="12" sm="6" class="p-0">
+          <button class="btn-add" type="button" @click="handleAddImage">
+            <icon-plus /> Hình ảnh
+          </button>
+        </v-col>
       </v-row>
     </v-sheet>
   </v-dialog>
 </template>
 
 <script>
-import { MODULE_TITLE, MODULE_PARAGRAPH } from '@/consts/contentNews'
+import { MODULE_TITLE, MODULE_PARAGRAPH, MODULE_IMAGE } from '@/consts/contentNews'
 export default {
   props: {
     index: {
@@ -61,6 +66,19 @@ export default {
         },
         errors: {
           content: ''
+        }
+      }, this.index)
+    },
+    handleAddImage() {
+      this.$emit('addModule', {
+        values: {
+          id: MODULE_IMAGE,
+          image: '',
+          description: ''
+        },
+        errors: {
+          image: '',
+          description: ''
         }
       }, this.index)
     }

@@ -1,7 +1,5 @@
 import * as Yup from 'yup'
-import {MODULE_TITLE, MODULE_PARAGRAPH} from '@/consts/contentNews'
-
-// const CONTENT_VALIDATE = 'content-validate'
+import {MODULE_TITLE, MODULE_PARAGRAPH, MODULE_IMAGE} from '@/consts/contentNews'
 
 export const schema = Yup.object().shape({
   category: Yup.string().required('Vui lòng chọn danh mục tin'),
@@ -9,6 +7,7 @@ export const schema = Yup.object().shape({
   title: Yup.string().required('Vui lòng điền tiêu đề bài viết'),
   description: Yup.string().required('Vui lòng điền mô tả bài viết'),
   thumbnail: Yup.string().required('Vui lòng chọn ảnh thu nhỏ bài viết'),
+  source: Yup.string(),
   content: Yup.array()
     .of(
       Yup.lazy(value => {
@@ -17,8 +16,10 @@ export const schema = Yup.object().shape({
             return schemaTitle
           case MODULE_PARAGRAPH:
             return schemaParagraph
+          case MODULE_IMAGE:
+            return schemaImage
           default:
-            return schemaParagraph
+            break
         }
       })
     )
@@ -36,6 +37,12 @@ const schemaParagraph = Yup.object().shape({
   content: Yup.string().required('Vui lòng nhập đoạn văn bản')
 })
 
+const schemaImage = Yup.object().shape({
+  id: Yup.string(),
+  image: Yup.string().required('Vui lòng chọn ảnh'),
+  description: Yup.string()
+})
+
 export const handleErrorContent = (input) => {
   return input.map(item => {
     switch (item.id) {
@@ -47,6 +54,11 @@ export const handleErrorContent = (input) => {
       case MODULE_PARAGRAPH:
         return ({
           content: ''
+        })
+      case MODULE_IMAGE:
+        return ({
+          image: '',
+          description: ''
         })
       default: break
     }

@@ -53,6 +53,13 @@
               </template>
             </v-col>
           </v-row>
+          <v-row class="mt-0 pb-3">
+            <v-col class="pb-0">
+              <p class="txt-label txt-highlight">Nguồn</p>
+              <v-text-field placeholder="Nhập nguồn bài viết" dense outlined v-model="values.source"
+                :error-messages="errors.source"></v-text-field>
+            </v-col>
+          </v-row>
         </div>
       </div>
       <div :class="[{ 'point-event': isLoading }, 'paper']">
@@ -85,7 +92,7 @@
 
 <script>
 import { UPLOAD_PRESET, CLOUD_NAME } from '@/consts/cloudinary'
-import { ModuleContent, ModuleTitle, ModuleParagraph } from '@/components/ModuleContent'
+import { ModuleContent, ModuleTitle, ModuleParagraph, ModuleImage } from '@/components/ModuleContent'
 import SideBar from '@/components/SideBar'
 import { NEWS_ITEM } from '@/consts/label'
 import { setNestedProperty } from '@/helpers/arrayHandler'
@@ -93,7 +100,7 @@ import { schema, handleErrorContent } from './validate'
 import { DEFAULT_TAGS } from '@/consts/contentNews'
 
 export default {
-  components: { SideBar, ModuleContent, ModuleTitle, ModuleParagraph },
+  components: { SideBar, ModuleContent, ModuleTitle, ModuleParagraph, ModuleImage },
   data() {
     return {
       tags: DEFAULT_TAGS,
@@ -112,6 +119,7 @@ export default {
         title: '',
         description: '',
         thumbnail: '',
+        source: '',
         content: []
       },
       errors: {
@@ -120,6 +128,7 @@ export default {
         title: '',
         description: '',
         thumbnail: '',
+        source: '',
         content: ''
       }
     }
@@ -150,6 +159,7 @@ export default {
         title: '',
         description: '',
         thumbnail: '',
+        source: '',
         content: handleErrorContent(this.values.content)
       }
       schema.validate(this.values, { abortEarly: false })
@@ -160,6 +170,7 @@ export default {
             title: this.values.title,
             description: this.values.description,
             thumbnail: this.values.thumbnail,
+            source: this.values.source,
             content: this.values.content,
             createdAt: new Date()
           })

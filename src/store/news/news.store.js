@@ -62,9 +62,11 @@ export default {
       }
     },
     async getNewById (context, payload) {
+      context.commit('LOADING_STATE', true)
       const [error, response] = await getNewById(payload.id)
       if (!error && response) {
         context.commit('GET_NEW_DATA', response)
+        context.commit('LOADING_STATE', false)
       } else {
         console.error(error)
       }

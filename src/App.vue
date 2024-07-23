@@ -27,6 +27,11 @@ export default {
 }
 
 @font-face {
+  font-family: 'Lexend';
+  src: url('../public/fonts/Lexend-Regular.ttf') format('truetype');
+}
+
+@font-face {
   font-family: 'Roboto-Regular';
   src: url('../public/fonts/Roboto-Regular.ttf') format('truetype');
 }
