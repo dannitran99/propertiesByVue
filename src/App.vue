@@ -56,6 +56,10 @@ a {
   -webkit-user-drag: none;
 }
 
+iframe {
+  border: 0;
+}
+
 .nav-bar {
   z-index: 99;
 }

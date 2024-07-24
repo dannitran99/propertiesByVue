@@ -23,7 +23,9 @@
           <p class="description-p">{{ data.description }}</p>
         </div>
         <div v-if="data.url">
-          <iframe :src="handleLink(data.url)" title="link" width="100%" height="450"></iframe>
+          <iframe :src="handleLink(data.url)" title="link" width="100%" height="450"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
         </div>
         <div class="detail-section">
           <div class="detail-child">

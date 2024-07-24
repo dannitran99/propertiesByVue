@@ -28,9 +28,9 @@
 
 <script>
 import { formatDateTime } from '@/helpers/formater'
-import { ModuleTitle, ModuleParagraph, ModuleImage } from '@/components/ModuleContentRender'
+import { ModuleTitle, ModuleParagraph, ModuleImage, ModuleVideo, ModuleTable } from '@/components/ModuleContentRender'
 export default {
-  components: { ModuleTitle, ModuleParagraph, ModuleImage },
+  components: { ModuleTitle, ModuleParagraph, ModuleImage, ModuleVideo, ModuleTable },
   computed: {
     content: {
       get() {

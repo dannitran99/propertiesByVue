@@ -1,5 +1,12 @@
 <template>
-  <p>{{ data.content }}</p>
+  <p>
+    <b v-if="data.isBold">
+      <i v-if="data.isItalic">{{ data.content }}</i>
+      <template v-else>{{ data.content }}</template>
+    </b>
+    <i v-else-if="data.isItalic">{{ data.content }}</i>
+    <template v-else>{{ data.content }}</template>
+  </p>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 import * as Yup from 'yup'
-import {MODULE_TITLE, MODULE_PARAGRAPH, MODULE_IMAGE} from '@/consts/contentNews'
+import {MODULE_TITLE, MODULE_PARAGRAPH, MODULE_IMAGE, MODULE_VIDEO, MODULE_TABLE} from '@/consts/contentNews'
 
 export const schema = Yup.object().shape({
   category: Yup.string().required('Vui lòng chọn danh mục tin'),
@@ -18,6 +18,10 @@ export const schema = Yup.object().shape({
             return schemaParagraph
           case MODULE_IMAGE:
             return schemaImage
+          case MODULE_VIDEO:
+            return schemaVideo
+          case MODULE_TABLE:
+            return schemaTable
           default:
             break
         }
@@ -34,13 +38,28 @@ const schemaTitle = Yup.object().shape({
 
 const schemaParagraph = Yup.object().shape({
   id: Yup.string(),
-  content: Yup.string().required('Vui lòng nhập đoạn văn bản')
+  content: Yup.string().required('Vui lòng nhập đoạn văn bản'),
+  isBold: Yup.boolean(),
+  isItalic: Yup.boolean()
 })
 
 const schemaImage = Yup.object().shape({
   id: Yup.string(),
   image: Yup.string().required('Vui lòng chọn ảnh'),
   description: Yup.string()
+})
+
+const schemaVideo = Yup.object().shape({
+  id: Yup.string(),
+  url: Yup.string().required('Vui lòng nhập link youtube'),
+  description: Yup.string()
+})
+
+const schemaTable = Yup.object().shape({
+  id: Yup.string(),
+  hasHeader: Yup.boolean(),
+  tableHead: Yup.array(Yup.string()),
+  tableRow: Yup.array(Yup.array(Yup.string()))
 })
 
 export const handleErrorContent = (input) => {
@@ -53,12 +72,25 @@ export const handleErrorContent = (input) => {
         })
       case MODULE_PARAGRAPH:
         return ({
-          content: ''
+          content: '',
+          isBold: '',
+          isItalic: ''
         })
       case MODULE_IMAGE:
         return ({
           image: '',
           description: ''
+        })
+      case MODULE_VIDEO:
+        return ({
+          url: '',
+          description: ''
+        })
+      case MODULE_TABLE:
+        return ({
+          hasHeader: '',
+          tableHead: '',
+          tableRow: ''
         })
       default: break
     }

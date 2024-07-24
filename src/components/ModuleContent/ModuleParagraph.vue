@@ -1,6 +1,14 @@
 <template>
   <v-row class="mt-0">
-    <v-col cols="12" class="pb-0">
+    <v-col cols="12" class="pb-0 row-checkbox" sm="6">
+      <p class="txt-label">In đậm</p>
+      <input type="checkbox" v-model="dataForm.isBold" />
+    </v-col>
+    <v-col cols="12" class="pb-0 row-checkbox" sm="6">
+      <p class="txt-label">In nghiêng</p>
+      <input type="checkbox" v-model="dataForm.isItalic" />
+    </v-col>
+    <v-col cols=" 12" class="pb-0">
       <p class="txt-label txt-highlight">Đoạn văn bản <span>*</span></p>
       <v-textarea placeholder="Nhập đoạn văn bản" dense outlined rows="4" no-resize v-model="dataForm.content"
         :error-messages="errors.content"></v-textarea>
@@ -32,5 +40,15 @@ export default {
 
 .txt-highlight span {
   color: red;
+}
+
+.row-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.row-checkbox p {
+  margin: 0;
 }
 </style>

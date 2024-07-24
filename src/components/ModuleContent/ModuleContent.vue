@@ -26,13 +26,23 @@
             <icon-plus /> Hình ảnh
           </button>
         </v-col>
+        <v-col cols="12" sm="6" class="p-0">
+          <button class="btn-add" type="button" @click="handleAddVideo">
+            <icon-plus /> Video Youtube
+          </button>
+        </v-col>
+        <v-col cols="12" sm="6" class="p-0">
+          <button class="btn-add" type="button" @click="handleAddTable">
+            <icon-plus /> Bảng
+          </button>
+        </v-col>
       </v-row>
     </v-sheet>
   </v-dialog>
 </template>
 
 <script>
-import { MODULE_TITLE, MODULE_PARAGRAPH, MODULE_IMAGE } from '@/consts/contentNews'
+import { MODULE_TITLE, MODULE_PARAGRAPH, MODULE_IMAGE, MODULE_VIDEO, MODULE_TABLE } from '@/consts/contentNews'
 export default {
   props: {
     index: {
@@ -62,10 +72,14 @@ export default {
       this.$emit('addModule', {
         values: {
           id: MODULE_PARAGRAPH,
-          content: ''
+          content: '',
+          isBold: false,
+          isItalic: false
         },
         errors: {
-          content: ''
+          content: '',
+          isBold: '',
+          isItalic: ''
         }
       }, this.index)
     },
@@ -79,6 +93,34 @@ export default {
         errors: {
           image: '',
           description: ''
+        }
+      }, this.index)
+    },
+    handleAddVideo() {
+      this.$emit('addModule', {
+        values: {
+          id: MODULE_VIDEO,
+          url: '',
+          description: ''
+        },
+        errors: {
+          url: '',
+          description: ''
+        }
+      }, this.index)
+    },
+    handleAddTable() {
+      this.$emit('addModule', {
+        values: {
+          id: MODULE_TABLE,
+          hasHeader: true,
+          tableHead: [],
+          tableRow: []
+        },
+        errors: {
+          hasHeader: '',
+          tableHead: '',
+          tableRow: ''
         }
       }, this.index)
     }

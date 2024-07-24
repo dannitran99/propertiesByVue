@@ -92,7 +92,7 @@
 
 <script>
 import { UPLOAD_PRESET, CLOUD_NAME } from '@/consts/cloudinary'
-import { ModuleContent, ModuleTitle, ModuleParagraph, ModuleImage } from '@/components/ModuleContent'
+import { ModuleContent, ModuleTitle, ModuleParagraph, ModuleImage, ModuleVideo, ModuleTable } from '@/components/ModuleContent'
 import SideBar from '@/components/SideBar'
 import { NEWS_ITEM } from '@/consts/label'
 import { setNestedProperty } from '@/helpers/arrayHandler'
@@ -100,7 +100,7 @@ import { schema, handleErrorContent } from './validate'
 import { DEFAULT_TAGS } from '@/consts/contentNews'
 
 export default {
-  components: { SideBar, ModuleContent, ModuleTitle, ModuleParagraph, ModuleImage },
+  components: { SideBar, ModuleContent, ModuleTitle, ModuleParagraph, ModuleImage, ModuleVideo, ModuleTable },
   data() {
     return {
       tags: DEFAULT_TAGS,
