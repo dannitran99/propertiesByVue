@@ -20,7 +20,7 @@
         <h3>Giới thiệu</h3>
         <h4>{{ contactData.type === 'ca-nhan' ? 'Khu vực' : 'Lĩnh vực công ty' }} môi giới</h4>
         <p class="detail-txt"> {{ txtIntro }} </p>
-        <ul>
+        <ul class="list-scope">
           <li v-for="(item, idx) in contactData.scope" :key="idx">
             {{ handleTypeProperty(item) }}
           </li>
@@ -188,5 +188,9 @@ li {
 
 .last-p {
   margin-bottom: 40px;
+}
+
+.list-scope {
+  padding-left: 20px;
 }
 </style>

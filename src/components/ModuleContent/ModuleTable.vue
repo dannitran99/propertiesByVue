@@ -8,9 +8,13 @@
       <div class="pb-3">
         <table class="mb-3 ">
           <tbody>
-            <tr v-if="dataForm.hasHeader" class="table-header">
-              <td v-for="(_, idx) in dataForm.tableHead" :key="idx">
-                <input v-model="dataForm.tableHead[idx]" class="pt-1 pb-1 pl-1 pr-1" />
+            <tr class="table-header" :class="[{ 'disable-header': !dataForm.hasHeader }]" ref="table-head">
+              <td v-for="(_, idx) in dataForm.tableHead" :key="idx" class="insert-cell"
+                @mousemove="(e) => handleMouseMove(e, idx)" @mouseleave="handleMouseLeave">
+                <div class="insert-button" :class="[{ 'show-btn': showBtnInsertLeft && indexInsert === idx }]"></div>
+                <div class="insert-button right-btn"
+                  :class="[{ 'show-btn': showBtnInsertRight && indexInsert === idx }]"></div>
+                <input v-model="dataForm.tableHead[idx]" class="pt-1 pb-1 pl-1 pr-1" :disabled="!dataForm.hasHeader" />
               </td>
             </tr>
             <tr v-for="(_, i) in dataForm.tableRow" :key="`row${i}`">
@@ -27,7 +31,7 @@
           </div>
         </button>
       </div>
-      <button type="button" class="button-add" @click="handleAddColumn">
+      <button type="button" class="button-add" @click="() => handleAddColumn()">
         <p class="txt-label">Thêm cột</p>
         <div class="close-btn">
           <icon-plus />
@@ -49,14 +53,26 @@ export default {
   },
   data() {
     return {
-      column: 0
+      column: 1,
+      showBtnInsertLeft: false,
+      showBtnInsertRight: false,
+      indexInsert: -1
+    }
+  },
+  computed: {
+    cellWidth() {
+      return this.$refs[`table-head`].clientWidth / this.column
+    },
+    boundingLeft() {
+      return this.$refs[`table-head`].getBoundingClientRect().left
     }
   },
   methods: {
-    handleAddColumn() {
-      this.dataForm.tableHead.push('')
+    handleAddColumn(idx) {
+      const index = idx !== undefined ? idx : this.column
+      this.dataForm.tableHead.splice(index, 0, '')
       this.dataForm.tableRow.forEach((item) => {
-        item.push('')
+        item.splice(index, 0, '')
       })
       this.column++
     },
@@ -66,12 +82,23 @@ export default {
         row.push('')
       }
       this.dataForm.tableRow.push(row)
+    },
+    handleMouseMove: function (e, idx) {
+      const pos = e.clientX - (this.boundingLeft + this.cellWidth * idx)
+      this.showBtnInsertLeft = pos < 10
+      this.showBtnInsertRight = pos > this.cellWidth - 10
+      this.indexInsert = this.showBtnInsertLeft || this.showBtnInsertRight ? idx : -1
+    },
+    handleMouseLeave() {
+      this.showBtnInsertLeft = false
+      this.showBtnInsertRight = false
+      this.indexInsert = -1
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 table,
 th,
 td {
@@ -84,6 +111,27 @@ td {
   font-size: 14px;
   line-height: 20px;
   font-weight: 600;
+}
+
+.insert-cell {
+  position: relative;
+}
+
+.insert-button {
+  position: absolute;
+  display: none;
+  height: 100%;
+  width: 10px;
+  background-color: red;
+  bottom: 100%;
+}
+
+.right-btn {
+  right: 0;
+}
+
+.show-btn {
+  display: block;
 }
 
 .table-header {
@@ -100,10 +148,10 @@ td {
   display: flex;
   gap: 12px;
   overflow: auto;
-}
 
-.row-table table {
-  min-height: 40px;
+  table {
+    min-height: 32px;
+  }
 }
 
 p {
@@ -121,6 +169,10 @@ p {
   border: 1px dashed #ccc;
   border-radius: 6px;
   cursor: pointer;
+}
+
+.disable-header {
+  opacity: .5;
 }
 
 .close-btn {

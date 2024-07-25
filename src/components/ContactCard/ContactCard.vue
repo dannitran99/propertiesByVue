@@ -15,7 +15,7 @@
       </div>
       <div class="sub-detail">
         <h5>KHU VỰC {{ data.type === 'ca-nhan' ? 'CÁ NHÂN' : 'CÔNG TY' }} MÔI GIỚI</h5>
-        <ul>
+        <ul class="list-scope">
           <li v-for="(item, idx) in data.scope" :key="idx">
             {{ handleTypeProperty(item) }}
           </li>
@@ -120,5 +120,9 @@ li {
 
 li::marker {
   color: red;
+}
+
+.list-scope {
+  padding-left: 24px;
 }
 </style>

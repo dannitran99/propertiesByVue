@@ -114,7 +114,7 @@ export default {
         values: {
           id: MODULE_TABLE,
           hasHeader: true,
-          tableHead: [],
+          tableHead: [''],
           tableRow: []
         },
         errors: {

@@ -43,7 +43,7 @@
       </template>
     </v-row>
     <div class="article">
-      <p class="card-title"><b>{{ data.title }}</b></p>
+      <p class="card-title mb-2"><b>{{ data.title }}</b></p>
       <div class="info-txt">
         <p class="txt-ct">{{ formatCurrency }}</p>
         <p>·</p>
@@ -147,7 +147,7 @@ export default {
 }
 
 .article {
-  padding: 16px 16px 0 16px;
+  padding: 16px;
 }
 
 .card-title {
