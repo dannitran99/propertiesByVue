@@ -76,6 +76,7 @@
               </div>
             </div>
             <component :is="item.id" :dataForm="item" :errors="errors.content[idx]" />
+            {{ errors.content[idx] }}
           </div>
           <module-content @addModule="handleAddModule" />
           <p v-if="errors.content && typeof errors.content === 'string'" class="warning-txt">{{ errors.content }}
@@ -92,7 +93,7 @@
 
 <script>
 import { UPLOAD_PRESET, CLOUD_NAME } from '@/consts/cloudinary'
-import { ModuleContent, ModuleTitle, ModuleParagraph, ModuleImage, ModuleVideo, ModuleTable } from '@/components/ModuleContent'
+import { ModuleContent, ModuleTitle, ModuleParagraph, ModuleImage, ModuleVideo, ModuleTable, ModuleList } from '@/components/ModuleContent'
 import SideBar from '@/components/SideBar'
 import { NEWS_ITEM } from '@/consts/label'
 import { setNestedProperty } from '@/helpers/arrayHandler'
@@ -100,7 +101,7 @@ import { schema, handleErrorContent } from './validate'
 import { DEFAULT_TAGS } from '@/consts/contentNews'
 
 export default {
-  components: { SideBar, ModuleContent, ModuleTitle, ModuleParagraph, ModuleImage, ModuleVideo, ModuleTable },
+  components: { SideBar, ModuleContent, ModuleTitle, ModuleParagraph, ModuleImage, ModuleVideo, ModuleTable, ModuleList },
   data() {
     return {
       tags: DEFAULT_TAGS,

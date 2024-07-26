@@ -1,5 +1,5 @@
 import * as Yup from 'yup'
-import {MODULE_TITLE, MODULE_PARAGRAPH, MODULE_IMAGE, MODULE_VIDEO, MODULE_TABLE} from '@/consts/contentNews'
+import {MODULE_TITLE, MODULE_PARAGRAPH, MODULE_IMAGE, MODULE_VIDEO, MODULE_TABLE, MODULE_LIST} from '@/consts/contentNews'
 
 export const schema = Yup.object().shape({
   category: Yup.string().required('Vui lòng chọn danh mục tin'),
@@ -22,6 +22,8 @@ export const schema = Yup.object().shape({
             return schemaVideo
           case MODULE_TABLE:
             return schemaTable
+          case MODULE_LIST:
+            return schemaList
           default:
             break
         }
@@ -62,6 +64,11 @@ const schemaTable = Yup.object().shape({
   tableRow: Yup.array(Yup.array(Yup.string()))
 })
 
+const schemaList = Yup.object().shape({
+  id: Yup.string(),
+  list: Yup.array(Yup.string().required('Vui lòng nhập nội dung'))
+})
+
 export const handleErrorContent = (input) => {
   return input.map(item => {
     switch (item.id) {
@@ -91,6 +98,10 @@ export const handleErrorContent = (input) => {
           hasHeader: '',
           tableHead: '',
           tableRow: ''
+        })
+      case MODULE_LIST:
+        return ({
+          list: ['']
         })
       default: break
     }

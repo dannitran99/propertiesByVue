@@ -4,6 +4,7 @@ import ModuleParagraph from './ModuleParagraph.vue'
 import ModuleImage from './ModuleImage.vue'
 import ModuleVideo from './ModuleVideo.vue'
 import ModuleTable from './ModuleTable.vue'
+import ModuleList from './ModuleList.vue'
 
 export {
   ModuleContent,
@@ -11,5 +12,6 @@ export {
   ModuleParagraph,
   ModuleImage,
   ModuleVideo,
-  ModuleTable
+  ModuleTable,
+  ModuleList
 }

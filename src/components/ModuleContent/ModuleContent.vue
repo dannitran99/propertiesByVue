@@ -36,13 +36,18 @@
             <icon-plus /> Bảng
           </button>
         </v-col>
+        <v-col cols="12" sm="6" class="p-0">
+          <button class="btn-add" type="button" @click="handleAddList">
+            <icon-plus /> Danh sách
+          </button>
+        </v-col>
       </v-row>
     </v-sheet>
   </v-dialog>
 </template>
 
 <script>
-import { MODULE_TITLE, MODULE_PARAGRAPH, MODULE_IMAGE, MODULE_VIDEO, MODULE_TABLE } from '@/consts/contentNews'
+import { MODULE_TITLE, MODULE_PARAGRAPH, MODULE_IMAGE, MODULE_VIDEO, MODULE_TABLE, MODULE_LIST } from '@/consts/contentNews'
 export default {
   props: {
     index: {
@@ -114,13 +119,24 @@ export default {
         values: {
           id: MODULE_TABLE,
           hasHeader: true,
-          tableHead: [''],
-          tableRow: []
+          tableHead: ['', ''],
+          tableRow: [['', '']]
         },
         errors: {
           hasHeader: '',
           tableHead: '',
           tableRow: ''
+        }
+      }, this.index)
+    },
+    handleAddList() {
+      this.$emit('addModule', {
+        values: {
+          id: MODULE_LIST,
+          list: ['']
+        },
+        errors: {
+          list: ['']
         }
       }, this.index)
     }

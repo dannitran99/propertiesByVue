@@ -40,7 +40,14 @@ export function setNestedProperty(obj, path, value) {
   }
 
   const lastKey = keys[keys.length - 1]
+  const match = lastKey.match(/(\w+)(?:\["(\d+)"\])?/)
   if (current && typeof current === 'object') {
-    current[lastKey] = value
+    if (match[2] !== undefined) {
+      const index = match[2] ? parseInt(match[2], 10) : undefined
+      const propName = match[1]
+      current[propName][index] = value
+    } else {
+      current[lastKey] = value
+    }
   }
 }
