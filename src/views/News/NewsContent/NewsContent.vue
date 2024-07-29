@@ -14,12 +14,22 @@
           <p>Cập nhật lần cuối vào {{ formatDateTime }}</p>
         </div>
       </div>
-      <div class="main-content-news">
-        <p class="description-content">{{ content.description }}</p>
-        <component v-for="(item, idx) in content.content" :key="idx" :is="item.id" :data="item" />
-        <p class="content-author">{{ name }}</p>
-        <div class="content-source" v-if="content.source">
-          <p>Nguồn: {{ content.source }}</p>
+      <div class="article-main">
+        <div class="main-content-news">
+          <p class="description-content">{{ content.description }}</p>
+          <component v-for="(item, idx) in content.content" :key="idx" :is="item.id" :data="item" />
+          <p class="content-author">{{ name }}</p>
+          <div class="content-source" v-if="content.source">
+            <p>Nguồn: {{ content.source }}</p>
+          </div>
+        </div>
+        <div class="article-related">
+          <div v-if="content.tags.length" class="tags-content">
+            <p>Khám phá thêm</p>
+            <div class="tags">
+              <div v-for="(item, idx) in content.tags" :key="idx" class="tags-detail">{{ item }}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -28,9 +38,9 @@
 
 <script>
 import { formatDateTime } from '@/helpers/formater'
-import { ModuleTitle, ModuleParagraph, ModuleImage, ModuleVideo, ModuleTable } from '@/components/ModuleContentRender'
+import { ModuleTitle, ModuleParagraph, ModuleImage, ModuleVideo, ModuleTable, ModuleList, ModuleMoreArticle } from '@/components/ModuleContentRender'
 export default {
-  components: { ModuleTitle, ModuleParagraph, ModuleImage, ModuleVideo, ModuleTable },
+  components: { ModuleTitle, ModuleParagraph, ModuleImage, ModuleVideo, ModuleTable, ModuleList, ModuleMoreArticle },
   computed: {
     content: {
       get() {
@@ -71,7 +81,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   font-family: 'Roboto-Regular', sans-serif;
 }
@@ -90,6 +100,7 @@ p {
 }
 
 .main-content-news {
+  flex-shrink: 0;
   padding: 0 12px;
   width: 66.66666667%;
 }
@@ -107,6 +118,39 @@ p {
   font-weight: 600;
   line-height: 26px;
   color: #1c1f22;
+}
+
+.article-main {
+  display: flex;
+}
+
+.article-related {
+  padding: 0 12px;
+}
+
+.tags-content {
+  p {
+    font-size: 12px;
+    line-height: 18px;
+    color: #505050;
+  }
+}
+
+.tags {
+  display: flex;
+  margin: 10px 0 20px 0;
+  flex-wrap: wrap;
+  column-gap: 10px;
+}
+
+.tags-detail {
+  margin-bottom: 10px;
+  font-size: 14px;
+  background: #eff1f5;
+  border-radius: 16px;
+  padding: 5px 15px;
+  line-height: 22px;
+  cursor: pointer;
 }
 
 .loading {

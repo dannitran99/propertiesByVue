@@ -25,5 +25,6 @@ p {
   font-size: 16px;
   line-height: 26px;
   margin-bottom: 30px;
+  white-space: pre-line;
 }
 </style>

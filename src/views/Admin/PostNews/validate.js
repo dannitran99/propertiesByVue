@@ -1,5 +1,5 @@
 import * as Yup from 'yup'
-import {MODULE_TITLE, MODULE_PARAGRAPH, MODULE_IMAGE, MODULE_VIDEO, MODULE_TABLE, MODULE_LIST} from '@/consts/contentNews'
+import {MODULE_TITLE, MODULE_PARAGRAPH, MODULE_IMAGE, MODULE_VIDEO, MODULE_TABLE, MODULE_LIST, MODULE_MORE_ARTICLE} from '@/consts/contentNews'
 
 export const schema = Yup.object().shape({
   category: Yup.string().required('Vui lòng chọn danh mục tin'),
@@ -24,6 +24,8 @@ export const schema = Yup.object().shape({
             return schemaTable
           case MODULE_LIST:
             return schemaList
+          case MODULE_MORE_ARTICLE:
+            return schemaMoreArticle
           default:
             break
         }
@@ -69,6 +71,16 @@ const schemaList = Yup.object().shape({
   list: Yup.array(Yup.string().required('Vui lòng nhập nội dung'))
 })
 
+const schemaArticle = Yup.object().shape({
+  title: Yup.string().required('Vui lòng nhập tựa đề'),
+  url: Yup.string().required('Vui lòng nhập link bài viết')
+})
+
+const schemaMoreArticle = Yup.object().shape({
+  id: Yup.string(),
+  article: Yup.array().of(schemaArticle)
+})
+
 export const handleErrorContent = (input) => {
   return input.map(item => {
     switch (item.id) {
@@ -101,7 +113,14 @@ export const handleErrorContent = (input) => {
         })
       case MODULE_LIST:
         return ({
-          list: ['']
+          list: item.list.map(() => '')
+        })
+      case MODULE_MORE_ARTICLE:
+        return ({
+          article: item.article.map(() => ({
+            title: '',
+            url: ''
+          }))
         })
       default: break
     }

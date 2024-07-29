@@ -41,13 +41,18 @@
             <icon-plus /> Danh sách
           </button>
         </v-col>
+        <v-col cols="12" sm="6" class="p-0">
+          <button class="btn-add" type="button" @click="handleAddViewMore">
+            <icon-plus /> Xem thêm bài viết
+          </button>
+        </v-col>
       </v-row>
     </v-sheet>
   </v-dialog>
 </template>
 
 <script>
-import { MODULE_TITLE, MODULE_PARAGRAPH, MODULE_IMAGE, MODULE_VIDEO, MODULE_TABLE, MODULE_LIST } from '@/consts/contentNews'
+import { MODULE_TITLE, MODULE_PARAGRAPH, MODULE_IMAGE, MODULE_VIDEO, MODULE_TABLE, MODULE_LIST, MODULE_MORE_ARTICLE } from '@/consts/contentNews'
 export default {
   props: {
     index: {
@@ -137,6 +142,25 @@ export default {
         },
         errors: {
           list: ['']
+        }
+      }, this.index)
+    },
+    handleAddViewMore() {
+      this.$emit('addModule', {
+        values: {
+          id: MODULE_MORE_ARTICLE,
+          article: [{
+            title: '',
+            url: ''
+          }]
+        },
+        errors: {
+          article: [
+            {
+              title: '',
+              url: ''
+            }
+          ]
         }
       }, this.index)
     }

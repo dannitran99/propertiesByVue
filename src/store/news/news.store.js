@@ -1,4 +1,5 @@
 import { getNewsList, getNewById, postNews } from '@/api/news.api'
+import router from '@/router'
 
 export default {
   namespaced: true,
@@ -76,6 +77,7 @@ export default {
       const [error, response] = await postNews(payload)
       if (!error && response) {
         context.commit('LOADING_STATE', false)
+        router.push('/tin-tuc')
       } else {
         console.error(error)
       }
