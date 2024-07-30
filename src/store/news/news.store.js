@@ -5,14 +5,19 @@ export default {
   namespaced: true,
   state: {
     isLoading: false,
+    searchKeyword: '',
     newsList: [],
     previewNewsItem: {},
     currentTab: 0,
-    newContent: {}
+    newContent: {},
+    totalItem: 0
   },
   getters: {
     isLoading (state) {
       return state.isLoading
+    },
+    searchKeyword (state) {
+      return state.searchKeyword
     },
     newsList (state) {
       return state.newsList
@@ -25,18 +30,25 @@ export default {
     },
     newContent (state) {
       return state.newContent
+    },
+    totalItem (state) {
+      return state.totalItem
     }
   },
   mutations: {
     INIT_STATE (state) {
       state.newContent = {}
     },
+    SEARCH_TYPING (state, payload) {
+      state.searchKeyword = payload
+    },
     GET_NEWS_LIST_PENDING (state) {
       state.isLoading = true
     },
     GET_NEWS_LIST_FULFILL (state, data) {
       state.isLoading = false
-      state.newsList = data
+      state.newsList = data.Data
+      state.totalItem = data.Total
     },
     GET_NEW_DATA (state, data) {
       state.newContent = data
@@ -49,15 +61,23 @@ export default {
     },
     LOADING_STATE (state, payload) {
       state.isLoading = payload
+    },
+    SUBMIT_FILTER (state, payload) {
+      const query = {}
+      state.searchKeyword && Object.assign(query, { k: state.searchKeyword })
+      router.push({
+        path: payload || router.path,
+        query: query
+      })
     }
   },
   actions: {
-    async getNewsList (context) {
+    async getNewsList (context, payload) {
       context.commit('GET_NEWS_LIST_PENDING')
-      const [error, response] = await getNewsList()
+      const [error, response] = await getNewsList(payload)
       if (!error && response) {
         context.commit('GET_NEWS_LIST_FULFILL', response)
-        response[0] && context.commit('SET_PREVIEW_NEW', response[0])
+        response.Data[0] && context.commit('SET_PREVIEW_NEW', response.Data[0])
       } else {
         console.error(error)
       }
@@ -82,6 +102,9 @@ export default {
         console.error(error)
       }
     },
+    searchChange (context, payload) {
+      context.commit('SEARCH_TYPING', payload)
+    },
     setPreviewNews ({ commit }, data) {
       commit('SET_PREVIEW_NEW', data.data)
     },
@@ -90,6 +113,9 @@ export default {
     },
     returnInitData ({ commit }) {
       commit('INIT_STATE')
+    },
+    submitFilter(context, payload) {
+      context.commit('SUBMIT_FILTER', payload)
     }
   }
 }

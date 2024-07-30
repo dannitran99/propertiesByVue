@@ -29,7 +29,9 @@ export default {
   data() {
     return {
       breadCrumb: [
-        'Tin tức'
+        {
+          label: 'Tin tức'
+        }
       ]
     }
   },
@@ -45,8 +47,22 @@ export default {
       }
     }
   },
-  async created() {
-    await this.$store.dispatch('news/getNewsList')
+  watch: {
+    '$route'() {
+      this.handleGetNews()
+    }
+  },
+  created() {
+    this.handleGetNews()
+  },
+  methods: {
+    async handleGetNews() {
+      const lastPath = this.$route.path.split('/').reverse()[0]
+      await this.$store.dispatch('news/getNewsList', {
+        type: lastPath,
+        query: this.$route.query
+      })
+    }
   }
 }
 </script>

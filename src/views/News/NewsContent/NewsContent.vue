@@ -64,8 +64,13 @@ export default {
     breadCrumb: {
       get() {
         return [
-          'Tin tức',
-          this.$store.getters['news/newContent'].title || ''
+          {
+            label: 'Tin tức',
+            href: '/tin-tuc'
+          },
+          {
+            label: this.$store.getters['news/newContent'].title || ''
+          }
         ]
       }
     }

@@ -4,7 +4,7 @@
       <tab-menu-item v-for="item in menu" v-bind:key="item.label" v-bind:data="item" />
     </ul>
     <div class="anchor-button">
-      <a href="#">Xem thêm</a>
+      <router-link :to="{ name: 'News' }">Xem thêm</router-link>
       <icon-rightarrow />
     </div>
   </div>
@@ -50,7 +50,7 @@ ul {
 a {
   font-family: 'Roboto-Regular', sans-serif;
   text-decoration: none;
-  color: #E03C31;
+  color: #E03C31 !important;
   font-size: 14px;
   line-height: 20px;
   font-weight: normal !important;

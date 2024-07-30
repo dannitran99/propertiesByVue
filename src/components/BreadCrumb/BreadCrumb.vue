@@ -3,7 +3,8 @@
     <div class="bread-crumb-content" v-if="isSearching">
       <div class="search-input">
         <icon-search />
-        <input type="text" placeholder="Nhập từ khóa và nhấn Enter để tìm kiếm" v-model="keyword">
+        <input type="text" placeholder="Nhập từ khóa và nhấn Enter để tìm kiếm" :value="searchKeyword"
+          @input="handleSearchChange" @keyup.enter="handleSubmitSearch">
         <button v-on:click="clearInputSearch" class="clear-btn">
           <icon-close :class="[{ 'hide': clearHide }]" />
         </button>
@@ -33,8 +34,14 @@ export default {
   data() {
     return {
       isSearching: false,
-      clearHide: true,
-      keyword: ''
+      clearHide: true
+    }
+  },
+  computed: {
+    searchKeyword: {
+      get() {
+        return this.$store.getters['news/searchKeyword']
+      }
     }
   },
   props: {
@@ -43,16 +50,29 @@ export default {
     }
   },
   watch: {
-    keyword(val) {
+    async '$route'() {
+      await this.$route.query.k ? this.$store.dispatch('news/searchChange', this.$route.query.k) : this.$store.dispatch('news/searchChange', '')
+    },
+    searchKeyword(val) {
       this.clearHide = val === ''
     }
   },
+  async created() {
+    await this.$route.query.k ? this.$store.dispatch('news/searchChange', this.$route.query.k) : this.$store.dispatch('news/searchChange', '')
+  },
   methods: {
+    handleSearchChange: function (e) {
+      this.$store.dispatch('news/searchChange', e.target.value)
+    },
     onChangeSearchState() {
       this.isSearching = !this.isSearching
     },
     clearInputSearch() {
-      this.keyword = ''
+      this.$store.dispatch('news/searchChange', '')
+      this.$store.dispatch('news/submitFilter')
+    },
+    handleSubmitSearch() {
+      this.$store.dispatch('news/submitFilter')
     }
   }
 }

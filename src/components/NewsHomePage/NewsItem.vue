@@ -28,11 +28,11 @@ export default {
 
 a {
   text-decoration: none;
-  color: #2C2C2C;
+  color: #2C2C2C !important;
 }
 
 a:hover {
-  color: #999;
+  color: #999 !important;
 }
 
 li {

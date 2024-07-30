@@ -16,6 +16,8 @@ import NewsItem from './NewsItem.vue'
 import NewsSkeleton from './NewsSkeleton.vue'
 import NewsPreview from './NewsPreview.vue'
 import NewsTabHeader from './NewsTabHeader.vue'
+import { NEWS_CATEGORY_TYPE } from '@/consts/newsCategory'
+import { DEFAULT_TAGS } from '@/consts/contentNews'
 export default {
   name: 'NewsHomePage',
   components: {
@@ -34,10 +36,47 @@ export default {
       get() {
         return this.$store.getters['news/isLoading']
       }
+    },
+    currentTab: {
+      get() {
+        return this.$store.getters['news/currentTab']
+      }
     }
   },
-  async created() {
-    await this.$store.dispatch('news/getNewsList')
+  watch: {
+    currentTab() {
+      this.handleGetNewsMain()
+    }
+  },
+  created() {
+    this.handleGetNewsMain()
+  },
+  methods: {
+    async handleGetNewsMain() {
+      await this.$store.dispatch('news/getNewsList', this.handleTabPayload())
+    },
+    handleTabPayload() {
+      switch (this.currentTab) {
+        case 0:
+          return {
+            query: { p: 1, l: 6 }
+          }
+        case 1:
+          return {
+            type: NEWS_CATEGORY_TYPE.tintuc.code,
+            query: { p: 1, l: 6 }
+          }
+        case 2:
+          return {
+            query: { p: 1, l: 6, tags: DEFAULT_TAGS[0] }
+          }
+        case 3:
+          return {
+            query: { p: 1, l: 6, tags: DEFAULT_TAGS[1] }
+          }
+        default: break
+      }
+    }
   }
 }
 </script>

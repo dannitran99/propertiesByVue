@@ -59,7 +59,7 @@ img {
 
 a {
   text-decoration: none;
-  color: #2C2C2C;
+  color: #2C2C2C !important;
 }
 
 .title {

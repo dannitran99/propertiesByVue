@@ -1,11 +1,14 @@
 <template>
   <div class="list-breadcrumb">
-    <router-link :to="{ name: 'HomePage' }">
+    <router-link :to="{ name: 'HomePage' }" class="home-ico">
       <icon-home />
     </router-link>
     <div v-for="(item, index) in items" :key="index">
       <icon-righttriangle />
-      <span>{{ item }}</span>
+      <router-link :to="{ path: item.href }" v-if="item.href">
+        {{ item.label }}
+      </router-link>
+      <span v-else>{{ item.label }}</span>
     </div>
   </div>
 </template>
@@ -23,13 +26,19 @@ export default {
 <style scoped>
 .list-breadcrumb {
   display: flex;
+  align-items: center;
   gap: 5px;
 }
 
-span {
+.home-ico {
+  height: 15px;
+}
+
+span,
+a {
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
-  color: #999;
+  color: #999 !important;
 }
 </style>
