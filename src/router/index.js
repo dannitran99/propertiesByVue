@@ -90,8 +90,28 @@ export default new Router({
       component: () => import('@/views/News')
     },
     {
+      path: '/wiki',
+      name: 'Wiki',
+      component: () => import('@/views/News')
+    },
+    {
+      path: '/phan-tich-danh-gia',
+      name: 'Analystic',
+      component: () => import('@/views/News')
+    },
+    {
       path: '/tin-tuc/:newsId',
       name: 'NewsDetail',
+      component: () => import('@/views/News/NewsContent')
+    },
+    {
+      path: '/wiki/:newsId',
+      name: 'WikiDetail',
+      component: () => import('@/views/News/NewsContent')
+    },
+    {
+      path: '/phan-tich-danh-gia/:newsId',
+      name: 'AnalysticDetail',
       component: () => import('@/views/News/NewsContent')
     },
     {

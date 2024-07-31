@@ -1,16 +1,22 @@
 <template>
   <li v-on:mouseenter="hoverPreviewNews">
-    <router-link :to="{ name: 'NewsDetail', params: { newsId: data.ID, } }" class="route-link">
-      {{ data.title }}
+    <router-link :to="{ name: routeName, params: { newsId: data.ID, } }" class="route-link">
+      <p>{{ data.title }}</p>
     </router-link>
   </li>
 </template>
 
 <script>
+import { handleNewsRoute } from '@/helpers/arrayHandler.js'
 export default {
   props: {
     data: {
       type: Object
+    }
+  },
+  computed: {
+    routeName() {
+      return handleNewsRoute(this.data.category).rootCategory.pathName
     }
   },
   methods: {

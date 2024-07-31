@@ -69,10 +69,10 @@ export default {
     },
     clearInputSearch() {
       this.$store.dispatch('news/searchChange', '')
-      this.$store.dispatch('news/submitFilter')
+      this.$store.dispatch('news/submitFilter', this.$route)
     },
     handleSubmitSearch() {
-      this.$store.dispatch('news/submitFilter')
+      this.$store.dispatch('news/submitFilter', this.$route)
     }
   }
 }

@@ -348,6 +348,68 @@ export const FILTER_SALE_OPTION = [
   }
 ]
 
+export const FILTER_NEWS = [
+  {
+    label: NEWS_CATEGORY_TYPE.tintuc.primaryLabel,
+    value: NEWS_CATEGORY_TYPE.tintuc.code,
+    pathName: 'NewsDetail'
+  },
+  {
+    label: NEWS_CATEGORY_TYPE.wiki.primaryLabel,
+    value: NEWS_CATEGORY_TYPE.wiki.code,
+    pathName: 'WikiDetail',
+    subItem: [
+      {
+        label: NEWS_CATEGORY_TYPE.mua.primaryLabel,
+        value: NEWS_CATEGORY_TYPE.mua.code
+      },
+      {
+        label: NEWS_CATEGORY_TYPE.ban.primaryLabel,
+        value: NEWS_CATEGORY_TYPE.ban.code
+      },
+      {
+        label: NEWS_CATEGORY_TYPE.thue.primaryLabel,
+        value: NEWS_CATEGORY_TYPE.thue.code
+      },
+      {
+        label: NEWS_CATEGORY_TYPE.taichinh.primaryLabel,
+        value: NEWS_CATEGORY_TYPE.taichinh.code
+      },
+      {
+        label: NEWS_CATEGORY_TYPE.quyhoach.primaryLabel,
+        value: NEWS_CATEGORY_TYPE.quyhoach.code
+      },
+      {
+        label: NEWS_CATEGORY_TYPE.noithat.primaryLabel,
+        value: NEWS_CATEGORY_TYPE.noithat.code
+      },
+      {
+        label: NEWS_CATEGORY_TYPE.phongthuy.primaryLabel,
+        value: NEWS_CATEGORY_TYPE.phongthuy.code
+      }
+    ]
+  },
+  {
+    label: NEWS_CATEGORY_TYPE.phantich.primaryLabel,
+    value: NEWS_CATEGORY_TYPE.phantich.code,
+    pathName: 'AnalysticDetail',
+    subItem: [
+      {
+        label: NEWS_CATEGORY_TYPE.bieudo.primaryLabel,
+        value: NEWS_CATEGORY_TYPE.bieudo.code
+      },
+      {
+        label: NEWS_CATEGORY_TYPE.video.primaryLabel,
+        value: NEWS_CATEGORY_TYPE.video.code
+      },
+      {
+        label: NEWS_CATEGORY_TYPE.chuyengia.primaryLabel,
+        value: NEWS_CATEGORY_TYPE.chuyengia.code
+      }
+    ]
+  }
+]
+
 export const MENU_ITEM = [
   {
     label: 'Nhà đất bán',
@@ -446,26 +508,63 @@ export const MENU_ITEM = [
       { label: 'Dự án khác' }
     ]
   },
-  { label: 'Tin tức', href: 'News', path: ['tin-tuc'] },
+  { label: NEWS_CATEGORY_TYPE.tintuc.primaryLabel,
+    href: 'News',
+    path: [NEWS_CATEGORY_TYPE.tintuc.code]
+  },
   {
-    label: 'Wiki BĐS',
+    label: NEWS_CATEGORY_TYPE.wiki.primaryLabel,
+    href: 'Wiki',
+    path: [NEWS_CATEGORY_TYPE.wiki.code],
     sub: [
-      { label: 'Mua BĐS' },
-      { label: 'Bán BĐS' },
-      { label: 'Thuê BĐS' },
-      { label: 'Tài chính BĐS' },
-      { label: 'Quy hoạch - Pháp lý' },
-      { label: 'Nội - Ngoại thất' },
-      { label: 'Phong thuỷ' }
+      {
+        label: NEWS_CATEGORY_TYPE.mua.primaryLabel,
+        path: NEWS_CATEGORY_TYPE.mua.code
+      },
+      {
+        label: NEWS_CATEGORY_TYPE.ban.primaryLabel,
+        path: NEWS_CATEGORY_TYPE.ban.code
+      },
+      {
+        label: NEWS_CATEGORY_TYPE.thue.primaryLabel,
+        path: NEWS_CATEGORY_TYPE.thue.code
+      },
+      {
+        label: NEWS_CATEGORY_TYPE.taichinh.primaryLabel,
+        path: NEWS_CATEGORY_TYPE.taichinh.code
+      },
+      {
+        label: NEWS_CATEGORY_TYPE.quyhoach.primaryLabel,
+        path: NEWS_CATEGORY_TYPE.quyhoach.code
+      },
+      {
+        label: NEWS_CATEGORY_TYPE.noithat.primaryLabel,
+        path: NEWS_CATEGORY_TYPE.noithat.code
+      },
+      {
+        label: NEWS_CATEGORY_TYPE.phongthuy.primaryLabel,
+        path: NEWS_CATEGORY_TYPE.phongthuy.code
+      }
     ]
   },
   {
-    label: 'Phân tích đánh giá',
+    label: NEWS_CATEGORY_TYPE.phantich.primaryLabel,
+    href: 'Analystic',
+    path: [NEWS_CATEGORY_TYPE.phantich.code],
     sub: [
-      { label: 'Biểu đồ giá' },
-      { label: 'Video đánh giá' },
+      {
+        label: NEWS_CATEGORY_TYPE.bieudo.primaryLabel,
+        path: NEWS_CATEGORY_TYPE.bieudo.code
+      },
+      {
+        label: NEWS_CATEGORY_TYPE.video.primaryLabel,
+        path: NEWS_CATEGORY_TYPE.video.code
+      },
       { label: 'Báo cáo thị trường' },
-      { label: 'Góc nhìn chuyên gia' },
+      {
+        label: NEWS_CATEGORY_TYPE.chuyengia.primaryLabel,
+        path: NEWS_CATEGORY_TYPE.chuyengia.code
+      },
       { label: 'Interaktive Story' }
     ]
   },

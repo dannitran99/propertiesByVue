@@ -1,3 +1,5 @@
+import { FILTER_NEWS } from '@/consts/label'
+
 export const removeElFromArr = (arr, el) => {
   const index = arr.indexOf(el)
   if (index > -1) {
@@ -53,4 +55,24 @@ export function setNestedProperty(obj, path, value) {
       current[lastKey] = value
     }
   }
+}
+
+export function handleNewsTypeRequest(first, last) {
+  if (last) return last
+  const parent = FILTER_NEWS.find(el => el.value === first)
+  if (parent.subItem) {
+    return parent.subItem.map(el => el.value).join(',')
+  } else return parent.value
+}
+
+export function handleNewsRoute(input) {
+  let subCategory
+  const rootCategory = FILTER_NEWS.find(el => {
+    if (el.value === input) {
+      return el
+    }
+    subCategory = el.subItem && el.subItem.find(subEl => subEl.value === input)
+    if (subCategory) return el
+  })
+  return {rootCategory, subCategory}
 }

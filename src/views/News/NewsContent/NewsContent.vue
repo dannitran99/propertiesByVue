@@ -39,6 +39,7 @@
 <script>
 import { formatDateTime } from '@/helpers/formater'
 import { ModuleTitle, ModuleParagraph, ModuleImage, ModuleVideo, ModuleTable, ModuleList, ModuleMoreArticle } from '@/components/ModuleContentRender'
+import { handleNewsRoute } from '@/helpers/arrayHandler.js'
 export default {
   components: { ModuleTitle, ModuleParagraph, ModuleImage, ModuleVideo, ModuleTable, ModuleList, ModuleMoreArticle },
   computed: {
@@ -63,13 +64,20 @@ export default {
     },
     breadCrumb: {
       get() {
+        const routeParse = handleNewsRoute(this.content.category)
+        const breadCrumbRoot = []
+        routeParse.rootCategory && breadCrumbRoot.push({
+          label: routeParse.rootCategory.label,
+          href: `/${routeParse.rootCategory.value}`
+        })
+        routeParse.subCategory && breadCrumbRoot.push({
+          label: routeParse.subCategory.label,
+          href: `/${routeParse.rootCategory.value}?category=${routeParse.subCategory.value}`
+        })
         return [
+          ...breadCrumbRoot,
           {
-            label: 'Tin tức',
-            href: '/tin-tuc'
-          },
-          {
-            label: this.$store.getters['news/newContent'].title || ''
+            label: this.content.title || ''
           }
         ]
       }

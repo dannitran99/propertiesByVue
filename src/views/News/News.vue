@@ -3,9 +3,8 @@
     <bread-crumb v-bind:items="breadCrumb" />
     <div class="content-wrapper">
       <div class="content-header">
-        <h1>Tin tức bất động sản mới nhất</h1>
-        <p>Thông tin mới, đầy đủ, hấp dẫn về thị trường bất động sản Việt Nam thông qua dữ liệu lớn về giá,<br /> giao
-          dịch, nguồn cung - cầu và khảo sát thực tế của đội ngũ phóng viên, biên tập</p>
+        <h1>{{ category.title || lastPath.title }}</h1>
+        <p>{{ category.description || lastPath.description }}</p>
       </div>
       <div class="content-main">
         <template v-if="isLoading">
@@ -24,15 +23,13 @@
 <script>
 import NewsCard from '@/components/News/NewsCard/NewsCard.vue'
 import NewsCardSkeleton from '@/components/News/NewsCard/NewsCardSkeleton.vue'
+import { NEWS_CATEGORY_TYPE } from '@/consts/newsCategory'
+import { handleNewsTypeRequest } from '@/helpers/arrayHandler.js'
 export default {
   components: { NewsCard, NewsCardSkeleton },
   data() {
     return {
-      breadCrumb: [
-        {
-          label: 'Tin tức'
-        }
-      ]
+      page: 1
     }
   },
   computed: {
@@ -45,6 +42,29 @@ export default {
       get() {
         return this.$store.getters['news/newsList']
       }
+    },
+    lastPath() {
+      const lastPath = this.$route.path.split('/').reverse()[0]
+      return this.handleRoutePath(lastPath)
+    },
+    category() {
+      const category = this.$route.query.category
+      if (category) {
+        return this.handleRoutePath(category)
+      } else return ''
+    },
+    breadCrumb() {
+      const itemBreakcrumb = [
+        {
+          label: this.lastPath.primaryLabel,
+          href: `/${this.lastPath.code}`
+        }
+      ]
+      this.category && itemBreakcrumb.push({
+        label: this.category.primaryLabel,
+        href: `/${this.lastPath.code}?category=${this.category.code}`
+      })
+      return itemBreakcrumb
     }
   },
   watch: {
@@ -57,27 +77,26 @@ export default {
   },
   methods: {
     async handleGetNews() {
-      const lastPath = this.$route.path.split('/').reverse()[0]
       await this.$store.dispatch('news/getNewsList', {
-        type: lastPath,
-        query: this.$route.query
+        type: handleNewsTypeRequest(this.lastPath.code, this.category.code),
+        query: { ...this.$route.query, p: this.page }
       })
+    },
+    handleRoutePath(input) {
+      const entries = Object.entries(NEWS_CATEGORY_TYPE)
+      let object
+      entries.forEach(([_, value]) => {
+        if (value.code === input) object = value
+      })
+      return object
     }
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   font-family: 'Roboto-Regular', sans-serif;
-}
-
-h1 {
-  font-family: 'Lexend-Medium', sans-serif;
-  font-weight: 500;
-  font-size: 40px;
-  line-height: 64px;
-  margin: 0;
 }
 
 .content-wrapper {
@@ -87,11 +106,28 @@ h1 {
 }
 
 .content-header {
-  height: 224px;
+  margin: 50px 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  white-space: pre-line;
+
+  h1 {
+    font-family: 'Lexend-Medium', sans-serif;
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 64px;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 26px;
+    color: #1c1f22;
+  }
 }
 
 .content-main {

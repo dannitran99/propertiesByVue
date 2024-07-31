@@ -1,13 +1,13 @@
 <template>
   <div class="card-new">
     <div class="card-content">
-      <router-link :to="{ name: 'NewsDetail', params: { newsId: data.ID, } }" class="image-wrapper">
+      <router-link :to="{ name: routeName, params: { newsId: data.ID, } }" class="image-wrapper">
         <img v-bind:src="data.thumbnail" alt="thumbnail" />
         <p>{{ category }}</p>
       </router-link>
       <div class="card-info">
         <p>{{ formatDateTime }} • {{ data.user }}</p>
-        <router-link :to="{ name: 'NewsDetail', params: { newsId: data.ID, } }" class="route-link">
+        <router-link :to="{ name: routeName, params: { newsId: data.ID, } }" class="route-link">
           <h3>{{ data.title }}</h3>
         </router-link>
         <p>{{ data.description }}</p>
@@ -21,6 +21,7 @@
 <script>
 import { NEWS_CATEGORY_TYPE } from '@/consts/newsCategory'
 import { formatDateTime } from '@/helpers/formater'
+import { handleNewsRoute } from '@/helpers/arrayHandler.js'
 export default {
   props: {
     data: {
@@ -30,6 +31,9 @@ export default {
   computed: {
     formatDateTime: function () {
       return formatDateTime(this.data.createdAt)
+    },
+    routeName() {
+      return handleNewsRoute(this.data.category).rootCategory.pathName
     },
     category() {
       const entries = Object.entries(NEWS_CATEGORY_TYPE)

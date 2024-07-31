@@ -64,9 +64,10 @@ export default {
     },
     SUBMIT_FILTER (state, payload) {
       const query = {}
+      payload.query.category && Object.assign(query, { category: payload.query.category })
       state.searchKeyword && Object.assign(query, { k: state.searchKeyword })
       router.push({
-        path: payload || router.path,
+        path: `/${payload.path.split('/')[1]}`,
         query: query
       })
     }
@@ -77,7 +78,7 @@ export default {
       const [error, response] = await getNewsList(payload)
       if (!error && response) {
         context.commit('GET_NEWS_LIST_FULFILL', response)
-        response.Data[0] && context.commit('SET_PREVIEW_NEW', response.Data[0])
+        response.Data && response.Data[0] && context.commit('SET_PREVIEW_NEW', response.Data[0])
       } else {
         console.error(error)
       }

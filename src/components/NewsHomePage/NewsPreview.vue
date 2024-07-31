@@ -1,6 +1,5 @@
 <template>
-  <router-link :to="{ name: 'NewsDetail', params: { newsId: data.ID, } }" class="wrapper"
-    :class="[{ 'show': isDisplay }]">
+  <router-link :to="{ name: routeName, params: { newsId: data.ID, } }" class="wrapper" :class="[{ 'show': isDisplay }]">
     <img v-bind:src="data.thumbnail">
     <p class="title">{{ data.title }}</p>
     <div class="time">
@@ -12,6 +11,7 @@
 
 <script>
 import { formatTimeHumanize } from '@/helpers/formater'
+import { handleNewsRoute } from '@/helpers/arrayHandler.js'
 export default {
   props: {
     data: {
@@ -27,6 +27,9 @@ export default {
         }
         return false
       }
+    },
+    routeName() {
+      return handleNewsRoute(this.data.category).rootCategory.pathName
     }
   },
   methods: {
