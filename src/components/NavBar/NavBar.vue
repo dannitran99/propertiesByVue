@@ -378,7 +378,7 @@ export default {
 .sub-menu-user li,
 button,
 a {
-  color: #000;
+  color: #000 !important;
   text-decoration: none;
   display: flex;
   align-items: center;

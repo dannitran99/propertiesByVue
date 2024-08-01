@@ -29,7 +29,7 @@ export default {
   computed: {
     news: {
       get() {
-        return this.$store.getters['news/newsList']
+        return this.$store.getters['news/newsListMain']
       }
     },
     isLoading: {
@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     async handleGetNewsMain() {
-      await this.$store.dispatch('news/getNewsList', this.handleTabPayload())
+      await this.$store.dispatch('news/getNewsListMain', this.handleTabPayload())
     },
     handleTabPayload() {
       switch (this.currentTab) {

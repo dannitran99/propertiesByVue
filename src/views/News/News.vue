@@ -7,13 +7,20 @@
         <p>{{ category.description || lastPath.description }}</p>
       </div>
       <div class="content-main">
+        <news-card v-for="item in news" :key="item.id" :data="item" />
         <template v-if="isLoading">
           <news-card-skeleton />
           <news-card-skeleton />
           <news-card-skeleton />
           <news-card-skeleton />
         </template>
-        <news-card v-else v-for="item in news" :key="item.id" :data="item" />
+        <button class="btn-view-more" :disabled="isLoading" @click="handleViewMore" v-if="news.length < totalItem">
+          Xem thêm
+        </button>
+        <div v-if="!isLoading && !news.length" class="news-empty">
+          <div class="background-img-news"></div>
+          <h2>Không tìm thấy kết quả</h2>
+        </div>
       </div>
     </div>
 
@@ -43,8 +50,13 @@ export default {
         return this.$store.getters['news/newsList']
       }
     },
+    totalItem: {
+      get() {
+        return this.$store.getters['news/totalItem']
+      }
+    },
     lastPath() {
-      const lastPath = this.$route.path.split('/').reverse()[0]
+      const lastPath = this.$route.path.split('/')[1]
       return this.handleRoutePath(lastPath)
     },
     category() {
@@ -69,11 +81,16 @@ export default {
   },
   watch: {
     '$route'() {
+      this.page = 1
+      this.$store.dispatch('news/returnInitData')
       this.handleGetNews()
     }
   },
   created() {
     this.handleGetNews()
+  },
+  destroyed() {
+    this.$store.dispatch('news/returnInitData')
   },
   methods: {
     async handleGetNews() {
@@ -89,6 +106,10 @@ export default {
         if (value.code === input) object = value
       })
       return object
+    },
+    handleViewMore() {
+      this.page++
+      this.handleGetNews()
     }
   }
 }
@@ -132,5 +153,48 @@ export default {
 
 .content-main {
   width: calc(2 / 3 * 100%);
+}
+
+.btn-view-more {
+  margin: 0 auto 25px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  text-align: center;
+  color: #c20000;
+  background: #fff;
+  border: 1px solid #c20000;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 7px 20px;
+  transition: all .2s ease;
+
+  &:hover {
+    color: #fff;
+    background: #c20000;
+  }
+}
+
+.news-empty {
+  text-align: center;
+  margin-bottom: 60px;
+
+  .background-img-news {
+    margin: auto;
+    width: 127px;
+    height: 106px;
+    background: url('../../assets/news-empty.svg');
+    background-size: contain;
+  }
+
+  h2 {
+    font-family: 'Lexend-medium', sans-serif;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 32px;
+    color: #1c1f22;
+  }
 }
 </style>

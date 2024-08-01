@@ -61,7 +61,7 @@ export function handleNewsTypeRequest(first, last) {
   if (last) return last
   const parent = FILTER_NEWS.find(el => el.value === first)
   if (parent.subItem) {
-    return parent.subItem.map(el => el.value).join(',')
+    return parent.subItem.filter(el => el.value).map(el => el.value).join(',')
   } else return parent.value
 }
 

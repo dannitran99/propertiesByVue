@@ -160,19 +160,25 @@ export default {
       }
     },
     async getAllContact (context, payload) {
+      const startRoute = router.history.current.fullPath
       context.commit('LOADING_STATE', true)
       const [error, response] = await getAllContact(payload)
       if (!error) {
-        context.commit('LOADING_STATE', false)
-        context.commit('GET_ALL_CONTACT', response)
+        if (startRoute === router.history.current.fullPath) {
+          context.commit('LOADING_STATE', false)
+          context.commit('GET_ALL_CONTACT', response)
+        }
       }
     },
     async getContactDetail (context, payload) {
+      const startRoute = router.history.current.fullPath
       context.commit('LOADING_STATE', true)
       const [error, response] = await getContactDetail(payload)
       if (!error && response) {
-        context.commit('LOADING_STATE', false)
-        context.commit('GET_CONTACT_DATA', response)
+        if (startRoute === router.history.current.fullPath) {
+          context.commit('LOADING_STATE', false)
+          context.commit('GET_CONTACT_DATA', response)
+        }
       }
     },
     submitFilter (context, payload) {

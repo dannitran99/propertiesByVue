@@ -146,12 +146,15 @@ export default {
   },
   actions: {
     async getPropertiesList (context, payload) {
+      const startRoute = router.history.current.fullPath
       context.commit('LOADING_STATE', true)
       context.commit('RESET_LIST')
       const [error, response] = await getPropertiesList(payload)
       if (!error && response) {
-        context.commit('LOADING_STATE', false)
-        context.commit('GET_PROPERTIES_LIST', response)
+        if (startRoute === router.history.current.fullPath) {
+          context.commit('LOADING_STATE', false)
+          context.commit('GET_PROPERTIES_LIST', response)
+        }
       } else {
         context.commit('LOADING_STATE', false)
       }
@@ -212,22 +215,28 @@ export default {
       }
     },
     async getPostedProperty (context) {
+      const startRoute = router.history.current.fullPath
       context.commit('LOADING_STATE', true)
       const [error, response] = await getPostedProperty()
       if (!error && response) {
-        context.commit('LOADING_STATE', false)
-        context.commit('GET_PROPERTIES_LIST_POSTED', response)
+        if (startRoute === router.history.current.fullPath) {
+          context.commit('LOADING_STATE', false)
+          context.commit('GET_PROPERTIES_LIST_POSTED', response)
+        }
       } else {
         context.commit('LOADING_STATE', false)
         return error
       }
     },
     async getPropertiesDetail (context, payload) {
+      const startRoute = router.history.current.fullPath
       context.commit('LOADING_STATE', true)
       const [error, response] = await getPropertiesDetail(payload)
       if (!error && response) {
-        context.commit('LOADING_STATE', false)
-        context.commit('GET_PROPERTIES_DETAIL', response)
+        if (startRoute === router.history.current.fullPath) {
+          context.commit('LOADING_STATE', false)
+          context.commit('GET_PROPERTIES_DETAIL', response)
+        }
       } else {
         context.commit('LOADING_STATE', false)
         return error

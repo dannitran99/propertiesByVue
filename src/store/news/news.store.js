@@ -7,6 +7,7 @@ export default {
     isLoading: false,
     searchKeyword: '',
     newsList: [],
+    newsListMain: [],
     previewNewsItem: {},
     currentTab: 0,
     newContent: {},
@@ -21,6 +22,9 @@ export default {
     },
     newsList (state) {
       return state.newsList
+    },
+    newsListMain (state) {
+      return state.newsListMain
     },
     previewNewsItem (state) {
       return state.previewNewsItem
@@ -37,7 +41,9 @@ export default {
   },
   mutations: {
     INIT_STATE (state) {
+      state.newsList = []
       state.newContent = {}
+      state.totalItem = 0
     },
     SEARCH_TYPING (state, payload) {
       state.searchKeyword = payload
@@ -47,8 +53,15 @@ export default {
     },
     GET_NEWS_LIST_FULFILL (state, data) {
       state.isLoading = false
-      state.newsList = data.Data
+      if (data.Data) {
+        const noDulplicate = data.Data.filter(item => !state.newsList.find(sItem => sItem.ID === item.ID))
+        state.newsList = [...state.newsList, ...noDulplicate]
+      }
       state.totalItem = data.Total
+    },
+    GET_NEWS_LIST_MAIN_FULFILL(state, data) {
+      state.isLoading = false
+      state.newsListMain = data.Data
     },
     GET_NEW_DATA (state, data) {
       state.newContent = data
@@ -74,21 +87,37 @@ export default {
   },
   actions: {
     async getNewsList (context, payload) {
+      const startRoute = router.history.current.fullPath
       context.commit('GET_NEWS_LIST_PENDING')
       const [error, response] = await getNewsList(payload)
       if (!error && response) {
-        context.commit('GET_NEWS_LIST_FULFILL', response)
+        if (startRoute === router.history.current.fullPath) {
+          context.commit('GET_NEWS_LIST_FULFILL', response)
+          response.Data && response.Data[0] && context.commit('SET_PREVIEW_NEW', response.Data[0])
+        }
+      } else {
+        console.error(error)
+      }
+    },
+    async getNewsListMain (context, payload) {
+      context.commit('GET_NEWS_LIST_PENDING')
+      const [error, response] = await getNewsList(payload)
+      if (!error && response) {
+        context.commit('GET_NEWS_LIST_MAIN_FULFILL', response)
         response.Data && response.Data[0] && context.commit('SET_PREVIEW_NEW', response.Data[0])
       } else {
         console.error(error)
       }
     },
     async getNewById (context, payload) {
+      const startRoute = router.history.current.fullPath
       context.commit('LOADING_STATE', true)
       const [error, response] = await getNewById(payload.id)
       if (!error && response) {
-        context.commit('GET_NEW_DATA', response)
-        context.commit('LOADING_STATE', false)
+        if (startRoute === router.history.current.fullPath) {
+          context.commit('GET_NEW_DATA', response)
+          context.commit('LOADING_STATE', false)
+        }
       } else {
         console.error(error)
       }

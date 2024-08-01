@@ -402,10 +402,12 @@ export const FILTER_NEWS = [
         label: NEWS_CATEGORY_TYPE.video.primaryLabel,
         value: NEWS_CATEGORY_TYPE.video.code
       },
+      { label: NEWS_CATEGORY_TYPE.baocao.primaryLabel },
       {
         label: NEWS_CATEGORY_TYPE.chuyengia.primaryLabel,
         value: NEWS_CATEGORY_TYPE.chuyengia.code
-      }
+      },
+      { label: NEWS_CATEGORY_TYPE.interaktive.primaryLabel }
     ]
   }
 ]
@@ -560,12 +562,12 @@ export const MENU_ITEM = [
         label: NEWS_CATEGORY_TYPE.video.primaryLabel,
         path: NEWS_CATEGORY_TYPE.video.code
       },
-      { label: 'Báo cáo thị trường' },
+      { label: NEWS_CATEGORY_TYPE.baocao.primaryLabel },
       {
         label: NEWS_CATEGORY_TYPE.chuyengia.primaryLabel,
         path: NEWS_CATEGORY_TYPE.chuyengia.code
       },
-      { label: 'Interaktive Story' }
+      { label: NEWS_CATEGORY_TYPE.interaktive.primaryLabel }
     ]
   },
   {

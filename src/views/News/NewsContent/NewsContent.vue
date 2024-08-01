@@ -1,6 +1,6 @@
 <template>
   <div>
-    <bread-crumb v-bind:items="breadCrumb" />
+    <bread-crumb v-bind:items="breadCrumb" :categoryNav="content.category" />
     <v-progress-circular indeterminate class="loading" v-if="isLoading"></v-progress-circular>
     <div class="content" v-else>
       <h1 class="title-content">{{ content.title }}</h1>

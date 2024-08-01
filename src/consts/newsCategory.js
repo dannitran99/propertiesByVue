@@ -71,10 +71,16 @@ export const NEWS_CATEGORY_TYPE = {
     title: 'Video đánh giá',
     description: 'Cập nhật thông tin thị trường BĐS tại một khu vực hoặc 1 dự án với các video đánh giá chi tiết, bao quát\nvề diễn biến giá, xu hướng và lời khuyên mua bán, đầu tư.'
   },
+  baocao: {
+    primaryLabel: 'Báo cáo thị trường'
+  },
   chuyengia: {
     primaryLabel: 'Góc nhìn chuyên gia',
     code: 'goc-nhin-chuyen-gia',
     title: 'Góc nhìn chuyên gia bất động sản',
     description: 'Nhận định, phân tích của các chuyên gia bất động sản về diễn biến và các xu hướng mới của thị trường.'
+  },
+  interaktive: {
+    primaryLabel: 'Interaktive Story'
   }
 }
