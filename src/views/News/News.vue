@@ -88,7 +88,7 @@ export default {
     subCategory() {
       const lastPath = this.$route.path.split('/')[1]
       const { rootCategory } = handleNewsRoute(lastPath)
-      return this.$route.query.category ? undefined : rootCategory.subItem.filter(el => el.icon)
+      return this.$route.query.category || !rootCategory.subItem ? undefined : rootCategory.subItem.filter(el => el.icon)
     },
     category() {
       const category = this.$route.query.category
