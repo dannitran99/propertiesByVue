@@ -361,31 +361,38 @@ export const FILTER_NEWS = [
     subItem: [
       {
         label: NEWS_CATEGORY_TYPE.mua.primaryLabel,
-        value: NEWS_CATEGORY_TYPE.mua.code
+        value: NEWS_CATEGORY_TYPE.mua.code,
+        icon: 'icon-buyproperty'
       },
       {
         label: NEWS_CATEGORY_TYPE.ban.primaryLabel,
-        value: NEWS_CATEGORY_TYPE.ban.code
+        value: NEWS_CATEGORY_TYPE.ban.code,
+        icon: 'icon-saleproperty'
       },
       {
         label: NEWS_CATEGORY_TYPE.thue.primaryLabel,
-        value: NEWS_CATEGORY_TYPE.thue.code
+        value: NEWS_CATEGORY_TYPE.thue.code,
+        icon: 'icon-rentproperty'
       },
       {
         label: NEWS_CATEGORY_TYPE.taichinh.primaryLabel,
-        value: NEWS_CATEGORY_TYPE.taichinh.code
+        value: NEWS_CATEGORY_TYPE.taichinh.code,
+        icon: 'icon-finance'
       },
       {
         label: NEWS_CATEGORY_TYPE.quyhoach.primaryLabel,
-        value: NEWS_CATEGORY_TYPE.quyhoach.code
+        value: NEWS_CATEGORY_TYPE.quyhoach.code,
+        icon: 'icon-planning'
       },
       {
         label: NEWS_CATEGORY_TYPE.noithat.primaryLabel,
-        value: NEWS_CATEGORY_TYPE.noithat.code
+        value: NEWS_CATEGORY_TYPE.noithat.code,
+        icon: 'icon-interior'
       },
       {
         label: NEWS_CATEGORY_TYPE.phongthuy.primaryLabel,
-        value: NEWS_CATEGORY_TYPE.phongthuy.code
+        value: NEWS_CATEGORY_TYPE.phongthuy.code,
+        icon: 'icon-zone'
       }
     ]
   },
@@ -396,16 +403,22 @@ export const FILTER_NEWS = [
     subItem: [
       {
         label: NEWS_CATEGORY_TYPE.bieudo.primaryLabel,
-        value: NEWS_CATEGORY_TYPE.bieudo.code
+        value: NEWS_CATEGORY_TYPE.bieudo.code,
+        icon: 'icon-statistic'
       },
       {
         label: NEWS_CATEGORY_TYPE.video.primaryLabel,
-        value: NEWS_CATEGORY_TYPE.video.code
+        value: NEWS_CATEGORY_TYPE.video.code,
+        icon: 'icon-video'
       },
-      { label: NEWS_CATEGORY_TYPE.baocao.primaryLabel },
+      {
+        label: NEWS_CATEGORY_TYPE.baocao.primaryLabel,
+        icon: 'icon-report'
+      },
       {
         label: NEWS_CATEGORY_TYPE.chuyengia.primaryLabel,
-        value: NEWS_CATEGORY_TYPE.chuyengia.code
+        value: NEWS_CATEGORY_TYPE.chuyengia.code,
+        icon: 'icon-analystic'
       },
       { label: NEWS_CATEGORY_TYPE.interaktive.primaryLabel }
     ]

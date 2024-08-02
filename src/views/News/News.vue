@@ -6,8 +6,28 @@
         <h1>{{ category.title || lastPath.title }}</h1>
         <p>{{ category.description || lastPath.description }}</p>
       </div>
+      <news-card-highlight-skeleton v-if="isLoading" />
+      <news-card-highlight :data="articleHighlight" v-if="articleHighlight.length" />
+      <div class="category-section" v-if="subCategory">
+        <h2>Chuyên mục</h2>
+        <div class="category-item-wrapper">
+          <div v-for="(item, idx) in subCategory" :key="idx" class="category-item">
+            <router-link v-if="item.value" :to="{ path: `/${lastPath.code}?category=${item.value}` }">
+              <component :is="item.icon" />
+              <p>{{ item.label }}</p>
+            </router-link>
+            <div v-else>
+              <component :is="item.icon" />
+              <p>{{ item.label }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="content-main">
-        <news-card v-for="item in news" :key="item.id" :data="item" />
+        <h2 class="title-news-content" v-if="category.secondaryLabel || lastPath.secondaryLabel">
+          {{ category.secondaryLabel || lastPath.secondaryLabel }}
+        </h2>
+        <news-card v-for="item in articleFeed" :key="item.id" :data="item" />
         <template v-if="isLoading">
           <news-card-skeleton />
           <news-card-skeleton />
@@ -28,15 +48,20 @@
 </template>
 
 <script>
-import NewsCard from '@/components/News/NewsCard/NewsCard.vue'
+import NewsCard from '@/components/News/NewsCard'
+import NewsCardHighlight from '@/components/News/NewsCardHighlight'
+import NewsCardHighlightSkeleton from '@/components/News/NewsCardHighlight/NewsCardHighlightSkeleton.vue'
 import NewsCardSkeleton from '@/components/News/NewsCard/NewsCardSkeleton.vue'
 import { NEWS_CATEGORY_TYPE } from '@/consts/newsCategory'
 import { handleNewsTypeRequest } from '@/helpers/arrayHandler.js'
+import { handleNewsRoute } from '@/helpers/arrayHandler'
 export default {
-  components: { NewsCard, NewsCardSkeleton },
+  components: { NewsCard, NewsCardSkeleton, NewsCardHighlight, NewsCardHighlightSkeleton },
   data() {
     return {
-      page: 1
+      page: 1,
+      articleHighlight: [],
+      articleFeed: []
     }
   },
   computed: {
@@ -50,6 +75,7 @@ export default {
         return this.$store.getters['news/newsList']
       }
     },
+
     totalItem: {
       get() {
         return this.$store.getters['news/totalItem']
@@ -58,6 +84,11 @@ export default {
     lastPath() {
       const lastPath = this.$route.path.split('/')[1]
       return this.handleRoutePath(lastPath)
+    },
+    subCategory() {
+      const lastPath = this.$route.path.split('/')[1]
+      const { rootCategory } = handleNewsRoute(lastPath)
+      return this.$route.query.category ? undefined : rootCategory.subItem.filter(el => el.icon)
     },
     category() {
       const category = this.$route.query.category
@@ -84,6 +115,17 @@ export default {
       this.page = 1
       this.$store.dispatch('news/returnInitData')
       this.handleGetNews()
+    },
+    news() {
+      if (this.$route.query.k) {
+        const clonedArray = [...this.news]
+        this.articleFeed = clonedArray
+        this.articleHighlight = []
+      } else {
+        const clonedArray = [...this.news]
+        this.articleFeed = clonedArray.splice(this.category ? 1 : 4)
+        this.articleHighlight = clonedArray
+      }
     }
   },
   created() {
@@ -195,6 +237,61 @@ export default {
     font-size: 24px;
     line-height: 32px;
     color: #1c1f22;
+  }
+}
+
+.title-news-content {
+  font-family: 'Lexend-Medium', sans-serif;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 44px;
+  color: #1c1f22;
+  margin-bottom: 30px;
+}
+
+.category-section {
+  margin-top: 50px;
+  margin-bottom: 80px;
+
+  h2 {
+    font-family: 'Lexend-medium', sans-serif;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 44px;
+    color: #1c1f22;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 30px;
+    margin-bottom: .5rem;
+  }
+}
+
+.category-item-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 30px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #ccc;
+
+  .category-item {
+    width: 25%;
+    text-align: center;
+    padding: 15px;
+
+    &:hover {
+      p {
+        color: #5a6067 !important;
+      }
+    }
+
+    p {
+      font-family: 'Lexend-medium', sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 28px;
+      color: #1c1f22 !important;
+      margin-top: 10px;
+      margin-bottom: 1rem;
+    }
   }
 }
 </style>

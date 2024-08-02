@@ -46,6 +46,17 @@ import Box from '@/components/icons/Box.vue'
 import Plus from '@/components/icons/Plus.vue'
 import Minus from '@/components/icons/Minus.vue'
 import CellPhone from '@/components/icons/CellPhone.vue'
+import BuyProperty from '@/components/icons/BuyProperty.vue'
+import SaleProperty from '@/components/icons/SaleProperty.vue'
+import RentProperty from '@/components/icons/RentProperty.vue'
+import Finance from '@/components/icons/Finance.vue'
+import Planning from '@/components/icons/Planning.vue'
+import Interior from '@/components/icons/Interior.vue'
+import Zone from '@/components/icons/Zone.vue'
+import Statistic from '@/components/icons/Statistic.vue'
+import Video from '@/components/icons/Video.vue'
+import Report from '@/components/icons/Report.vue'
+import Analystic from '@/components/icons/Analystic.vue'
 const iconElements = {
   RightArrow,
   Home,
@@ -94,7 +105,18 @@ const iconElements = {
   Threedot,
   MenuList,
   Person,
-  Box
+  Box,
+  BuyProperty,
+  SaleProperty,
+  RentProperty,
+  Finance,
+  Planning,
+  Interior,
+  Zone,
+  Statistic,
+  Video,
+  Report,
+  Analystic
 }
 
 export default {
