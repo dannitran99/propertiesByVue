@@ -27,7 +27,9 @@
           <div v-if="content.tags.length" class="tags-content">
             <p>Khám phá thêm</p>
             <div class="tags">
-              <div v-for="(item, idx) in content.tags" :key="idx" class="tags-detail">{{ item }}</div>
+              <router-link :to="{ name: 'Wiki', query: { tags: item } }" v-for="(item, idx) in content.tags" :key="idx"
+                class="tags-detail">{{ item }}
+              </router-link>
             </div>
           </div>
         </div>
@@ -62,10 +64,10 @@ export default {
         return this.$store.getters['news/isLoading']
       }
     },
-    breadCrumb: {
-      get() {
+    breadCrumb() {
+      const breadCrumbRoot = []
+      if (this.content.category) {
         const routeParse = handleNewsRoute(this.content.category)
-        const breadCrumbRoot = []
         routeParse.rootCategory && breadCrumbRoot.push({
           label: routeParse.rootCategory.label,
           href: `/${routeParse.rootCategory.value}`
@@ -74,13 +76,13 @@ export default {
           label: routeParse.subCategory.label,
           href: `/${routeParse.rootCategory.value}?category=${routeParse.subCategory.value}`
         })
-        return [
-          ...breadCrumbRoot,
-          {
-            label: this.content.title || ''
-          }
-        ]
       }
+      return [
+        ...breadCrumbRoot,
+        {
+          label: this.content.title || ''
+        }
+      ]
     }
   },
   async created() {
@@ -163,7 +165,13 @@ p {
   border-radius: 16px;
   padding: 5px 15px;
   line-height: 22px;
+  color: #505050 !important;
   cursor: pointer;
+
+  &:hover {
+    background: #fff0f0;
+    color: #1c1f22 !important;
+  }
 }
 
 .loading {

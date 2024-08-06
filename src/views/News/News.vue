@@ -2,63 +2,87 @@
   <div>
     <bread-crumb v-bind:items="breadCrumb" />
     <div class="content-wrapper">
-      <div class="content-header">
-        <h1>{{ category.title || lastPath.title }}</h1>
-        <p>{{ category.description || lastPath.description }}</p>
-      </div>
-      <news-card-highlight-skeleton v-if="isLoading" />
-      <news-card-highlight :data="articleHighlight" v-if="articleHighlight.length" />
-      <div class="category-section" v-if="subCategory">
-        <h2>Chuyên mục</h2>
-        <div class="category-item-wrapper">
-          <div v-for="(item, idx) in subCategory" :key="idx" class="category-item">
-            <router-link v-if="item.value" :to="{ path: `/${lastPath.code}?category=${item.value}` }">
-              <component :is="item.icon" />
-              <p>{{ item.label }}</p>
-            </router-link>
-            <div v-else>
-              <component :is="item.icon" />
-              <p>{{ item.label }}</p>
+      <template v-if="isSearching">
+        <div class="content-main">
+          <h1 class="searching-page-title">{{ totalItem }} kết quả cho '{{ isSearching }}'</h1>
+          <news-card-searching v-for="item in news" :key="item.id" :data="item" />
+          <template v-if="isLoading">
+            <news-card-searching-skeleton />
+            <news-card-searching-skeleton />
+            <news-card-searching-skeleton />
+            <news-card-searching-skeleton />
+          </template>
+          <button class="btn-view-more" :disabled="isLoading" @click="handleViewMore" v-if="news.length < totalItem">
+            Xem thêm
+          </button>
+          <div v-if="!isLoading && !news.length" class="news-empty">
+            <div class="background-img-news"></div>
+            <h2>Không tìm thấy kết quả</h2>
+            <p>Thử các cụm từ tìm kiếm khác hoặc ít cụ thể hơn</p>
+          </div>
+        </div>
+      </template>
+      <template v-else>
+        <div class="content-header">
+          <h1>{{ category.title || lastPath.title }}</h1>
+          <p>{{ category.description || lastPath.description }}</p>
+        </div>
+        <news-card-highlight-skeleton v-if="isLoading" />
+        <news-card-highlight :data="articleHighlight" v-if="articleHighlight.length" />
+        <div class="category-section" v-if="subCategory">
+          <h2>Chuyên mục</h2>
+          <div class="category-item-wrapper">
+            <div v-for="(item, idx) in subCategory" :key="idx" class="category-item">
+              <router-link v-if="item.value" :to="{ path: `/${lastPath.code}?category=${item.value}` }">
+                <component :is="item.icon" />
+                <p>{{ item.label }}</p>
+              </router-link>
+              <div v-else>
+                <component :is="item.icon" />
+                <p>{{ item.label }}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="content-main">
-        <h2 class="title-news-content" v-if="category.secondaryLabel || lastPath.secondaryLabel">
-          {{ category.secondaryLabel || lastPath.secondaryLabel }}
-        </h2>
-        <news-card v-for="item in articleFeed" :key="item.id" :data="item" />
-        <template v-if="isLoading">
-          <news-card-skeleton />
-          <news-card-skeleton />
-          <news-card-skeleton />
-          <news-card-skeleton />
-        </template>
-        <button class="btn-view-more" :disabled="isLoading" @click="handleViewMore" v-if="news.length < totalItem">
-          Xem thêm
-        </button>
-        <div v-if="!isLoading && !news.length" class="news-empty">
-          <div class="background-img-news"></div>
-          <h2>Không tìm thấy kết quả</h2>
+        <div class="content-main">
+          <h2 class="title-news-content" v-if="category.secondaryLabel || lastPath.secondaryLabel">
+            {{ category.secondaryLabel || lastPath.secondaryLabel }}
+          </h2>
+          <news-card v-for="item in articleFeed" :key="item.id" :data="item" />
+          <template v-if="isLoading">
+            <news-card-skeleton />
+            <news-card-skeleton />
+            <news-card-skeleton />
+            <news-card-skeleton />
+          </template>
+          <button class="btn-view-more" :disabled="isLoading" @click="handleViewMore" v-if="news.length < totalItem">
+            Xem thêm
+          </button>
+          <div v-if="!isLoading && !news.length" class="news-empty">
+            <div class="background-img-news"></div>
+            <h2>Không tìm thấy kết quả</h2>
+          </div>
         </div>
-      </div>
+      </template>
     </div>
-
   </div>
 </template>
 
 <script>
 import NewsCard from '@/components/News/NewsCard'
 import NewsCardHighlight from '@/components/News/NewsCardHighlight'
+import NewsCardSearching from '@/components/News/NewsCardSearching'
+import NewsCardSearchingSkeleton from '@/components/News/NewsCardSearching/NewsCardSearchingSkeleton.vue'
 import NewsCardHighlightSkeleton from '@/components/News/NewsCardHighlight/NewsCardHighlightSkeleton.vue'
 import NewsCardSkeleton from '@/components/News/NewsCard/NewsCardSkeleton.vue'
 import { NEWS_CATEGORY_TYPE } from '@/consts/newsCategory'
 import { handleNewsTypeRequest } from '@/helpers/arrayHandler.js'
 import { handleNewsRoute } from '@/helpers/arrayHandler'
 export default {
-  components: { NewsCard, NewsCardSkeleton, NewsCardHighlight, NewsCardHighlightSkeleton },
+  components: { NewsCard, NewsCardSkeleton, NewsCardHighlight, NewsCardHighlightSkeleton, NewsCardSearching, NewsCardSearchingSkeleton },
   data() {
     return {
+      isSearching: '',
       page: 1,
       articleHighlight: [],
       articleFeed: []
@@ -136,8 +160,9 @@ export default {
   },
   methods: {
     async handleGetNews() {
+      this.isSearching = this.$route.query.tags || this.$route.query.k
       await this.$store.dispatch('news/getNewsList', {
-        type: handleNewsTypeRequest(this.lastPath.code, this.category.code),
+        type: !this.$route.query.tags && handleNewsTypeRequest(this.lastPath.code, this.category.code),
         query: { ...this.$route.query, p: this.page }
       })
     },
@@ -238,6 +263,14 @@ export default {
     line-height: 32px;
     color: #1c1f22;
   }
+
+  p {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 26px;
+    color: #505050;
+    margin-top: .5rem;
+  }
 }
 
 .title-news-content {
@@ -293,5 +326,15 @@ export default {
       margin-bottom: 1rem;
     }
   }
+}
+
+.searching-page-title {
+  font-family: 'Lexend-medium', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 28px;
+  color: #1c1f22;
+  margin-bottom: 30px;
+  margin-top: 64px;
 }
 </style>

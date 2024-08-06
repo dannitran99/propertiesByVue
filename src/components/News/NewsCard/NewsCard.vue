@@ -14,7 +14,8 @@
       </div>
     </div>
     <div v-if="data.tags.length" class="card-tags">
-      <div v-for="(item, idx) in data.tags" :key="idx" class="tags-chip">{{ item }}</div>
+      <router-link :to="{ name: 'Wiki', query: { tags: item } }" v-for="(item, idx) in data.tags" :key="idx"
+        class="tags-chip">{{ item }}</router-link>
     </div>
   </div>
 </template>
@@ -47,7 +48,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   font-family: 'Roboto-Regular', sans-serif;
 }
@@ -96,7 +97,12 @@ export default {
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
-  color: #505050;
+  color: #505050 !important;
+
+  &:hover {
+    background: #ffeceb;
+    color: #74150f !important;
+  }
 }
 
 .card-content img {
