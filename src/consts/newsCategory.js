@@ -84,7 +84,8 @@ export const NEWS_CATEGORY_TYPE = {
     description: 'Cập nhật thông tin thị trường BĐS tại một khu vực hoặc 1 dự án với các video đánh giá chi tiết, bao quát\nvề diễn biến giá, xu hướng và lời khuyên mua bán, đầu tư.'
   },
   baocao: {
-    primaryLabel: 'Báo cáo thị trường'
+    primaryLabel: 'Báo cáo thị trường',
+    code: 'bao-cao-thi-truong'
   },
   chuyengia: {
     primaryLabel: 'Góc nhìn chuyên gia',

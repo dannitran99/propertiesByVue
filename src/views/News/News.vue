@@ -33,7 +33,8 @@
           <h2>Chuyên mục</h2>
           <div class="category-item-wrapper">
             <div v-for="(item, idx) in subCategory" :key="idx" class="category-item">
-              <router-link v-if="item.value" :to="{ path: `/${lastPath.code}?category=${item.value}` }">
+              <router-link v-if="item.value || item.href"
+                :to="{ path: item.href ? item.href : `/${lastPath.code}?category=${item.value}` }">
                 <component :is="item.icon" />
                 <p>{{ item.label }}</p>
               </router-link>

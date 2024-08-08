@@ -413,6 +413,7 @@ export const FILTER_NEWS = [
       },
       {
         label: NEWS_CATEGORY_TYPE.baocao.primaryLabel,
+        href: `/${NEWS_CATEGORY_TYPE.baocao.code}`,
         icon: 'icon-report'
       },
       {
@@ -575,7 +576,10 @@ export const MENU_ITEM = [
         label: NEWS_CATEGORY_TYPE.video.primaryLabel,
         path: NEWS_CATEGORY_TYPE.video.code
       },
-      { label: NEWS_CATEGORY_TYPE.baocao.primaryLabel },
+      {
+        label: NEWS_CATEGORY_TYPE.baocao.primaryLabel,
+        href: `/${NEWS_CATEGORY_TYPE.baocao.code}`
+      },
       {
         label: NEWS_CATEGORY_TYPE.chuyengia.primaryLabel,
         path: NEWS_CATEGORY_TYPE.chuyengia.code

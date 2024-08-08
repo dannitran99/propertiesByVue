@@ -95,6 +95,11 @@ export default new Router({
       component: () => import('@/views/News')
     },
     {
+      path: '/bao-cao-thi-truong',
+      name: 'Report',
+      component: () => import('@/views/Report')
+    },
+    {
       path: '/phan-tich-danh-gia',
       name: 'Analystic',
       component: () => import('@/views/News')

@@ -7,7 +7,8 @@
           <div class="divider-breadcrumb" :class="[{ 'active-divider': currentRoute === category.value }]"></div>
         </li>
         <li v-for="(item, idx) in category.subItem" :key="idx">
-          <router-link v-if="item.value" :to="{ path: `/${category.value}?category=${item.value}` }">
+          <router-link v-if="item.value || item.href"
+            :to="{ path: item.href ? item.href : `/${category.value}?category=${item.value}` }">
             {{ item.label }}
             <div class="divider-breadcrumb" :class="[{ 'active-divider': currentRoute === item.value }]"></div>
           </router-link>

@@ -1,9 +1,9 @@
 <template>
   <v-app id="app">
-    <nav-bar class="nav-bar" />
-    <router-view class="main-content" />
-    <scroll-to-top />
-    <footer-comp></footer-comp>
+    <nav-bar class="nav-bar" v-if="defaultLayout" />
+    <router-view :class="[{ 'main-content': defaultLayout }]" />
+    <scroll-to-top v-if="defaultLayout" />
+    <footer-comp v-if="defaultLayout"></footer-comp>
   </v-app>
 </template>
 
@@ -11,6 +11,11 @@
 
 export default {
   name: 'App',
+  computed: {
+    defaultLayout() {
+      return this.$route.path !== '/bao-cao-thi-truong'
+    }
+  },
   async created() {
     if (localStorage.token && !sessionStorage.getItem('Entry')) {
       await this.$store.dispatch('common/checkVerifyToken')
