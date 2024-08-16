@@ -235,7 +235,9 @@ export default {
       preventDefault: true,
       type: 'wheel,scroll',
       allowClicks: true,
-      onEnable: self => self.savedScroll = self.scrollY(), // save the scroll position
+      onEnable: self => {
+        self.savedScroll = self.scrollY()
+      }, // save the scroll position
       onChangeY: self => self.scrollY(self.savedScroll) // refuse to scroll
     })
     preventScroll.disable()
