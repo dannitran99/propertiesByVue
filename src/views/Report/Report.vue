@@ -1,6 +1,6 @@
 <template>
-  <div class="scroll">
-    <section class="panel-section testxx">
+  <div>
+    <section class="panel-section planet-scroll">
       <div class="report-hero hero-section">
         <svg viewBox="0 0 1920 1200" preserveAspectRatio="xMidYMid meet" text-rendering="geometricPrecision">
           <defs></defs>
@@ -119,12 +119,54 @@
         </div>
       </div>
     </section>
-    <section class="test panel-section x-100">
-      abc
-    </section>
-    <section class="test panel-section x-100">
-      abcccc
-    </section>
+    <div class="scroll">
+      <section class="solution-section panel-section x-100">
+        <div class="solution-container">
+          <h3 class="solution-title">
+            Giải Pháp Nghiên Cứu Thị Trường
+            <img src="../../assets/line.png" alt="line" />
+          </h3>
+          <p class="solution-description">
+            Cung cấp giải pháp phân tích dữ liệu và khảo sát thị trường bất động sản toàn diện giúp chủ đầu tư cập nhật
+            xu hướng, thấu hiểu thị trường và có cơ sở đưa ra các quyết định kinh doanh & marketing</p>
+          <div class="solution-list">
+            <div>
+              <img src="../../assets/item1.png" alt="solution" />
+              <p>Đặc điểm thị hiếu người mua nhà tiềm năng</p>
+            </div>
+            <div>
+              <img src="../../assets/item2.png" alt="solution" />
+              <p>Phân tích đối thủ cạnh tranh</p>
+            </div>
+            <div>
+              <img src="../../assets/item3.png" alt="solution" />
+              <p>Biến động giá theo phân khúc, khu vực (cập nhật theo thời gian thực)</p>
+            </div>
+            <div>
+              <img src="../../assets/item4.png" alt="solution" />
+              <p>Khảo sát nhu cầu của khách hàng mục tiêu</p>
+            </div>
+            <div>
+              <img src="../../assets/item5.png" alt="solution" />
+              <p>Khảo sát tiềm năng phát triển của khu vực, dự án</p>
+            </div>
+            <div>
+              <img src="../../assets/item6.png" alt="solution" />
+              <p>Nghiên cứu Cung – Cầu về sản phẩm</p>
+            </div>
+          </div>
+          <p class="solution-slogan">
+            CHÚNG TÔI SỞ HỮU <span>DỮ LIỆU TRỰC TUYẾN LỚN NHẤT</span> VỀ THỊ TRƯỜNG BẤT ĐỘNG SẢN VIỆT NAM
+          </p>
+          <div class="solution-progress">
+            <div></div>
+          </div>
+        </div>
+      </section>
+      <section class="test panel-section x-100">
+        abcccc
+      </section>
+    </div>
   </div>
 </template>
 
@@ -288,7 +330,11 @@ export default {
 
 <style scoped lang="scss">
 * {
-  font-family: 'Roboto-Regular', sans-serif;
+  font-family: 'Montserrat-Medium', sans-serif;
+}
+
+.planet-scroll {
+  height: 100vh;
 }
 
 .report-hero {
@@ -332,6 +378,94 @@ export default {
     font-size: 34px;
     font-weight: 300;
   }
+}
+
+.solution-section {
+  background-color: #fff !important;
+  height: 100vh;
+  background: url('../../assets/bg1.png') no-repeat center bottom;
+}
+
+.solution-container {
+  width: 1120px;
+  margin: 0 auto;
+}
+
+.solution-title {
+  padding: 60px 0;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1f3671;
+
+  img {
+    display: block;
+    margin: 40px auto 0;
+  }
+}
+
+.solution-description {
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 300;
+  color: #222222;
+}
+
+.solution-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 50px 0;
+
+  >div {
+    width: calc(100% / 3 - 27px);
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 35px;
+
+    p {
+      width: 250px;
+      margin: auto;
+    }
+
+    img {
+      height: 120px;
+      object-fit: none;
+    }
+  }
+
+  >:nth-child(3n+1) {
+    margin-right: 24px;
+  }
+
+  >:nth-child(3n+2) {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+
+  >:nth-child(3n) {
+    margin-left: 24px;
+  }
+}
+
+.solution-slogan {
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 300;
+  color: #222222;
+
+  span {
+    color: #1f3671;
+    font-weight: 600;
+  }
+}
+
+.solution-progress {
+  width: 700px;
+  margin: 50px auto;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .fade-animation {

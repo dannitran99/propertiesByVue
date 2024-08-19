@@ -41,6 +41,11 @@ export default {
   src: url('../public/fonts/Roboto-Regular.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Montserrat-Medium';
+  src: url('../public/fonts/Montserrat-Medium.ttf') format('truetype');
+}
+
 ::-webkit-scrollbar {
   width: 4px;
 }
