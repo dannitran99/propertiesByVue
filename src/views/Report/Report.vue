@@ -159,12 +159,53 @@
             CHÚNG TÔI SỞ HỮU <span>DỮ LIỆU TRỰC TUYẾN LỚN NHẤT</span> VỀ THỊ TRƯỜNG BẤT ĐỘNG SẢN VIỆT NAM
           </p>
           <div class="solution-progress">
-            <div></div>
+            <div class="progress-circle">
+              <div class="progress-title">
+                <div class="progress-percentage" id="percentage-1">80</div>
+                <p>Tống số tin đăng trên toàn thị trường</p>
+              </div>
+              <svg version="1.1" preserveAspectRatio="xMinYMin meet" viewBox="0 0 160 160">
+                <ellipse rx="79" ry="79" cx="80" cy="80" stroke="#f2f2f2" fill="none" stroke-width="2"></ellipse>
+                <path id="progress-animation-1" fill="none" stroke-width="2" stroke="#4780b6"
+                  d="M80,1 A79,79 0 1 1 4.866535212682862,55.58765744437917"
+                  style="stroke-dashoffset: 397.112 ; stroke-dasharray:397.112, 397.112 ;">
+                </path>
+              </svg>
+            </div>
+            <div class="progress-circle">
+              <div class="progress-title">
+                <div class="progress-percentage" id="percentage-2">90</div>
+                <p>Tống số dự án trên toàn thị trường</p>
+              </div>
+              <svg version="1.1" preserveAspectRatio="xMinYMin meet" viewBox="0 0 160 160">
+                <ellipse rx="79" ry="79" cx="80" cy="80" stroke="#f2f2f2" fill="none" stroke-width="2"></ellipse>
+                <path id="progress-animation-2" fill="none" stroke-width="2" stroke="#4780b6"
+                  d="M80,1 A79,79 0 1 1 33.56496506889461,16.08765744437916"
+                  style="stroke-dasharray: 446.768, 446.768; stroke-dashoffset: 446.768;"></path>
+              </svg>
+            </div>
+            <div class="progress-circle">
+              <div class="progress-title">
+                <div class="progress-percentage" id="percentage-3">54</div>
+                <p>Tống thời gian online của người tìm kiếm BĐS</p>
+              </div>
+              <svg version="1.1" preserveAspectRatio="xMinYMin meet" viewBox="0 0 160 160">
+                <ellipse rx="79" ry="79" cx="80" cy="80" stroke="#f2f2f2" fill="none" stroke-width="2"></ellipse>
+                <path id="progress-animation-3" fill="none" stroke-width="2" stroke="#4780b6"
+                  d="M80,1 A79,79 0 1 1 60.35349891397649,156.51806972916188"
+                  style="stroke-dasharray: 268.046, 268.046; stroke-dashoffset: 268.046;"></path>
+              </svg>
+            </div>
           </div>
         </div>
       </section>
-      <section class="test panel-section x-100">
-        abcccc
+      <section class="gallery-section panel-section x-100">
+        <div class="gallery-main">
+          <h3 class="solution-title">
+            Tìm hiểu về chúng tôi
+            <img src="../../assets/line.png" alt="line" />
+          </h3>
+        </div>
       </section>
     </div>
   </div>
@@ -292,12 +333,36 @@ export default {
         gsap.to(target, {
           xPercent: isScrollingDown ? 0 : 100,
           duration: 0.5,
+          onStart: () => {
+            if (currentIndex === 1) {
+              counting(80, sections[1].querySelector('#percentage-1'))
+              counting(90, sections[1].querySelector('#percentage-2'))
+              counting(54, sections[1].querySelector('#percentage-3'))
+              sections[1].querySelector('#progress-animation-1').classList.add('circle-1')
+              sections[1].querySelector('#progress-animation-2').classList.add('circle-2')
+              sections[1].querySelector('#progress-animation-3').classList.add('circle-3')
+            }
+          },
           onComplete: () => {
+            if (currentIndex !== 1) {
+              sections[1].querySelector('#progress-animation-1').classList.remove('circle-1')
+              sections[1].querySelector('#progress-animation-2').classList.remove('circle-2')
+              sections[1].querySelector('#progress-animation-3').classList.remove('circle-3')
+            }
             animating = false
           }
         })
         currentIndex = index
       }
+    }
+
+    function counting(count, element) {
+      let c = 1
+      var timer = setInterval(() => {
+        element.innerHTML = c
+        c++
+        c > count && clearInterval(timer)
+      }, 20)
     }
 
     // pin swipe section and initiate observer
@@ -344,9 +409,9 @@ export default {
   overflow: visible;
 }
 
-.test {
+.gallery-section {
   height: 100vh;
-  background-color: red;
+  background-color: #fff;
 }
 
 .scroll {
@@ -392,7 +457,7 @@ export default {
 }
 
 .solution-title {
-  padding: 60px 0;
+  padding: 70px 0;
   text-align: center;
   font-size: 32px;
   font-weight: 700;
@@ -415,7 +480,7 @@ export default {
 .solution-list {
   display: flex;
   flex-wrap: wrap;
-  margin: 50px 0;
+  margin: 80px 0;
 
   >div {
     width: calc(100% / 3 - 27px);
@@ -461,11 +526,72 @@ export default {
   }
 }
 
+.gallery-main {
+  background-color: #e6eaf2;
+  max-width: 1920px;
+  height: 100%;
+  margin: 0 auto;
+}
+
 .solution-progress {
   width: 700px;
   margin: 50px auto;
   display: flex;
   flex-wrap: wrap;
+
+  .progress-circle {
+    width: 166px;
+    height: 166px;
+    background: #fff;
+    text-align: center;
+    color: #555555;
+    font-size: 14px;
+    position: relative;
+
+    .progress-title {
+      width: 100%;
+      position: absolute;
+
+      .progress-percentage {
+        font-weight: 700;
+        font-size: 48px;
+        color: #1f3671;
+        padding-top: 10px;
+        margin-right: 15px;
+        position: relative;
+
+        &::after {
+          content: '%';
+          font-size: 32px;
+          position: absolute;
+          top: 18px;
+        }
+      }
+
+      p {
+        padding: 0 20px;
+        line-height: 18px;
+        color: #555555;
+        font-size: 14px;
+      }
+    }
+
+    .circle-1 {
+      animation: progress-1 1.6s ease-out forwards;
+    }
+
+    .circle-2 {
+      animation: progress-2 1.8s ease-out forwards;
+    }
+
+    .circle-3 {
+      animation: progress-3 1.08s ease-out forwards;
+    }
+  }
+
+  >:not(:last-child) {
+    margin-right: 75px;
+  }
 }
 
 .fade-animation {
@@ -485,6 +611,42 @@ export default {
 
 .breathing-animation-3 {
   animation: breathing-3 1.5s alternate infinite ease-in
+}
+
+@keyframes progress-1 {
+  0% {
+    stroke-dasharray: 397.112, 397.112;
+    stroke-dashoffset: 397.112;
+  }
+
+  100% {
+    stroke-dasharray: 397.112, 397.112;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes progress-2 {
+  0% {
+    stroke-dasharray: 446.768, 446.768;
+    stroke-dashoffset: 446.768;
+  }
+
+  100% {
+    stroke-dasharray: 446.768, 446.768;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes progress-3 {
+  0% {
+    stroke-dasharray: 268.046, 268.046;
+    stroke-dashoffset: 268.046;
+  }
+
+  100% {
+    stroke-dasharray: 268.046, 268.046;
+    stroke-dashoffset: 0;
+  }
 }
 
 @keyframes fade-in-down {
