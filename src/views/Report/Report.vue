@@ -201,10 +201,56 @@
       </section>
       <section class="gallery-section panel-section x-100">
         <div class="gallery-main">
-          <h3 class="solution-title">
-            Tìm hiểu về chúng tôi
-            <img src="../../assets/line.png" alt="line" />
-          </h3>
+          <div class="gallery-container">
+            <h3 class="solution-title">
+              Tìm hiểu về chúng tôi
+              <img src="../../assets/line.png" alt="line" />
+            </h3>
+            <p class="gallery-description">Chúng tôi ứng dụng công nghệ hiện đại nhất vào việc phân tích <span>Big
+                data</span> để mang đến cái nhìn
+              tổng quan cũng như cận cảnh thị trường BĐS theo thời gian thực và theo khu vực mong muốn</p>
+            <div class="gallery-detail">
+              <div class="detail-info">
+                <h3>Phương Pháp Nghiên Cứu</h3>
+                <div class="detail-img">
+                  <img src="../../assets/item7.png" alt="gallery">
+                </div>
+                <ul class="detail-list">
+                  <li>
+                    <h4>Phân tích Big data</h4>
+                    <p>Thu thập 24/7 dữ liệu lớn (Big data) Sử dụng công nghệ AI, machine learning (học máy) để loại
+                      bỏ data nhiễu và phân loại trường dữ liệu</p>
+                  </li>
+                  <li>
+                    <h4>Điều tra thực địa thị trường (Fieldwork)</h4>
+                    <p>Đội ngũ điều tra thực địa thị trường trải đều trên khắp 64 tỉnh thành trên toàn quốc, thường
+                      xuyên kiểm chứng và đối chiếu với kho dữ liệu trực tuyến</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="detail-info">
+                <h3>Đội ngũ nghiên cứu</h3>
+                <div class="detail-img">
+                  <img src="../../assets/item8.png" alt="gallery">
+                </div>
+                <ul class="detail-list">
+                  <li>
+                    <h4>Chuyên gia công nghệ</h4>
+                    <p>Chuyên gia về AI và công nghệ Big data</p>
+                  </li>
+                  <li>
+                    <h4>Đội ngũ phân tích</h4>
+                    <p>Các nhân sự giàu kinh nghiệm, đã từng làm việc ở các cơ quan nghiên cứu trong và ngoài nước & đội
+                      ngũ chuyên gia, tư vấn am hiểu thị trường BĐS Việt Nam</p>
+                  </li>
+                  <li>
+                    <h4>Đội điều tra thực địa thị trường</h4>
+                    <p>Đội điều tra viên dày dặn kinh nghiệm và am hiểu thị trường</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </div>
@@ -477,6 +523,21 @@ export default {
   color: #222222;
 }
 
+.gallery-description {
+  width: 772px;
+  margin: 40px auto;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.6;
+  font-weight: 300;
+  color: #222222;
+
+  span {
+    font-weight: 700;
+    color: #0d3866;
+  }
+}
+
 .solution-list {
   display: flex;
   flex-wrap: wrap;
@@ -496,6 +557,11 @@ export default {
     img {
       height: 120px;
       object-fit: none;
+      transition: all .2s ease-in-out;
+
+      &:hover {
+        transform: scale(1.1);
+      }
     }
   }
 
@@ -531,6 +597,61 @@ export default {
   max-width: 1920px;
   height: 100%;
   margin: 0 auto;
+}
+
+.gallery-container {
+  width: 1150px;
+  margin: 0 auto;
+}
+
+.gallery-detail {
+  >:first-child {
+    float: left;
+  }
+
+  >:last-child {
+    float: right;
+  }
+
+  .detail-info {
+    width: 555px;
+    background: url('../../assets/bgbox.png');
+    height: 557px;
+    padding: 10px 40px 0 35px;
+    color: #333;
+    line-height: 28px;
+
+    h3 {
+      font-size: 24px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .detail-img {
+      text-align: center;
+
+      img {
+        margin: 40px 0 50px;
+      }
+    }
+
+    .detail-list {
+      li {
+        list-style: disc;
+        margin-bottom: 5px;
+
+        h3 {
+          font-size: 18px;
+          font-weight: 700;
+          color: #333;
+        }
+
+        &::marker {
+          color: #d3b05c;
+        }
+      }
+    }
+  }
 }
 
 .solution-progress {
