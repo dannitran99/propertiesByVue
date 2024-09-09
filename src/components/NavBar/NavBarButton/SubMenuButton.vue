@@ -3,6 +3,7 @@
     v-if="query || hrefName">
     <li :class="[{ 'active': isActive }]">
       {{ label }}
+      <slot></slot>
     </li>
   </router-link>
   <li v-else>{{ label }}</li>
@@ -51,6 +52,8 @@ export default {
 }
 
 li {
+  width: 100%;
+  position: relative;
   padding: 6px 16px;
   list-style-type: none;
   white-space: nowrap;

@@ -152,6 +152,7 @@ export default {
 }
 
 .btn-login {
+  flex-shrink: 0;
   border: none;
   background-color: white;
   cursor: pointer;

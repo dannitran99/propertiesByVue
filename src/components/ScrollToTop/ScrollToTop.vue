@@ -45,6 +45,7 @@ export default {
   z-index: 98;
   outline: none;
   transition: opacity 0.4s ease-in-out;
+  background-color: #fff;
   box-shadow: 0px 8px 20px rgba(182, 182, 182, 0.42);
   border-radius: 48px;
 }

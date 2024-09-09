@@ -1,5 +1,5 @@
 <template>
-  <li class="menu-button">
+  <li class="menu-button" v-if="showFullMenu || index < 5">
     <router-link :to="{ name: href }" class="route-link" v-if="href">
       {{ label }}
     </router-link>
@@ -42,6 +42,13 @@ export default {
     path: {
       type: Array,
       default: null
+    },
+    showFullMenu: {
+      type: Boolean,
+      default: true
+    },
+    index: {
+      type: Number
     }
   },
   watch: {

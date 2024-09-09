@@ -2,52 +2,68 @@
   <div class="nav-wrapper">
     <div class="nav-header" data-app>
       <ul class="menu-list">
-        <nav-bar-button v-for="item in menu" v-bind:key="item.label" v-bind:label="item.label" v-bind:href="item.href"
-          v-bind:submenu="item.sub" v-bind:path="item.path" />
-      </ul>
-      <div v-if="login" class="account-info">
-
-        <div class="user-info">
-          <router-link to="/danh-sach">
-            <img :src="avatar" alt="avatar" class="avatar-img" v-if="avatar">
-            <v-avatar color="rgb(255, 236, 235)" size="40" v-else>
-              <span class="text-h6 avt-text">{{ username.split(' ').reverse()[0][0].toUpperCase() }}</span>
-            </v-avatar>
-            <p class="txt-user">{{ username }}</p>
-            <icon-downtriangle />
-          </router-link>
-          <ul class="sub-menu-user">
-            <li>
-              <router-link to="/danh-sach">
-                <icon-list />Quản lý tin đăng
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/tai-khoan">
-                <icon-user />Thay đổi thông tin cá nhân
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/doi-mat-khau">
-                <icon-lock />Thay đổi mật khẩu
-              </router-link>
-            </li>
-            <li v-if="beforeRouteEnter(['user', 'agency'])">
-              <router-link to="/dang-ky-moi-gioi">
-                <icon-case />Môi giới chuyên nghiệp
-              </router-link>
-            </li>
-            <div class="divider-li"></div>
-            <li>
-              <button @click="logout"><icon-logout />Đăng xuất</button>
-            </li>
+        <nav-bar-button v-for="(item, idx) in menu" v-bind:key="idx" v-bind:label="item.label" v-bind:href="item.href"
+          v-bind:submenu="item.sub" v-bind:path="item.path" :showFullMenu="showFullMenu" :index="idx" />
+        <div v-if="!showFullMenu" class="menu-extend">
+          <div class="icon-extend">
+            <icon-threedot />
+          </div>
+          <ul class="sub-menu">
+            <sub-menu-button v-for="(item, idx) in menuExtend" v-bind:key="idx" v-bind:label="item.label"
+              :hrefName="item.path[0]" class="sub-d1">
+              <ul class="sub-menu sub-d2">
+                <sub-menu-button v-for="(subItem, idx) in item.sub" v-bind:key="idx" v-bind:label="subItem.label"
+                  v-bind:navLink="item.href" v-bind:query="subItem.path" v-bind:path="item.path"
+                  :hrefName="subItem.href" />
+              </ul>
+            </sub-menu-button>
           </ul>
         </div>
-        <router-link :to="{ name: 'PostProperty' }" class="btn-post">
-          Đăng tin
-        </router-link>
+      </ul>
+      <div ref="info" class="right-navbar">
+        <div v-if="login" class="account-info">
+          <div class="user-info">
+            <router-link to="/danh-sach">
+              <img :src="avatar" alt="avatar" class="avatar-img" v-if="avatar">
+              <v-avatar color="rgb(255, 236, 235)" size="40" v-else>
+                <span class="text-h6 avt-text">{{ username.split(' ').reverse()[0][0].toUpperCase() }}</span>
+              </v-avatar>
+              <p class="txt-user">{{ username }}</p>
+              <icon-downtriangle />
+            </router-link>
+            <ul class="sub-menu-user">
+              <li>
+                <router-link to="/danh-sach">
+                  <icon-list />Quản lý tin đăng
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/tai-khoan">
+                  <icon-user />Thay đổi thông tin cá nhân
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/doi-mat-khau">
+                  <icon-lock />Thay đổi mật khẩu
+                </router-link>
+              </li>
+              <li v-if="beforeRouteEnter(['user', 'agency'])">
+                <router-link to="/dang-ky-moi-gioi">
+                  <icon-case />Môi giới chuyên nghiệp
+                </router-link>
+              </li>
+              <div class="divider-li"></div>
+              <li>
+                <button @click="logout"><icon-logout />Đăng xuất</button>
+              </li>
+            </ul>
+          </div>
+          <router-link :to="{ name: 'PostProperty' }" class="btn-post">
+            Đăng tin
+          </router-link>
+        </div>
+        <login-button v-else />
       </div>
-      <login-button v-else />
     </div>
     <div v-if="isSale || isRent" class="search-nav">
       <div class="btn-tab">
@@ -93,11 +109,11 @@ import { beforeRouteEnter } from '@/helpers/JWTVerify'
 import { cloneDeep } from '@/helpers/arrayHandler'
 import { FILTER_SALE_ID, MENU_ITEM } from '@/consts/label.js'
 import NavBarButton from './NavBarButton'
+import SubMenuButton from './NavBarButton/SubMenuButton.vue'
 import FilterCategory from './NavBarFilter/FilterCategory.vue'
 import FilterLocation from './NavBarFilter/FilterLocation.vue'
 import FilterPrice from './NavBarFilter/FilterPrice.vue'
 import FilterSquare from './NavBarFilter/FilterSquare.vue'
-
 export default {
   name: 'NavBar',
   components: {
@@ -105,15 +121,18 @@ export default {
     'filter-category': FilterCategory,
     'filter-location': FilterLocation,
     'filter-price': FilterPrice,
-    'filter-square': FilterSquare
+    'filter-square': FilterSquare,
+    'sub-menu-button': SubMenuButton
   },
   data() {
     return {
       isSale: false,
       isRent: false,
       menu: MENU_ITEM,
+      menuExtend: MENU_ITEM.slice(MENU_ITEM.length - 2),
       login: false,
-      username: undefined
+      username: undefined,
+      showFullMenu: true
     }
   },
   computed: {
@@ -135,8 +154,12 @@ export default {
     }
   },
   created() {
+    window.addEventListener('resize', this.handleResizeWindow)
     this.login = !!localStorage.token
     this.username = localStorage.getItem('username')
+  },
+  mounted() {
+    this.handleResizeWindow()
   },
   watch: {
     '$route'(to, from) {
@@ -148,6 +171,9 @@ export default {
     }
   },
   methods: {
+    handleResizeWindow() {
+      this.showFullMenu = window.innerWidth - this.$refs['info'].offsetWidth > 1000
+    },
     beforeRouteEnter,
     logout: () => {
       localStorage.removeItem('token')
@@ -169,8 +195,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .menu-list {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -179,6 +206,64 @@ export default {
   margin: 0;
   position: -webkit-sticky;
   position: sticky;
+  top: 0;
+}
+
+.right-navbar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.menu-extend {
+  position: relative;
+  border-radius: 8px;
+
+  .icon-extend {
+    padding: 0px 15px 5px 15px;
+  }
+
+  svg {
+    width: 25px;
+    height: 25px;
+    color: #999;
+  }
+
+  &:hover {
+    background: #FAFAFA;
+
+    >.sub-menu {
+      display: block;
+    }
+  }
+}
+
+.sub-menu {
+  display: grid;
+  position: absolute;
+  display: none;
+  min-width: 240px;
+  height: auto;
+  border-radius: 8px;
+  margin: 0;
+  padding-inline: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #fff;
+  box-shadow: 0 8px 20px hsla(0, 0%, 71%, .3);
+  text-align: left;
+}
+
+.sub-d1 {
+  &:hover {
+    .sub-d2 {
+      display: block;
+    }
+  }
+}
+
+.sub-d2 {
+  left: -100%;
   top: 0;
 }
 
