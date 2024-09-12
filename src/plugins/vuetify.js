@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
-import '@/scss/variables.scss'
+import '@/styles/vuetify-variables.scss'
 
 Vue.use(Vuetify)
 

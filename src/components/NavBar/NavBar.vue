@@ -1,6 +1,11 @@
 <template>
   <div class="nav-wrapper">
-    <div class="nav-header" data-app>
+    <div v-if="isMobile" class="drawer-navbar">
+      <button @click.stop="$emit('toggle')" class="navbar-toggle-button">
+        <icon-menu />
+      </button>
+    </div>
+    <div class="nav-header" data-app v-else>
       <ul class="menu-list">
         <nav-bar-button v-for="(item, idx) in menu" v-bind:key="idx" v-bind:label="item.label" v-bind:href="item.href"
           v-bind:submenu="item.sub" v-bind:path="item.path" :showFullMenu="showFullMenu" :index="idx" />
@@ -114,6 +119,7 @@ import FilterCategory from './NavBarFilter/FilterCategory.vue'
 import FilterLocation from './NavBarFilter/FilterLocation.vue'
 import FilterPrice from './NavBarFilter/FilterPrice.vue'
 import FilterSquare from './NavBarFilter/FilterSquare.vue'
+
 export default {
   name: 'NavBar',
   components: {
@@ -123,6 +129,12 @@ export default {
     'filter-price': FilterPrice,
     'filter-square': FilterSquare,
     'sub-menu-button': SubMenuButton
+  },
+  props: {
+    isMobile: {
+      type: Boolean,
+      default: null
+    }
   },
   data() {
     return {
@@ -172,7 +184,7 @@ export default {
   },
   methods: {
     handleResizeWindow() {
-      this.showFullMenu = window.innerWidth - this.$refs['info'].offsetWidth > 1000
+      if (this.$refs['info']) { this.showFullMenu = window.innerWidth - this.$refs['info'].offsetWidth > 1400 }
     },
     beforeRouteEnter,
     logout: () => {
@@ -207,6 +219,24 @@ export default {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
+}
+
+.drawer-navbar {
+  height: 72px;
+  padding: 15px 0;
+
+  .navbar-toggle-button {
+    width: 40px;
+    height: 40px;
+    padding: 4px;
+    margin-right: 5px;
+    float: right;
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
 }
 
 .right-navbar {

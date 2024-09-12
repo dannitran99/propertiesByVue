@@ -16,11 +16,15 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
 .body {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  // @include responsive(md) {
+  //   background-color: red;
+  // }
 }
 
 .component {

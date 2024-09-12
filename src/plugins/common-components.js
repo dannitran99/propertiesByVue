@@ -14,6 +14,7 @@ import FilterHome from '@/components/FilterHome'
 import Pagination from '@/components/Pagination'
 import SortBox from '@/components/SortBox'
 import FilterContact from '@/components/FilterContact'
+import DrawerNavBar from '@/components/DrawerNavBar'
 const commonElements = {
   NavBar,
   FooterComp,
@@ -30,7 +31,8 @@ const commonElements = {
   FilterHome,
   Pagination,
   SortBox,
-  FilterContact
+  FilterContact,
+  DrawerNavBar
 }
 
 export default {

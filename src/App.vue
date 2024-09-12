@@ -1,6 +1,7 @@
 <template>
   <v-app id="app">
-    <nav-bar class="nav-bar" v-if="defaultLayout" />
+    <drawer-nav-bar v-if="isMobile" :isShow="navbarDrawer" @toggle="toggleDrawer" />
+    <nav-bar class="nav-bar" v-if="defaultLayout" :isMobile="isMobile" @toggle="toggleDrawer" />
     <router-view :class="[{ 'main-content': defaultLayout }]" />
     <scroll-to-top v-if="defaultLayout" />
     <footer-comp v-if="defaultLayout"></footer-comp>
@@ -8,9 +9,20 @@
 </template>
 
 <script>
+import { useBreakpoints } from '@vueuse/core'
+import { breakpoints } from '@/consts/breakpoints.js'
+import DrawerNavBar from './components/DrawerNavBar/DrawerNavBar.vue'
 
+const definedBreakpoint = useBreakpoints(breakpoints)
 export default {
+  components: { DrawerNavBar },
   name: 'App',
+  data() {
+    return {
+      navbarDrawer: null,
+      isMobile: definedBreakpoint.smaller('md')
+    }
+  },
   computed: {
     defaultLayout() {
       return this.$route.path !== '/bao-cao-thi-truong'
@@ -20,6 +32,11 @@ export default {
     if (localStorage.token && !sessionStorage.getItem('Entry')) {
       await this.$store.dispatch('common/checkVerifyToken')
       sessionStorage.setItem('Entry', true)
+    }
+  },
+  methods: {
+    toggleDrawer() {
+      this.navbarDrawer = !this.navbarDrawer
     }
   }
 }

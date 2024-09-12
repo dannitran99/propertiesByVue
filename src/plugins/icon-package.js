@@ -57,6 +57,7 @@ import Statistic from '@/components/icons/Statistic.vue'
 import Video from '@/components/icons/Video.vue'
 import Report from '@/components/icons/Report.vue'
 import Analystic from '@/components/icons/Analystic.vue'
+import Menu from '@/components/icons/Menu.vue'
 const iconElements = {
   RightArrow,
   Home,
@@ -116,7 +117,8 @@ const iconElements = {
   Statistic,
   Video,
   Report,
-  Analystic
+  Analystic,
+  Menu
 }
 
 export default {
