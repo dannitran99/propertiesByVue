@@ -1,12 +1,12 @@
 <template>
-  <router-link :to="hrefName ? { path: hrefName } : { name: navLink, query: { category: query } }"
-    v-if="query || hrefName">
-    <li :class="[{ 'active': isActive }]">
+  <li v-if="query || hrefName">
+    <router-link :to="hrefName ? { path: hrefName } : { name: navLink, query: { category: query } }"
+      :class="[{ 'active': isActive }]">
       {{ label }}
-      <slot></slot>
-    </li>
-  </router-link>
-  <li v-else>{{ label }}</li>
+    </router-link>
+    <slot></slot>
+  </li>
+  <li v-else class="li-item">{{ label }}</li>
 </template>
 
 <script>
@@ -54,7 +54,6 @@ export default {
 li {
   width: 100%;
   position: relative;
-  padding: 6px 16px;
   list-style-type: none;
   white-space: nowrap;
   margin: 0;
@@ -65,9 +64,13 @@ li {
   cursor: pointer;
 }
 
-li a {
+li a,
+.li-item {
+  display: block;
+  width: 100%;
   text-decoration: none;
-  color: #2c3e50
+  color: #2c3e50;
+  padding: 6px 16px;
 }
 
 li:hover {
