@@ -58,6 +58,10 @@ import Video from '@/components/icons/Video.vue'
 import Report from '@/components/icons/Report.vue'
 import Analystic from '@/components/icons/Analystic.vue'
 import Menu from '@/components/icons/Menu.vue'
+import News from '@/components/icons/News.vue'
+import Books from '@/components/icons/Books.vue'
+import Chart from '@/components/icons/Chart.vue'
+import Contact from '@/components/icons/Contact.vue'
 const iconElements = {
   RightArrow,
   Home,
@@ -118,7 +122,11 @@ const iconElements = {
   Video,
   Report,
   Analystic,
-  Menu
+  Menu,
+  News,
+  Books,
+  Chart,
+  Contact
 }
 
 export default {

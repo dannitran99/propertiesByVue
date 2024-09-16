@@ -431,6 +431,7 @@ export const MENU_ITEM = [
     label: 'Nhà đất bán',
     href: 'PropertiesForSale',
     path: ['nha-dat-ban'],
+    icon: 'icon-house',
     sub: [
       {
         label: PROPSSALETYPE.canho.primaryLabel,
@@ -470,6 +471,7 @@ export const MENU_ITEM = [
     label: 'Nhà đất cho thuê',
     href: 'PropertiesForRent',
     path: ['nha-dat-cho-thue'],
+    icon: 'icon-condotel',
     sub: [
       {
         label: PROPSRENTTYPE.canho.primaryLabel,
@@ -509,6 +511,7 @@ export const MENU_ITEM = [
   },
   {
     label: 'Dự án',
+    icon: 'icon-building',
     sub: [
       { label: 'Căn hộ chung cư' },
       { label: 'Cao ốc văn phòng' },
@@ -526,12 +529,14 @@ export const MENU_ITEM = [
   },
   { label: NEWS_CATEGORY_TYPE.tintuc.primaryLabel,
     href: 'News',
-    path: [NEWS_CATEGORY_TYPE.tintuc.code]
+    path: [NEWS_CATEGORY_TYPE.tintuc.code],
+    icon: 'icon-news'
   },
   {
     label: NEWS_CATEGORY_TYPE.wiki.primaryLabel,
     href: 'Wiki',
     path: [NEWS_CATEGORY_TYPE.wiki.code],
+    icon: 'icon-books',
     sub: [
       {
         label: NEWS_CATEGORY_TYPE.mua.primaryLabel,
@@ -567,6 +572,7 @@ export const MENU_ITEM = [
     label: NEWS_CATEGORY_TYPE.phantich.primaryLabel,
     href: 'Analystic',
     path: [NEWS_CATEGORY_TYPE.phantich.code],
+    icon: 'icon-chart',
     sub: [
       {
         label: NEWS_CATEGORY_TYPE.bieudo.primaryLabel,
@@ -590,6 +596,7 @@ export const MENU_ITEM = [
   {
     label: 'Danh bạ',
     path: ['/nha-moi-gioi'],
+    icon: 'icon-contact',
     sub: [
       { label: 'Nhà môi giới', href: '/nha-moi-gioi' },
       { label: 'Doanh nghiệp' }

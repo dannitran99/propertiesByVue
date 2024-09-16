@@ -12,13 +12,22 @@
     <v-list class="menu-item">
       <v-list-group v-for="(item, idx) in menu" :key="idx">
         <template v-slot:activator>
-          <v-list-item-content>
-            <!-- <v-list-item-icon>
-              <component :is="'icon-box'" />
-            </v-list-item-icon> -->
-            <v-list-item-title>{{ item.label }}</v-list-item-title>
-          </v-list-item-content>
+          <router-link :to="{ name: item.href }" class="route-link" v-if="item.href">
+            <component :is="item.icon" class="menu-item-icon" />
+            <v-list-item-content>
+              <v-list-item-title class="menu-item-label">{{ item.label }}</v-list-item-title>
+            </v-list-item-content>
+          </router-link>
+          <template v-else>
+            <component :is="item.icon" class="menu-item-icon" />
+            <v-list-item-content>
+              <v-list-item-title class="menu-item-label">{{ item.label }}</v-list-item-title>
+            </v-list-item-content>
+          </template>
         </template>
+        <v-list-item v-for="(subitem, i) in item.sub" :key="i" link>
+          <v-list-item-title class="menu-item-label">{{ subitem.label }}</v-list-item-title>
+        </v-list-item>
       </v-list-group>
     </v-list>
   </v-navigation-drawer>
@@ -95,5 +104,27 @@ export default {
 .menu-item {
   padding: 0;
   background-color: #fff !important;
+}
+
+.route-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.menu-item-label {
+  font-family: 'Roboto-Regular', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #2C2C2C;
+  margin-top: 2px;
+  margin-left: 18px;
+}
+
+.menu-item-icon {
+  margin-left: 2px;
+  width: 20px;
+  height: 20px;
+  color: #2C2C2C;
 }
 </style>
