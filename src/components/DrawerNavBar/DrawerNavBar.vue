@@ -10,25 +10,44 @@
       <button class="btn-user outline">Đăng tin</button>
     </div>
     <v-list class="menu-item">
-      <v-list-group v-for="(item, idx) in menu" :key="idx">
-        <template v-slot:activator>
+      <template v-for="(item, idx) in menu">
+        <v-list-group v-if="item.sub" :key="idx">
+          <template v-slot:activator>
+            <router-link :to="{ name: item.href }" class="route-link" v-if="item.href">
+              <component :is="item.icon" class="menu-item-icon" />
+              <v-list-item-content>
+                <v-list-item-title class="menu-item-label">{{ item.label }}</v-list-item-title>
+              </v-list-item-content>
+            </router-link>
+            <template v-else>
+              <component :is="item.icon" class="menu-item-icon" />
+              <v-list-item-content>
+                <v-list-item-title class="menu-item-label">{{ item.label }}</v-list-item-title>
+              </v-list-item-content>
+            </template>
+          </template>
+          <v-list-item v-for="(subitem, i) in item.sub" :key="i" link>
+            <router-link
+              :to="subitem.href ? { path: subitem.href } : { name: item.href, query: { category: subitem.path } }"
+              v-if="subitem.path || subitem.href" class="sub-route">
+              <v-list-item-content class="pl-4">
+                <v-list-item-title class="menu-item-label">{{ subitem.label }}</v-list-item-title>
+              </v-list-item-content>
+            </router-link>
+            <v-list-item-content class="pl-4" v-else>
+              <v-list-item-title class="menu-item-label">{{ subitem.label }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+        <v-list-item v-else :key="item.label" link>
           <router-link :to="{ name: item.href }" class="route-link" v-if="item.href">
             <component :is="item.icon" class="menu-item-icon" />
             <v-list-item-content>
               <v-list-item-title class="menu-item-label">{{ item.label }}</v-list-item-title>
             </v-list-item-content>
           </router-link>
-          <template v-else>
-            <component :is="item.icon" class="menu-item-icon" />
-            <v-list-item-content>
-              <v-list-item-title class="menu-item-label">{{ item.label }}</v-list-item-title>
-            </v-list-item-content>
-          </template>
-        </template>
-        <v-list-item v-for="(subitem, i) in item.sub" :key="i" link>
-          <v-list-item-title class="menu-item-label">{{ subitem.label }}</v-list-item-title>
         </v-list-item>
-      </v-list-group>
+      </template>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -44,7 +63,13 @@ export default {
   },
   data() {
     return {
-      menu: MENU_ITEM
+      menu: MENU_ITEM,
+      path: undefined
+    }
+  },
+  watch: {
+    '$route'() {
+      this.path = this.$route.fullPath
     }
   },
   methods: {
@@ -126,5 +151,9 @@ export default {
   width: 20px;
   height: 20px;
   color: #2C2C2C;
+}
+
+.sub-route {
+  width: 100%;
 }
 </style>
