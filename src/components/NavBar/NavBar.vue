@@ -67,7 +67,7 @@
             Đăng tin
           </router-link>
         </div>
-        <login-button v-else />
+        <login-button :isMobile="isMobile" v-else />
       </div>
     </div>
     <div v-if="isSale || isRent" class="search-nav">
