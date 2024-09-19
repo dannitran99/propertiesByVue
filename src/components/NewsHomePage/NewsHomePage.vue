@@ -1,30 +1,55 @@
 <template>
   <div>
     <news-tab-header class="tab-header" />
-    <news-skeleton v-if="isLoading" />
-    <div class="wrapper" v-else>
-      <news-preview v-for="item in news" v-bind:key="item.id" v-bind:data="item" />
-      <ul>
-        <news-item v-for="item in news" v-bind:key="item.id" v-bind:data="item" />
-      </ul>
-    </div>
+    <template v-if="isLoading">
+      <template v-if="isMobile">
+        <news-skeleton-mobile />
+        <news-skeleton-mobile />
+        <news-skeleton-mobile />
+      </template>
+      <news-skeleton v-else />
+    </template>
+    <template v-else>
+      <div v-if="isMobile">
+        <news-item-mobile v-for="item in news" :key="item.id" :data="item" />
+      </div>
+      <div class="wrapper-news-item" v-else>
+        <news-preview v-for="item in news" v-bind:key="item.id" v-bind:data="item" />
+        <ul>
+          <news-item v-for="item in news" v-bind:key="item.id" v-bind:data="item" />
+        </ul>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
+import { useBreakpoints } from '@vueuse/core'
+import { breakpoints } from '@/consts/breakpoints.js'
 import NewsItem from './NewsItem.vue'
 import NewsSkeleton from './NewsSkeleton.vue'
 import NewsPreview from './NewsPreview.vue'
 import NewsTabHeader from './NewsTabHeader.vue'
+import NewsItemMobile from './NewsItemMobile.vue'
+import NewsSkeletonMobile from './NewsSkeletonMobile.vue'
 import { NEWS_CATEGORY_TYPE } from '@/consts/newsCategory'
 import { DEFAULT_TAGS } from '@/consts/contentNews'
+
+const definedBreakpoint = useBreakpoints(breakpoints)
 export default {
   name: 'NewsHomePage',
   components: {
     'news-item': NewsItem,
     'news-preview': NewsPreview,
     'news-tab-header': NewsTabHeader,
-    'news-skeleton': NewsSkeleton
+    'news-skeleton': NewsSkeleton,
+    'news-item-mobile': NewsItemMobile,
+    'news-skeleton-mobile': NewsSkeletonMobile
+  },
+  data() {
+    return {
+      isMobile: definedBreakpoint.smaller('lg')
+    }
   },
   computed: {
     news: {
@@ -81,16 +106,25 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .tab-header {
   margin-bottom: 24px;
   border-bottom: 1px solid #F2F2F2;
   max-width: 848px;
+
+  @include responsive(lg) {
+    max-width: 100%;
+    margin-bottom: 0;
+  }
 }
 
-.wrapper {
+.wrapper-news-item {
   display: flex;
   max-width: 1140px;
+
+  @include responsive(lg) {
+    width: 100%;
+  }
 }
 
 ul {

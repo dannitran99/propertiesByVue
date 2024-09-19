@@ -25,7 +25,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 li {
   flex-shrink: 0;
   list-style-type: none;
@@ -35,6 +35,11 @@ li {
   letter-spacing: -.2px;
   color: #999;
   cursor: pointer;
+
+  @include responsive(sm) {
+    font-size: 18px;
+    line-height: 28px;
+  }
 }
 
 li:hover {

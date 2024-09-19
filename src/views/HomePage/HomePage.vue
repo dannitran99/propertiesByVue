@@ -21,15 +21,17 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  // @include responsive(md) {
-  //   background-color: red;
-  // }
 }
 
 .component {
   width: 1140px;
   margin: 40px auto;
+
+  @include responsive(lg) {
+    width: 100%;
+    margin: 32px auto;
+    padding: 0 32px;
+  }
 }
 
 .component-wrapper {

@@ -71,6 +71,7 @@ a:hover {
 .menu-tab {
   display: flex;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .anchor-button {
@@ -78,6 +79,7 @@ a:hover {
   align-items: center;
   color: #E03C31;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .anchor-button:hover {

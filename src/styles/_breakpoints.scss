@@ -1,23 +1,21 @@
-$md: 1128px;
+$sm: 768px;
+$md: 1127px;
+$lg: 1139px;
 
 @mixin responsive($breakpoint) {
-  @if $breakpoint == md {
+  @if $breakpoint == lg {
+    @media only screen and (max-width: $lg) {
+      @content;
+    }
+  } @else if $breakpoint == md {
     @media only screen and (max-width: $md) {
       @content;
     }
+  } @else if $breakpoint == sm {
+    @media only screen and (max-width: $sm) {
+      @content;
+    }
   }
-  //  @else if $breakpoint == lg {
-  //   @media only screen and (max-width: $lg) {
-  //     @content;
-  //   }
-  // } @else if $breakpoint == md {
-  //   @media only screen and (max-width: $md) {
-  //     @content;
-  //   }
-  // } @else if $breakpoint == sm {
-  //   @media only screen and (max-width: $sm) {
-  //     @content;
-  //   }
   // } @else if $breakpoint == xsm {
   //   @media only screen and (max-width: $xsm) {
   //     @content;
