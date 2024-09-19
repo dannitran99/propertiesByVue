@@ -198,6 +198,7 @@ p {
 }
 
 .txt-ct {
+  flex-shrink: 0;
   font-size: 16px;
   line-height: 26px;
   font-weight: 600;

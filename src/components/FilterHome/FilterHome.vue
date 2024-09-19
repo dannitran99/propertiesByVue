@@ -19,10 +19,10 @@
         </button>
       </div>
       <div class="filter-more">
-        <filter-location :isHome="true" />
-        <filter-price :isHome="true" :isSale="isSale" />
-        <filter-square :isHome="true" />
-        <div class="filter-tmp">
+        <filter-location :isHome="true" class="filter-option" />
+        <filter-price :isHome="true" :isSale="isSale" class="filter-option" />
+        <filter-square :isHome="true" class="filter-option" />
+        <div class="filter-tmp filter-option">
           <p class="home-text-result">Lọc thêm</p>
           <icon-downtriangle />
         </div>
@@ -72,7 +72,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   font-family: 'Roboto-Regular', sans-serif;
 }
@@ -81,6 +81,19 @@ export default {
   width: 945px;
   margin: 32px 0 100px 0;
 
+  @include responsive(sm1) {
+    width: calc(100% - 64px);
+  }
+}
+
+.filter-option {
+  @include responsive(sm1) {
+    width: calc((100% - 70px) / 4) !important;
+
+    >:first-child {
+      width: 100%;
+    }
+  }
 }
 
 .tab-button {
@@ -98,6 +111,7 @@ export default {
   font-size: 14px;
   line-height: 20px;
   color: rgba(0, 0, 0, 0.6);
+  flex-shrink: 0;
 }
 
 .tab-button li:hover {
@@ -126,6 +140,10 @@ export default {
   position: relative;
   margin-top: 8px;
   display: flex;
+
+  @include responsive(sm1) {
+    gap: 8px;
+  }
 }
 
 .search-input {

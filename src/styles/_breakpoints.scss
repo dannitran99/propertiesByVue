@@ -1,4 +1,5 @@
 $sm: 768px;
+$sm1: 1008px;
 $md: 1127px;
 $lg: 1139px;
 
@@ -9,6 +10,10 @@ $lg: 1139px;
     }
   } @else if $breakpoint == md {
     @media only screen and (max-width: $md) {
+      @content;
+    }
+  } @else if $breakpoint == sm1 {
+    @media only screen and (max-width: $sm1) {
       @content;
     }
   } @else if $breakpoint == sm {

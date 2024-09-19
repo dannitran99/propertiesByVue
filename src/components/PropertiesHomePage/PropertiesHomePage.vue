@@ -74,7 +74,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 h2 {
   font-weight: normal;
   font-family: 'Lexend-Medium', sans-serif;
@@ -103,6 +103,10 @@ p {
 .redirect-title {
   display: flex;
   gap: 10px;
+
+  @include responsive(lg) {
+    display: none;
+  }
 }
 
 .clickable-text:hover {
@@ -121,6 +125,25 @@ p {
   display: flex;
   flex-wrap: wrap;
   gap: 28px;
+
+  @include responsive(lg) {
+    gap: 24px;
+
+    .wrapper-item-property,
+    .skeleton-wrapper {
+      width: calc((100% - 48px) / 3 - 2px);
+    }
+  }
+
+  @include responsive(sm) {
+    gap: 12px;
+    row-gap: 24px;
+
+    .wrapper-item-property,
+    .skeleton-wrapper {
+      width: calc((100% - 12px) / 2 - 2px);
+    }
+  }
 }
 
 .foot-btn button {
