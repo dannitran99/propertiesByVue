@@ -206,13 +206,18 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .wrapper {
   display: flex;
   margin-top: 129px !important;
   margin: 0 auto;
   max-width: 1140px;
   min-height: calc(100vh - 72px - 56px - 57px);
+
+  @include responsive(md) {
+    margin-top: 174px !important;
+    min-height: calc(100vh - 72px - 56px - 102px);
+  }
 }
 
 .title-property {

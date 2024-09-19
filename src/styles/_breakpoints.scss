@@ -2,9 +2,14 @@ $sm: 768px;
 $sm1: 1008px;
 $md: 1127px;
 $lg: 1139px;
+$lg1: 1279px;
 
 @mixin responsive($breakpoint) {
-  @if $breakpoint == lg {
+  @if $breakpoint == lg1 {
+    @media only screen and (max-width: $lg1) {
+      @content;
+    }
+  } @else if $breakpoint == lg {
     @media only screen and (max-width: $lg) {
       @content;
     }

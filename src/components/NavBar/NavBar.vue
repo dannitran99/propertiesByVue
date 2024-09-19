@@ -317,12 +317,22 @@ export default {
   border-top: 1px solid #F2F2F2;
   height: 57px;
   display: flex;
+  flex-wrap: wrap;
+
+  @include responsive(md) {
+    height: 102px;
+    border-top: 1px solid transparent;
+  }
 }
 
 .btn-tab {
   margin: 12px 16px;
   width: 160px;
   display: flex;
+
+  @include responsive(md) {
+    display: none;
+  }
 }
 
 .btn-tab a {
@@ -368,6 +378,17 @@ export default {
   padding: 0 15px;
   align-items: center;
   gap: 15px;
+
+  @include responsive(lg1) {
+    width: calc((100% - 88px - 16px - 159px - 16px - 16px - 16px)* 0.3) !important;
+  }
+
+  @include responsive(md) {
+    margin: 1px 16px 12px 16px !important;
+    height: 32px;
+    width: calc(100% - 32px) !important;
+    flex-shrink: 0;
+  }
 }
 
 .input-search input {
@@ -397,10 +418,34 @@ export default {
 
 .wide {
   width: calc((100% - 108px - 108px - 16px - 159px - 16px - 16px - 16px) * 0.2) !important;
+
+  @include responsive(lg1) {
+    width: calc((100% - 88px - 16px - 159px - 16px - 16px - 16px)* 0.2) !important;
+  }
+
+  @include responsive(md) {
+    width: calc((100% - 108px - 108px - 16px) * 0.3) !important;
+  }
+
+  @include responsive(sm) {
+    width: calc((100% - 88px - 16px) * 0.3) !important
+  }
 }
 
 .normal {
   width: calc((100% - 108px - 108px - 16px - 159px - 16px - 16px - 16px) * 0.15) !important;
+
+  @include responsive(lg1) {
+    width: calc((100% - 88px - 16px - 159px - 16px - 16px - 16px)* 0.15) !important;
+  }
+
+  @include responsive(md) {
+    width: calc((100% - 108px - 108px - 16px) * 0.2) !important
+  }
+
+  @include responsive(sm) {
+    width: calc((100% - 88px - 16px) * 0.2) !important
+  }
 }
 
 .filter:hover {
@@ -431,6 +476,24 @@ export default {
 .title-dv {
   display: flex;
   gap: 5px;
+
+  @include responsive(lg1) {
+    p {
+      display: none;
+    }
+  }
+
+  @include responsive(md) {
+    p {
+      display: block;
+    }
+  }
+
+  @include responsive(sm) {
+    p {
+      display: none;
+    }
+  }
 }
 
 .account-info {
