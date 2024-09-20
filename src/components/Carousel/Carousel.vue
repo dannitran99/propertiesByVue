@@ -124,7 +124,7 @@ export default {
     imageWidth: function () {
       switch (true) {
         case definedBreakpoint.smaller('sm2').value:
-          return window.innerWidth
+          return this.$refs['gallery'] ? this.$refs['gallery'].offsetWidth : 666
         case definedBreakpoint.smaller('xl').value:
           return 696
         default:
