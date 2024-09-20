@@ -3,7 +3,7 @@
     <div class="wrapper-gallery" @mousemove="handleMouseMove" @mousedown="handleMouseDown" @mouseup="handleMouseLeave"
       @mouseleave="handleMouseLeave" ref="gallery">
       <ul
-        :style="{ transform: `translate3d(${-858 * currentIdx + gallery.currentTranslateX}px, 0px, 0px)`, transitionDuration: `${isTrans ? '300ms' : '0ms'}` }">
+        :style="{ transform: `translate3d(${-(imageWidth + 10) * currentIdx + gallery.currentTranslateX}px, 0px, 0px)`, transitionDuration: `${isTrans ? '300ms' : '0ms'}` }">
         <li v-for="item in imageList" :key="item.name">
           <div class="image-overlay">
             <img :src="item.url" alt="img" draggable="false" />
@@ -80,6 +80,10 @@
 </template>
 
 <script>
+import { useBreakpoints } from '@vueuse/core'
+import { breakpoints } from '@/consts/breakpoints.js'
+
+const definedBreakpoint = useBreakpoints(breakpoints)
 export default {
   props: {
     imageList: {
@@ -116,6 +120,18 @@ export default {
       }
     }
   },
+  computed: {
+    imageWidth: function () {
+      switch (true) {
+        case definedBreakpoint.smaller('sm2').value:
+          return window.innerWidth
+        case definedBreakpoint.smaller('xl').value:
+          return 696
+        default:
+          return 848
+      }
+    }
+  },
   methods: {
     handleGoRight: function (e) {
       e.stopPropagation()
@@ -147,17 +163,17 @@ export default {
       if (!this.gallery.isDragging) return
       const pos = this.gallery.startPosX - this.$refs.gallery.getBoundingClientRect().left
       this.gallery.isDragging = false
-      if (this.gallery.currentTranslateX === 0 && pos > 51 && pos < 797) {
+      if (this.gallery.currentTranslateX === 0 && pos > 51 && pos < (this.imageWidth - 51)) {
         this.popup = true
         this.scale = 1
         this.galleryPopup.currentTranslateX = 0
         this.galleryPopup.currentTranslateY = 0
         return
       }
-      if (this.gallery.currentTranslateX > 429 && this.currentIdx > 0) {
+      if (this.gallery.currentTranslateX > ((this.imageWidth + 10) / 2) && this.currentIdx > 0) {
         this.currentIdx--
       }
-      if (this.gallery.currentTranslateX < -429 && this.currentIdx < this.imageList.length - 1) {
+      if (this.gallery.currentTranslateX < -((this.imageWidth + 10) / 2) && this.currentIdx < this.imageList.length - 1) {
         this.currentIdx++
       }
       this.gallery.currentTranslateX = 0
@@ -178,10 +194,10 @@ export default {
       if (!this.galleryPopup.isDragging) return
       this.galleryPopup.isDragging = false
       if (this.scale === 1) {
-        if (this.galleryPopup.currentTranslateX > 429 && this.currentIdx > 0) {
+        if (this.galleryPopup.currentTranslateX > ((this.imageWidth + 10) / 2) && this.currentIdx > 0) {
           this.currentIdx--
         }
-        if (this.galleryPopup.currentTranslateX < -429 && this.currentIdx < this.imageList.length - 1) {
+        if (this.galleryPopup.currentTranslateX < -((this.imageWidth + 10) / 2) && this.currentIdx < this.imageList.length - 1) {
           this.currentIdx++
         }
         this.galleryPopup.currentTranslateX = 0
@@ -241,7 +257,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   font-family: 'Roboto-Regular', sans-serif;
 }
@@ -255,6 +271,18 @@ export default {
   cursor: pointer;
   overflow: hidden;
   list-style: none;
+
+  @include responsive(xl) {
+    width: 696px;
+    height: calc(696px* 472 / 840);
+  }
+
+  @include responsive(sm2) {
+    width: 100%;
+    height: calc(848px* 472 / 840);
+    aspect-ratio: 472 / 840;
+    border-radius: 0px;
+  }
 }
 
 .wrapper-gallery ul {
@@ -271,6 +299,14 @@ export default {
   margin-right: 10px;
   height: 100%;
   position: relative;
+
+  @include responsive(xl) {
+    width: 696px;
+  }
+
+  @include responsive(sm2) {
+    width: 100%;
+  }
 }
 
 .image-layout {
@@ -369,6 +405,10 @@ export default {
   padding: 0;
   list-style: none;
   display: flex;
+
+  @include responsive(sm2) {
+    padding-left: 8px;
+  }
 }
 
 .slick-popup-gallery {

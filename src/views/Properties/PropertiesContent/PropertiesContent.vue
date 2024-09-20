@@ -4,38 +4,40 @@
     <div class="wrapper" v-else>
       <div class="content">
         <carousel :imageList="data.images" />
-        <bread-crumb-property :city="data.city" :district="data.district" class="breadcrumb-property" />
-        <h3>{{ data.title }}</h3>
-        <p class="address-txt">{{ `${data.project ? `${data.project}, ` : ''} ${data.ward}, ${data.district},
-          ${data.city}` }}</p>
-        <div class="detail-section">
-          <div class="detail-child">
-            <p class="detail-title">Mức giá</p>
-            <p class="detail-value">{{ formatCurrency }}</p>
+        <div class="main-content-property">
+          <bread-crumb-property :city="data.city" :district="data.district" class="breadcrumb-property" />
+          <h3>{{ data.title }}</h3>
+          <p class="address-txt">{{ `${data.project ? `${data.project}, ` : ''} ${data.ward}, ${data.district},
+            ${data.city}` }}</p>
+          <div class="detail-section">
+            <div class="detail-child">
+              <p class="detail-title">Mức giá</p>
+              <p class="detail-value">{{ formatCurrency }}</p>
+            </div>
+            <div class="detail-child">
+              <p class="detail-title">Diện tích</p>
+              <p class="detail-value">{{ formatArea }}</p>
+            </div>
           </div>
-          <div class="detail-child">
-            <p class="detail-title">Diện tích</p>
-            <p class="detail-value">{{ formatArea }}</p>
+          <div class="description-section">
+            <h4 class="description-title">Thông tin mô tả</h4>
+            <p class="description-p">{{ data.description }}</p>
           </div>
-        </div>
-        <div class="description-section">
-          <h4 class="description-title">Thông tin mô tả</h4>
-          <p class="description-p">{{ data.description }}</p>
-        </div>
-        <div v-if="data.url">
-          <iframe :src="handleLink(data.url)" title="link" width="100%" height="450"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
-        </div>
-        <div class="detail-section">
-          <div class="detail-child">
-            <p class="detail-title">Ngày đăng</p>
-            <p class="detail-description">{{ formatDate }}</p>
+          <div v-if="data.url">
+            <iframe :src="handleLink(data.url)" title="link" width="100%" height="450"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
           </div>
+          <div class="detail-section">
+            <div class="detail-child">
+              <p class="detail-title">Ngày đăng</p>
+              <p class="detail-description">{{ formatDate }}</p>
+            </div>
+          </div>
+          <carousel-card :data="history" v-if="history.length" class="carousel-section">
+            <h4 class="description-title">Tin đăng đã xem</h4>
+          </carousel-card>
         </div>
-        <carousel-card :data="history" v-if="history.length" class="carousel-section">
-          <h4 class="description-title">Tin đăng đã xem</h4>
-        </carousel-card>
       </div>
       <div class="user-info">
         <img :src="data.relatedUser && data.relatedUser[0].avatar" alt="avatar" class="avatar-img"
@@ -116,7 +118,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   font-family: 'Roboto-Regular', sans-serif;
 }
@@ -128,11 +130,26 @@ export default {
   margin: 0 auto;
   max-width: 1140px;
   margin-top: 16px;
+
+  @include responsive(xl) {
+    width: 936px;
+  }
+
+  @include responsive(sm2) {
+    width: 100%;
+  }
 }
 
 .content {
   width: 848px;
-  /* margin-right: 30px */
+
+  @include responsive(xl) {
+    width: 696px;
+  }
+
+  @include responsive(sm2) {
+    width: 100%;
+  }
 }
 
 .content h3 {
@@ -168,6 +185,33 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @include responsive(xl) {
+    width: 210px;
+  }
+
+  @include responsive(sm2) {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    background-color: #fff;
+    z-index: 80;
+    padding: 16px;
+    box-sizing: border-box;
+    box-shadow: 0px -2px 2px rgba(203, 203, 203, 0.25);
+    margin-bottom: 0;
+    border-radius: 0;
+
+    >:not(:last-child) {
+      display: none;
+    }
+  }
+}
+
+.main-content-property {
+  @include responsive(sm2) {
+    padding: 32px;
+  }
 }
 
 .loading {
