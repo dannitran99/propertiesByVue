@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="content">
+    <div class="content" ref="property-item">
       <bread-crumb-property class="content-breadcrumb" :city="city" :district="district.length === 1 ? district[0] : ''"
         :current="`${type} ${at}`" />
       <h3 class="title-property">{{ `${typeTitle} ${at}` }}</h3>
@@ -10,12 +10,13 @@
       </div>
       <div class="properties-list">
         <template v-if="isLoading">
-          <properties-skeleton />
-          <properties-skeleton />
-          <properties-skeleton />
-          <properties-skeleton />
+          <properties-skeleton :heightImage="heightImage" :isMobile="isMobile" />
+          <properties-skeleton :heightImage="heightImage" :isMobile="isMobile" />
+          <properties-skeleton :heightImage="heightImage" :isMobile="isMobile" />
+          <properties-skeleton :heightImage="heightImage" :isMobile="isMobile" />
         </template>
-        <properties v-for="item in properties" :key="item.ID" :data="item" v-else-if="properties" />
+        <properties v-for="item in properties" :key="item.ID" :data="item" v-else-if="properties"
+          :heightImage="heightImage" :isMobile="isMobile" />
         <div class="empty-list" v-else>
           <div class="background"></div>
           <p>Không có kết quả nào phù hợp</p>
@@ -44,6 +45,10 @@ import { PROPSSALETYPE, PROPSRENTTYPE } from '../../consts/propstype'
 import PropertiesSkeleton from '../../components/Properties/PropertyCardSkeleton.vue'
 import PropertiesFilter from '../../components/Properties/PropertyFilter.vue'
 import { FILTER_RENT_OPTION, FILTER_SALE_OPTION } from '../../consts/label'
+import { useBreakpoints } from '@vueuse/core'
+import { breakpoints } from '@/consts/breakpoints.js'
+
+const definedBreakpoint = useBreakpoints(breakpoints)
 export default {
   components: { PropertiesSkeleton, BreadCrumbProperty, PropertiesFilter },
   data() {
@@ -60,7 +65,9 @@ export default {
       selectPriceList: [],
       selectSquareList: FILTER_SQUARE,
       minHeight: 0,
-      bottom: false
+      bottom: false,
+      heightImage: undefined,
+      isMobile: definedBreakpoint.smaller('sm2')
     }
   },
   computed: {
@@ -107,14 +114,21 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll)
+    this.handleResizeWindow()
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll)
   },
   async created() {
+    window.addEventListener('resize', this.handleResizeWindow)
     this.handleGetRouterQuery()
   },
   methods: {
+    handleResizeWindow() {
+      if (this.$refs['property-item'] && this.isMobile) {
+        this.heightImage = this.$refs['property-item'].offsetWidth / 3
+      }
+    },
     handleGetRouterQuery: async function () {
       if (this.$route.query.category) {
         const category = await this.handleCategory()
@@ -211,12 +225,21 @@ export default {
   display: flex;
   margin-top: 129px !important;
   margin: 0 auto;
-  max-width: 1140px;
+  width: 1140px;
   min-height: calc(100vh - 72px - 56px - 57px);
+
+  @include responsive(xl) {
+    width: 936px;
+  }
 
   @include responsive(md) {
     margin-top: 174px !important;
     min-height: calc(100vh - 72px - 56px - 102px);
+  }
+
+  @include responsive(sm2) {
+    padding: 0 32px;
+    width: 100%;
   }
 }
 
@@ -249,6 +272,15 @@ export default {
   width: 848px;
   margin-top: 24px;
   margin-right: 30px;
+
+  @include responsive(xl) {
+    width: 696px;
+  }
+
+  @include responsive(sm2) {
+    width: 100%;
+    margin-right: 0;
+  }
 }
 
 .sort-filter {
@@ -260,7 +292,15 @@ export default {
 .filter {
   position: relative;
   margin-top: 24px;
-  width: 262px
+  width: 262px;
+
+  @include responsive(xl) {
+    width: 210px;
+  }
+
+  @include responsive(sm2) {
+    display: none;
+  }
 }
 
 .filter-container {

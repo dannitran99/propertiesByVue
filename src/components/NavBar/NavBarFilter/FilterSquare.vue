@@ -163,7 +163,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   font-family: 'Roboto-Regular', sans-serif;
 }
@@ -209,6 +209,10 @@ export default {
 .title-dv {
   display: flex;
   gap: 5px;
+
+  p {
+    flex-shrink: 0;
+  }
 }
 
 .filter-home-price {

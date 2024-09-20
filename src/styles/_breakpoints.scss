@@ -1,11 +1,17 @@
 $sm: 768px;
 $sm1: 1008px;
+$sm2: 1024px;
 $md: 1127px;
 $lg: 1139px;
 $lg1: 1279px;
+$xl: 1544px;
 
 @mixin responsive($breakpoint) {
-  @if $breakpoint == lg1 {
+  @if $breakpoint == xl {
+    @media only screen and (max-width: $xl) {
+      @content;
+    }
+  } @else if $breakpoint == lg1 {
     @media only screen and (max-width: $lg1) {
       @content;
     }
@@ -17,6 +23,10 @@ $lg1: 1279px;
     @media only screen and (max-width: $md) {
       @content;
     }
+  } @else if $breakpoint == sm2 {
+    @media only screen and (max-width: $sm2) {
+      @content;
+    }
   } @else if $breakpoint == sm1 {
     @media only screen and (max-width: $sm1) {
       @content;
@@ -26,17 +36,4 @@ $lg1: 1279px;
       @content;
     }
   }
-  // } @else if $breakpoint == xsm {
-  //   @media only screen and (max-width: $xsm) {
-  //     @content;
-  //   }
-  // } @else if $breakpoint == xs {
-  //   @media only screen and (max-width: $xs) {
-  //     @content;
-  //   }
-  // } @else if $breakpoint == xxs {
-  //   @media only screen and (max-width: $xxs) {
-  //     @content;
-  //   }
-  // }
 }

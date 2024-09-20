@@ -3,7 +3,7 @@
     <router-link
       :to="{ name: data.type === 'sale' ? 'PropertiesSaleDetail' : 'PropertiesRentDetail', params: { propertiesId: data.ID, } }"
       class="navigate-link" :class="[{ 'hide': hideInfo }]"></router-link>
-    <v-row class="img-gallery" no-gutters>
+    <v-row class="img-gallery" no-gutters :style="[isMobile && { height: `${heightImage}px` }]">
       <template v-if="data.images.length > 1">
         <v-col cols="8" class="height-100">
           <img v-bind:src="data.images[0].url" :alt="data.images[0].name" class="height-100 border-tl p-r" />
@@ -79,7 +79,6 @@
 </template>
 
 <script>
-
 import { formatCurrency, formatTimeCalendar } from '@/helpers/formater'
 export default {
   props: {
@@ -87,6 +86,14 @@ export default {
       type: Object
     },
     hideInfo: {
+      type: Boolean,
+      default: false
+    },
+    heightImage: {
+      type: Number,
+      default: undefined
+    },
+    isMobile: {
       type: Boolean,
       default: false
     }
@@ -121,7 +128,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   font-family: 'Roboto-Regular', sans-serif;
 }
@@ -139,6 +146,10 @@ export default {
 
 .img-gallery {
   height: 284px;
+
+  @include responsive(xl) {
+    height: 233px;
+  }
 }
 
 .img-gallery img {

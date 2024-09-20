@@ -315,6 +315,7 @@ export default {
 .search-nav {
   font-family: 'Roboto-Regular', sans-serif;
   border-top: 1px solid #F2F2F2;
+  // min-width: 666px;
   height: 57px;
   display: flex;
   flex-wrap: wrap;
