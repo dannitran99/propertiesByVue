@@ -13,11 +13,11 @@
         </button>
       </div>
     </div>
-    <div class="carousel-c-wrapper">
+    <div class="carousel-c-wrapper" ref="card-slider">
       <div class="carousel-c-container" @mousemove="handleMouseMove" @mousedown="handleMouseDown"
         @mouseup="handleMouseLeave" @mouseleave="handleMouseLeave">
         <div class="carousel-c-gallery"
-          :style="{ transform: `translate3d(${-235 * 3 * page + currentTranslateX + (page && page + 1 === total ? 143 + extra * 235 : 0)}px, 0px, 0px)`, transitionDuration: `${isTrans ? '300ms' : '0ms'}` }">
+          :style="{ transform: `translate3d(${-cardWidth * 3 * page + currentTranslateX + (page && page + 1 === total ? (sliderWidth - cardWidth * 3) + extra * cardWidth : 0)}px, 0px, 0px)`, transitionDuration: `${isTrans ? '300ms' : '0ms'}` }">
           <property-item v-for="item in data" :key="item.ID" :data="item" :small="true"
             :class="[{ 'disable-link': preventAction }]" />
         </div>
@@ -29,6 +29,10 @@
 
 <script>
 import PropertyItem from '@/components/PropertiesHomePage/PropertyItem'
+import { useBreakpoints } from '@vueuse/core'
+import { breakpoints } from '@/consts/breakpoints.js'
+
+const definedBreakpoint = useBreakpoints(breakpoints)
 export default {
   components: {
     'property-item': PropertyItem
@@ -47,10 +51,32 @@ export default {
       currentTranslateX: 0,
       total: Math.ceil((this.data.length) / 3),
       extra: this.data.length % 3 ? 3 - this.data.length % 3 : 0,
-      preventAction: false
+      preventAction: false,
+      sliderWidth: undefined,
+      cardWidth: undefined
     }
   },
+  created() {
+    window.addEventListener('resize', this.handleResizeWindow)
+  },
+  mounted() {
+    this.handleResizeWindow()
+  },
   methods: {
+    handleResizeWindow() {
+      this.sliderWidth = this.$refs['card-slider'] ? this.$refs['card-slider'].offsetWidth : undefined
+      switch (true) {
+        case definedBreakpoint.smaller('sm2').value:
+          this.cardWidth = 275
+          break
+        case definedBreakpoint.smaller('xl').value:
+          this.cardWidth = 227
+          break
+        default:
+          this.cardWidth = 235
+          break
+      }
+    },
     handleMouseDown: function (e) {
       this.isDragging = true
       this.startPosX = e.clientX
@@ -64,10 +90,10 @@ export default {
       this.preventAction = false
       if (!this.isDragging) return
       this.isDragging = false
-      if (this.currentTranslateX > 429 && this.page > 0) {
+      if (this.currentTranslateX > this.sliderWidth / 2 && this.page > 0) {
         this.page--
       }
-      if (this.currentTranslateX < -429 && this.page + 1 < this.total) {
+      if (this.currentTranslateX < -(this.sliderWidth / 2) && this.page + 1 < this.total) {
         this.page++
       }
       this.currentTranslateX = 0
@@ -83,7 +109,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .carousel-c-wrapper {
   position: relative;
 }
@@ -105,6 +131,10 @@ export default {
   mix-blend-mode: multiply;
   opacity: 0.15;
   transform: rotate(-90deg);
+
+  @include responsive(sm2) {
+    display: none;
+  }
 }
 
 .carousel-c-gallery {
@@ -112,6 +142,10 @@ export default {
   gap: 15px;
   width: fit-content;
   user-select: none;
+
+  @include responsive(sm2) {
+    gap: 24px;
+  }
 }
 
 .disable-link {
@@ -132,6 +166,10 @@ export default {
 .button-container {
   display: flex;
   gap: 8px;
+
+  @include responsive(sm2) {
+    display: none;
+  }
 }
 
 .btn-carousel {

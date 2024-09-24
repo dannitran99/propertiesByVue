@@ -63,7 +63,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   font-family: 'Roboto-Regular', sans-serif;
 }
@@ -92,6 +92,16 @@ export default {
 .small-wrapper {
   width: 218px;
   height: 293px;
+
+  @include responsive(xl) {
+    width: 210px;
+    height: 288px;
+  }
+
+  @include responsive(sm2) {
+    width: 249px;
+    height: 310px;
+  }
 }
 
 p {

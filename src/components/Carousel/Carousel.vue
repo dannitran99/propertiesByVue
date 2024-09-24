@@ -117,22 +117,30 @@ export default {
         slickTrans: false,
         startSlickPos: 0,
         startSlickScroll: 0
-      }
+      },
+      imageWidth: undefined
     }
   },
-  computed: {
-    imageWidth: function () {
-      switch (true) {
-        case definedBreakpoint.smaller('sm2').value:
-          return this.$refs['gallery'] ? this.$refs['gallery'].offsetWidth : 666
-        case definedBreakpoint.smaller('xl').value:
-          return 696
-        default:
-          return 848
-      }
-    }
+  created() {
+    window.addEventListener('resize', this.handleResizeWindow)
+  },
+  mounted() {
+    this.handleResizeWindow()
   },
   methods: {
+    handleResizeWindow() {
+      switch (true) {
+        case definedBreakpoint.smaller('sm2').value:
+          this.imageWidth = this.$refs['gallery'] ? this.$refs['gallery'].offsetWidth : 666
+          break
+        case definedBreakpoint.smaller('xl').value:
+          this.imageWidth = 696
+          break
+        default:
+          this.imageWidth = 848
+          break
+      }
+    },
     handleGoRight: function (e) {
       e.stopPropagation()
       this.currentIdx++
