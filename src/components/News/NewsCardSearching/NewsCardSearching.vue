@@ -52,6 +52,11 @@ export default {
     font-size: 18px;
     line-height: 28px;
     color: #c20000;
+
+    @include responsive(sm1) {
+      font-size: 16px;
+      line-height: 24px;
+    }
   }
 }
 

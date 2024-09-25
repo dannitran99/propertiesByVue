@@ -161,18 +161,26 @@ button {
 }
 
 .nav-container {
-  * {
-    font-family: 'Lexend-medium', sans-serif;
-  }
-
   padding-left: 30px;
   display: flex;
   gap: 20px;
-  width: 1350px;
   height: 100%;
   max-width: 1350px;
   margin: auto;
   list-style: none;
+  overflow: auto;
+
+  @include responsive(lg3) {
+    max-width: 1160px;
+  }
+
+  @include responsive(sm) {
+    padding-left: 12px;
+  }
+
+  * {
+    font-family: 'Lexend-medium', sans-serif;
+  }
 
   a {
     color: #fff !important;
@@ -184,6 +192,7 @@ button {
     margin-top: 19px;
     cursor: pointer;
     color: #fff;
+    flex-shrink: 0;
 
     &:hover {
       .divider-breadcrumb {
@@ -207,6 +216,18 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+
+  @include responsive(lg1) {
+    max-width: 960px;
+  }
+
+  @include responsive(sm1) {
+    max-width: 720px;
+  }
+
+  @include responsive(sm) {
+    max-width: 100%;
+  }
 }
 
 .search-input {
@@ -223,6 +244,12 @@ button {
   display: flex;
   align-items: center;
   cursor: pointer;
+
+  span {
+    @include responsive(sm) {
+      display: none;
+    }
+  }
 }
 
 .divider-breadcrumb {

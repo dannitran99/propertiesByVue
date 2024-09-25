@@ -3,12 +3,22 @@ $sm1: 1008px;
 $sm2: 1024px;
 $md: 1127px;
 $lg: 1139px;
-$lg1: 1279px;
+$lg1: 1199px;
+$lg2: 1279px;
+$lg3: 1399px;
 $xl: 1544px;
 
 @mixin responsive($breakpoint) {
   @if $breakpoint == xl {
     @media only screen and (max-width: $xl) {
+      @content;
+    }
+  } @else if $breakpoint == lg3 {
+    @media only screen and (max-width: $lg3) {
+      @content;
+    }
+  } @else if $breakpoint == lg2 {
+    @media only screen and (max-width: $lg2) {
       @content;
     }
   } @else if $breakpoint == lg1 {

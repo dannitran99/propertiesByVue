@@ -380,7 +380,7 @@ export default {
   align-items: center;
   gap: 15px;
 
-  @include responsive(lg1) {
+  @include responsive(lg2) {
     width: calc((100% - 88px - 16px - 159px - 16px - 16px - 16px)* 0.3) !important;
   }
 
@@ -420,7 +420,7 @@ export default {
 .wide {
   width: calc((100% - 108px - 108px - 16px - 159px - 16px - 16px - 16px) * 0.2) !important;
 
-  @include responsive(lg1) {
+  @include responsive(lg2) {
     width: calc((100% - 88px - 16px - 159px - 16px - 16px - 16px)* 0.2) !important;
   }
 
@@ -436,7 +436,7 @@ export default {
 .normal {
   width: calc((100% - 108px - 108px - 16px - 159px - 16px - 16px - 16px) * 0.15) !important;
 
-  @include responsive(lg1) {
+  @include responsive(lg2) {
     width: calc((100% - 88px - 16px - 159px - 16px - 16px - 16px)* 0.15) !important;
   }
 
@@ -478,7 +478,7 @@ export default {
   display: flex;
   gap: 5px;
 
-  @include responsive(lg1) {
+  @include responsive(lg2) {
     p {
       display: none;
     }

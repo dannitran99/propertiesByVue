@@ -57,10 +57,27 @@ export default {
   border-bottom: 1px solid #dfdddd;
   padding-bottom: 15px;
   margin-bottom: 25px;
+
+  @include responsive(sm) {
+    border: none;
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .11);
+    border: 1px solid #eff1f5;
+    border-radius: 8px;
+    cursor: pointer;
+  }
 }
 
 .image-wrapper {
   position: relative;
+
+  @include responsive(sm1) {
+    flex: 20% 1;
+  }
+
+  @include responsive(sm) {
+    display: block;
+  }
 }
 
 .image-wrapper p {
@@ -81,12 +98,20 @@ export default {
 .card-content {
   display: flex;
   gap: 12px;
+
+  @include responsive(sm) {
+    display: block;
+  }
 }
 
 .card-tags {
   padding-top: 12px;
   display: flex;
   gap: 8px;
+
+  @include responsive(sm) {
+    padding: 12px 8px;
+  }
 }
 
 .tags-chip {
@@ -111,6 +136,22 @@ export default {
   object-fit: cover;
   border-radius: 8px;
   flex-shrink: 0;
+
+  @include responsive(sm1) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    width: 100%;
+  }
+}
+
+.card-info {
+  @include responsive(sm1) {
+    flex: 80% 1;
+  }
+
+  @include responsive(sm) {
+    padding: 10px;
+  }
 }
 
 .card-info p:first-child {
@@ -133,6 +174,11 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+
+  @include responsive(sm1) {
+    font-size: 16px;
+    line-height: 24px;
+  }
 }
 
 .card-info h3:hover {

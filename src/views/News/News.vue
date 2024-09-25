@@ -192,6 +192,18 @@ export default {
   max-width: 1140px;
   padding: 0 12px;
   margin: auto;
+
+  @include responsive(lg1) {
+    max-width: 960px;
+  }
+
+  @include responsive(sm1) {
+    max-width: 720px;
+  }
+
+  @include responsive(sm) {
+    max-width: 100%;
+  }
 }
 
 .content-header {
@@ -209,6 +221,11 @@ export default {
     font-size: 40px;
     line-height: 64px;
     margin-bottom: 8px;
+
+    @include responsive(sm1) {
+      font-size: 32px;
+      line-height: 44px;
+    }
   }
 
   p {
@@ -216,11 +233,20 @@ export default {
     font-size: 16px;
     line-height: 26px;
     color: #1c1f22;
+
+    @include responsive(sm1) {
+      font-size: 14px;
+      line-height: 22px;
+    }
   }
 }
 
 .content-main {
   width: calc(2 / 3 * 100%);
+
+  @include responsive(sm1) {
+    width: 100%;
+  }
 }
 
 .btn-view-more {
@@ -263,6 +289,11 @@ export default {
     font-size: 24px;
     line-height: 32px;
     color: #1c1f22;
+
+    @include responsive(sm1) {
+      font-size: 18px;
+      line-height: 28px;
+    }
   }
 
   p {
@@ -271,6 +302,11 @@ export default {
     line-height: 26px;
     color: #505050;
     margin-top: .5rem;
+
+    @include responsive(sm1) {
+      font-size: 14px;
+      line-height: 22px;
+    }
   }
 }
 
@@ -281,6 +317,11 @@ export default {
   line-height: 44px;
   color: #1c1f22;
   margin-bottom: 30px;
+
+  @include responsive(sm1) {
+    font-size: 24px;
+    line-height: 32px;
+  }
 }
 
 .category-section {
@@ -296,6 +337,11 @@ export default {
     border-bottom: 1px solid #ccc;
     padding-bottom: 30px;
     margin-bottom: .5rem;
+
+    @include responsive(sm1) {
+      font-size: 24px;
+      line-height: 32px;
+    }
   }
 }
 
@@ -311,6 +357,11 @@ export default {
     text-align: center;
     padding: 15px;
 
+    @include responsive(sm) {
+      flex: 0 1 50%;
+      padding: 7px 9px;
+    }
+
     &:hover {
       p {
         color: #5a6067 !important;
@@ -325,6 +376,11 @@ export default {
       color: #1c1f22 !important;
       margin-top: 10px;
       margin-bottom: 1rem;
+
+      @include responsive(sm1) {
+        font-size: 16px;
+        line-height: 24px;
+      }
     }
   }
 }
@@ -337,5 +393,10 @@ export default {
   color: #1c1f22;
   margin-bottom: 30px;
   margin-top: 64px;
+
+  @include responsive(sm1) {
+    font-size: 16px;
+    line-height: 24px;
+  }
 }
 </style>

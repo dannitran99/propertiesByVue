@@ -94,6 +94,5 @@ iframe {
 .main-content {
   min-height: calc(100vh - 72px - 56px);
   margin-top: 72px;
-  min-width: 666px;
 }
 </style>

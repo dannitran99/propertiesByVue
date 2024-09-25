@@ -54,6 +54,10 @@ export default {
   display: flex;
   gap: 24px;
   margin-bottom: 30px;
+
+  @include responsive(sm1) {
+    display: block;
+  }
 }
 
 .main-item-highlight {
@@ -61,6 +65,11 @@ export default {
   width: calc(2 / 3 * 100%);
   position: relative;
   height: 360px;
+
+  @include responsive(sm1) {
+    display: block;
+    width: 100%;
+  }
 
   img {
     height: 360px;
@@ -77,11 +86,19 @@ export default {
   padding: 30px;
   color: #eff1f5;
   z-index: 1;
+
+  @include responsive(sm) {
+    padding: 15px;
+  }
 }
 
 .item-highlight-title {
   height: 76px;
   margin: 10px 0;
+
+  @include responsive(sm) {
+    height: unset;
+  }
 
   h3 {
     font-family: 'Lexend-Medium', sans-serif;
@@ -93,6 +110,11 @@ export default {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+
+    @include responsive(sm1) {
+      font-size: 18px;
+      line-height: 28px;
+    }
   }
 }
 
@@ -106,6 +128,15 @@ export default {
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
+
+  @include responsive(sm1) {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  @include responsive(sm) {
+    display: none;
+  }
 }
 
 .highlight-overlay {
@@ -118,6 +149,7 @@ export default {
 
 .sub-item-highlight {
   border-bottom: 1px solid #eff1f5;
+  margin-top: 5px;
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
