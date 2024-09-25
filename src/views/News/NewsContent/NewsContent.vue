@@ -112,12 +112,21 @@ p {
   line-height: 64px;
   color: #1c1f22;
   padding: 20px 12px;
+
+  @include responsive(sm1) {
+    font-size: 32px;
+    line-height: 44px;
+  }
 }
 
 .main-content-news {
   flex-shrink: 0;
   padding: 0 12px;
   width: 66.66666667%;
+
+  @include responsive(sm1) {
+    width: 100%;
+  }
 }
 
 .content {
@@ -125,6 +134,19 @@ p {
   padding: 10px 15px;
   max-width: 1140px;
   text-align: left;
+
+  @include responsive(lg1) {
+    max-width: 960px;
+  }
+
+  @include responsive(sm1) {
+    max-width: 720px;
+  }
+
+  @include responsive(sm) {
+    max-width: none;
+    padding: 10px 12px;
+  }
 }
 
 .description-content {
@@ -137,6 +159,10 @@ p {
 
 .article-main {
   display: flex;
+
+  @include responsive(sm1) {
+    display: block;
+  }
 }
 
 .article-related {
@@ -200,6 +226,11 @@ p {
   font-size: 16px;
   line-height: 26px;
   color: #1c1f22;
+
+  @include responsive(sm1) {
+    font-size: 14px;
+    line-height: 22px;
+  }
 }
 
 .content-author {

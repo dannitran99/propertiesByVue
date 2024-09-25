@@ -23,11 +23,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .list-breadcrumb {
   display: flex;
   align-items: center;
   gap: 5px;
+  overflow: hidden;
+
+  >:nth-child(n) {
+    flex-shrink: 0;
+  }
 }
 
 .home-ico {

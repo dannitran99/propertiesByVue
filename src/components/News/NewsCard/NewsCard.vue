@@ -107,6 +107,7 @@ export default {
 .card-tags {
   padding-top: 12px;
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 
   @include responsive(sm) {

@@ -12,7 +12,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   font-family: 'Lexend-Medium', sans-serif;
   color: #1c1f22;
@@ -28,11 +28,21 @@ h1 {
 h2 {
   font-size: 32px !important;
   line-height: 44px !important;
+
+  @include responsive(sm1) {
+    font-size: 24px !important;
+    line-height: 32px !important;
+  }
 }
 
 h3 {
   font-size: 24px;
   line-height: 32px;
+
+  @include responsive(sm1) {
+    font-size: 18px;
+    line-height: 28px;
+  }
 }
 
 h4 {
