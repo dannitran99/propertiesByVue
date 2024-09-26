@@ -102,7 +102,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   font-family: 'Roboto-Regular', sans-serif;
 }
@@ -137,10 +137,23 @@ h4 {
 .wrapper {
   margin: 0 auto;
   width: 936px;
+
+  @include responsive(sm1) {
+    width: 720px;
+  }
+
+  @include responsive(sm) {
+    width: 100%;
+    padding: 0 12px;
+  }
 }
 
 .content-detail {
   width: 666px;
+
+  @include responsive(sm1) {
+    width: 100%;
+  }
 }
 
 .detail-main {

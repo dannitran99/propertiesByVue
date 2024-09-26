@@ -49,7 +49,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   font-family: 'Roboto-Regular', sans-serif;
 }
@@ -66,13 +66,23 @@ h5 {
   border-radius: 8px;
   padding: 16px;
   display: flex;
+
+  @include responsive(sm) {
+    border: none;
+    border-bottom: 1px solid #F2F2F2;
+  }
 }
 
 .card-wrapper img {
   width: 120px;
   max-height: 120px;
   margin-right: 16px;
-  object-fit: cover
+  object-fit: cover;
+
+  @include responsive(sm) {
+    width: 76px;
+    max-height: 76px;
+  }
 }
 
 .card-content {
@@ -83,10 +93,18 @@ h5 {
 
 .main-detail {
   width: 240px;
+
+  @include responsive(sm) {
+    width: 100%;
+  }
 }
 
 .sub-detail {
   width: 240px;
+
+  @include responsive(sm) {
+    display: none;
+  }
 }
 
 .card-name {

@@ -81,7 +81,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   font-family: 'Roboto-Regular', sans-serif;
 }
@@ -99,6 +99,15 @@ h1 {
 .wrapper {
   margin: 72px auto 0 auto;
   width: 936px;
+
+  @include responsive(sm1) {
+    width: 720px;
+  }
+
+  @include responsive(sm) {
+    width: 100%;
+    padding: 0 12px;
+  }
 }
 
 .btn-tab {
@@ -160,5 +169,9 @@ h1 {
   flex-direction: column;
   gap: 16px;
   margin-bottom: 16px;
+
+  @include responsive(sm1) {
+    width: 100%;
+  }
 }
 </style>

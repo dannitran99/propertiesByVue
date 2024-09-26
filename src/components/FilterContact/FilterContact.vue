@@ -190,12 +190,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .wrapper-filter {
   margin: 24px 0;
   border: 1px solid #F2F2F2;
   border-radius: 8px;
   padding: 16px 20px;
+  width: fit-content;
 }
 
 .wrapper-filter>:first-child {
@@ -205,6 +206,10 @@ export default {
 .search-box {
   display: flex;
   gap: 9px;
+
+  >:nth-child(n) {
+    flex-shrink: 0;
+  }
 }
 
 .filter-title {
