@@ -142,7 +142,7 @@
 import { SALE_ITEM, RENT_ITEM } from '@/consts/label'
 import SideBar from '../../components/SideBar'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import { UPLOAD_PRESET, CLOUD_NAME } from '@/consts/cloudinary'
+import { fileUploader } from '@/helpers/fileUploader'
 import * as Yup from 'yup'
 export default {
   components: {
@@ -252,11 +252,7 @@ export default {
       for (const element of files) {
         if (element.type.split('/')[0] !== 'image') continue
         if (!this.images.some(e => e.name === element.name)) {
-          const post = new FormData()
-          post.append('file', element)
-          post.append('upload_preset', UPLOAD_PRESET)
-          post.append('cloud_name', CLOUD_NAME)
-          this.$store.dispatch('properties/postImg', post).then(
+          this.$store.dispatch('properties/postImg', fileUploader(element)).then(
             (res) => {
               this.images.push({ name: element.name, url: res.url, description: '' })
             }
@@ -283,11 +279,7 @@ export default {
       for (const element of files) {
         if (element.type.split('/')[0] !== 'image') continue
         if (!this.images.some(e => e.name === element.name)) {
-          const post = new FormData()
-          post.append('file', element)
-          post.append('upload_preset', UPLOAD_PRESET)
-          post.append('cloud_name', CLOUD_NAME)
-          this.$store.dispatch('properties/postImg', post).then(
+          this.$store.dispatch('properties/postImg', fileUploader(element)).then(
             (res) => {
               this.images.push({ name: element.name, url: res.url, description: '' })
             }

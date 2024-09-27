@@ -1,5 +1,41 @@
 import { PROPSSALETYPE, PROPSRENTTYPE } from './propstype'
 import { NEWS_CATEGORY_TYPE } from './newsCategory'
+import {ENTERPRISE_CATEGORY} from './enterpriseCategory'
+
+export const ENTERPRISE_SELECTOR = [
+  {
+    id: 1,
+    label: ENTERPRISE_CATEGORY.chudautu.label
+  },
+  {
+    id: 2,
+    label: ENTERPRISE_CATEGORY.thicong.label
+  },
+  {
+    id: 3,
+    label: ENTERPRISE_CATEGORY.thietke.label
+  },
+  {
+    id: 4,
+    label: ENTERPRISE_CATEGORY.sangiaodich.label
+  },
+  {
+    id: 5,
+    label: ENTERPRISE_CATEGORY.noithat.label
+  },
+  {
+    id: 6,
+    label: ENTERPRISE_CATEGORY.vatlieu.label
+  },
+  {
+    id: 7,
+    label: ENTERPRISE_CATEGORY.taichinh.label
+  },
+  {
+    id: 8,
+    label: ENTERPRISE_CATEGORY.khac.label
+  }
+]
 
 export const FILTER_SALE_LABEL = [
   'Tất cả nhà đất',

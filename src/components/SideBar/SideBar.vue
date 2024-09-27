@@ -70,6 +70,7 @@ export default {
         sub: [
           { title: 'Yêu cầu đăng ký môi giới', path: '/yeu-cau-moi-gioi' },
           { title: 'Yêu cầu xóa tài khoản', path: '/yeu-cau-xoa-tai-khoan' },
+          { title: 'Quản lý doanh nghiệp', path: '/quan-ly-doanh-nghiep' },
           { title: 'Đăng tin tức', path: '/tao-tin' }
         ],
         role: ['admin']

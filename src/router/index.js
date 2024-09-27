@@ -85,6 +85,14 @@ export default new Router({
       }
     },
     {
+      path: '/quan-ly-doanh-nghiep',
+      name: 'EnterpriseManagement',
+      component: () => import('@/views/Admin/EnterpriseRegister'),
+      beforeEnter: (to, from, next) => {
+        beforeRouteEnter(['admin']) ? next() : next('/')
+      }
+    },
+    {
       path: '/tin-tuc',
       name: 'News',
       component: () => import('@/views/News')

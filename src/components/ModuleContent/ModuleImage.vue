@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { UPLOAD_PRESET, CLOUD_NAME } from '@/consts/cloudinary'
+import { fileUploader } from '@/helpers/fileUploader'
 export default {
   props: {
     dataForm: {
@@ -48,11 +48,7 @@ export default {
     onFileSelected(event) {
       const files = event.target.files
       if (files[0].type.split('/')[0] === 'image') {
-        const post = new FormData()
-        post.append('file', files[0])
-        post.append('upload_preset', UPLOAD_PRESET)
-        post.append('cloud_name', CLOUD_NAME)
-        this.$store.dispatch('user/postImg', post).then(
+        this.$store.dispatch('user/postImg', fileUploader(files[0])).then(
           (res) => {
             this.dataForm.image = res.url
           }
@@ -80,11 +76,7 @@ export default {
       const files = event.dataTransfer.files
       for (const element of files) {
         if (element.type.split('/')[0] !== 'image') continue
-        const post = new FormData()
-        post.append('file', files[0])
-        post.append('upload_preset', UPLOAD_PRESET)
-        post.append('cloud_name', CLOUD_NAME)
-        this.$store.dispatch('user/postImg', post).then(
+        this.$store.dispatch('user/postImg', fileUploader(element)).then(
           (res) => {
             this.dataForm.image = res.url
           }
