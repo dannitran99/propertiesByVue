@@ -7,6 +7,7 @@ import propertiesStore from './properties'
 import usersStore from './users'
 import common from './common'
 import contact from './contacts'
+import enterprises from './enterprises'
 
 Vue.use(Vuex)
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     properties: propertiesStore,
     user: usersStore,
     common: common,
-    contact: contact
+    contact: contact,
+    enterprises: enterprises
   }
 })

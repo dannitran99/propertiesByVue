@@ -28,9 +28,15 @@ export default {
     },
     GET_WARD_LIST (state, data) {
       state.ward = data
+    },
+    CLEAR_LIST(state, data) {
+      state[data] = []
     }
   },
   actions: {
+    clearList(context, payload) {
+      context.commit('CLEAR_LIST', payload)
+    },
     async getCity (context) {
       const [error, response] = await getCity()
       if (!error && response) {
