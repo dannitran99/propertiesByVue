@@ -635,7 +635,7 @@ export const MENU_ITEM = [
     icon: 'icon-contact',
     sub: [
       { label: 'Nhà môi giới', href: '/nha-moi-gioi' },
-      { label: 'Doanh nghiệp' }
+      { label: 'Doanh nghiệp', href: '/doanh-nghiep' }
     ]
   }
 ]

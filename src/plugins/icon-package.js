@@ -62,6 +62,7 @@ import News from '@/components/icons/News.vue'
 import Books from '@/components/icons/Books.vue'
 import Chart from '@/components/icons/Chart.vue'
 import Contact from '@/components/icons/Contact.vue'
+import Edit from '@/components/icons/Edit.vue'
 const iconElements = {
   RightArrow,
   Home,
@@ -126,7 +127,8 @@ const iconElements = {
   News,
   Books,
   Chart,
-  Contact
+  Contact,
+  Edit
 }
 
 export default {
