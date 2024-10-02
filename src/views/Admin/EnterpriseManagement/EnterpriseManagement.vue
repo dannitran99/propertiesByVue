@@ -31,7 +31,7 @@
             <template v-slot:[`item.action`]="{ item }">
               <div v-if="selectedEdit === item.ID" class="action-div">
                 <v-select placeholder="Chọn" dense outlined :items="businessFieldSelect" item-text="label"
-                  item-value="label" v-model="selected"></v-select>
+                  item-value="label" v-model="selected" hide-details @change="handlePinnedItem"></v-select>
               </div>
               <div class="action-div" v-else>
                 <p>{{ item.pinned || '--' }}</p>
@@ -62,7 +62,7 @@ export default {
         { text: 'Tên doanh nghiệp', value: 'name', width: 300 },
         { text: 'Địa chỉ', value: 'direction', width: 350 },
         { text: 'Ngày tạo', value: 'create', width: 150 },
-        { text: 'Đã Ghim', value: 'action', width: 50 }
+        { text: 'Đã Ghim', value: 'action', width: 100 }
       ]
     }
   },
@@ -110,6 +110,12 @@ export default {
         { id: 0, label: item.businessField },
         ...item.subBusiness.map((sub, idx) => ({ id: idx + 1, label: sub }))
       ]
+    },
+    handlePinnedItem() {
+      this.$store.dispatch('enterprises/setPinnedEnterprise', {
+        id: this.selectedEdit,
+        pinned: this.selected
+      })
     }
   }
 }

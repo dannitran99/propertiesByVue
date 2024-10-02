@@ -1,4 +1,4 @@
-import { createEnterprise, getAllEnterprise } from '@/api/enterprises.api'
+import { createEnterprise, getAllEnterprise, setPinnedEnterprise } from '@/api/enterprises.api'
 import router from '@/router'
 
 export default {
@@ -97,6 +97,14 @@ export default {
       if (!error && response) {
         context.commit('LOADING_STATE', false)
         context.commit('GET_ALL_ENTERPRISES', response)
+      }
+    },
+    async setPinnedEnterprise(context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await setPinnedEnterprise(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+        location.reload()
       }
     }
   }

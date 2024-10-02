@@ -26,3 +26,12 @@ export const getAllEnterprise = async (payload) => {
     return [error]
   }
 }
+
+export const setPinnedEnterprise = async (dataPost) => {
+  try {
+    const { data } = await HTTP.post('/api/setPinnedEnterprise', dataPost)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
