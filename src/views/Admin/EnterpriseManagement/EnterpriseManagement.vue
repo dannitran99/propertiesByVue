@@ -107,7 +107,8 @@ export default {
       this.selectedEdit = item.ID
       this.selected = item.pinned
       this.businessFieldSelect = [
-        { id: 0, label: item.businessField },
+        { id: 0, label: '' },
+        { id: 1, label: item.businessField },
         ...item.subBusiness.map((sub, idx) => ({ id: idx + 1, label: sub }))
       ]
     },

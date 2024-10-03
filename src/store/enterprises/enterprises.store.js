@@ -1,4 +1,4 @@
-import { createEnterprise, getAllEnterprise, setPinnedEnterprise } from '@/api/enterprises.api'
+import { createEnterprise, getAllEnterprise, setPinnedEnterprise, getPinnedEnterprise } from '@/api/enterprises.api'
 import router from '@/router'
 
 export default {
@@ -55,6 +55,9 @@ export default {
       state.enterpriseList = payload.Data
       state.totalItem = payload.Total
     },
+    GET_PINNED_ENTERPRISES(state, payload) {
+      state.enterpriseList = payload
+    },
     SUBMIT_FILTER(state, payload) {
       const query = {}
       state.searchKeyword && Object.assign(query, { k: state.searchKeyword })
@@ -105,6 +108,14 @@ export default {
       if (!error && response) {
         context.commit('LOADING_STATE', false)
         location.reload()
+      }
+    },
+    async getPinnedEnterprise(context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await getPinnedEnterprise(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+        context.commit('GET_PINNED_ENTERPRISES', response)
       }
     }
   }
