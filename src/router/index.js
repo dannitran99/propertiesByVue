@@ -170,6 +170,11 @@ export default new Router({
       name: 'Enterprise',
       component: () => import('@/views/Enterprise')
     },
+    {
+      path: '/doanh-nghiep/:enterpriseId',
+      name: 'EnterpriseDetail',
+      component: () => import('@/views/Enterprise/EnterpriseDetail')
+    },
     { path: '/404',
       name: 'NotFound',
       component: () => import('@/views/404')
