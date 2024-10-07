@@ -7,6 +7,9 @@
     <div class="component-wrapper bg-dark">
       <properties-home-page class="component " />
     </div>
+    <div class="component-wrapper">
+      <enterprise-slideshow class="component" />
+    </div>
   </div>
 </template>
 

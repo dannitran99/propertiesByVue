@@ -3,6 +3,7 @@ import FooterComp from '@/components/Footer'
 import LoginButton from '@/components/LoginButton'
 import NewsHomePage from '@/components/NewsHomePage'
 import PropertiesHomePage from '@/components/PropertiesHomePage'
+import EnterpriseSlideshow from '@/components/EnterpriseSlideshow'
 import BreadCrumb from '@/components/BreadCrumb'
 import BreadCrumbProperty from '@/components/BreadCrumbProperty'
 import Properties from '@/components/Properties'
@@ -21,6 +22,7 @@ const commonElements = {
   LoginButton,
   NewsHomePage,
   PropertiesHomePage,
+  EnterpriseSlideshow,
   BreadCrumb,
   BreadCrumbProperty,
   Properties,

@@ -36,7 +36,8 @@
                     <h3>{{ item.name }}</h3>
                   </router-link>
                   <p class="card-address" v-if="item.city">
-                    <icon-mappoint />{{ item.street }}, {{ item.ward }}, {{ item.district }}, {{ item.city }}
+                    <icon-mappoint />{{ item.street && `${item.street}, ` }}{{ item.ward }}, {{ item.district }},
+                    {{ item.city }}
                   </p>
                   <p class="card-address" v-if="item.phoneNumber"><icon-cellphone />{{ item.phoneNumber }} </p>
                 </div>
