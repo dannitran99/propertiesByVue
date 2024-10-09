@@ -1,35 +1,24 @@
 <template>
   <div>
     <h2>Doanh nghiệp tiêu biểu</h2>
-    <div v-if="isLoading"></div>
-    <div class="slider-content" v-else>
-      <div class="slider-wrapper">
-        <ul class="slider-card"
-          :style="{ transform: `translate3d(${-195 * index}px, 0px, 0px)`, transitionDuration: `${transitionDuration}ms` }">
+    <div class="slider-content">
+      <div class="slider-wrapper" ref="emblaRef">
+        <enterprise-slideshow-skeleton v-if="isLoading" />
+        <ul class="slider-card" v-else>
           <li v-for="(item, idx) in enterpriseList" :key="idx" class="slider-item" @mouseenter="handlePauseInterval"
             @mouseleave="handleResumeInterval">
             <router-link :to="{ name: 'EnterpriseDetail', params: { enterpriseId: item.ID, } }">
               <img :src="item.logo" alt="logo" draggable="false">
             </router-link>
           </li>
-          <li v-for="(item, idx) in enterpriseList" :key="idx + 100" class="slider-item"
-            @mouseenter="handlePauseInterval" @mouseleave="handleResumeInterval">
-            <router-link :to="{ name: 'EnterpriseDetail', params: { enterpriseId: item.ID, } }">
-              <img :src="item.logo" alt="logo" draggable="false">
-            </router-link>
-          </li>
-          <li v-for="(item, idx) in enterpriseList" :key="idx + 200" class="slider-item"
-            @mouseenter="handlePauseInterval" @mouseleave="handleResumeInterval">
-            <router-link :to="{ name: 'EnterpriseDetail', params: { enterpriseId: item.ID, } }">
-              <img :src="item.logo" alt="logo" draggable="false">
-            </router-link>
-          </li>
         </ul>
       </div>
-      <button class="btn-carousel">
+      <button class="btn-carousel" :disabled="btnDisable" @click="() => handleChangeSlide(false, true)"
+        v-if="isDesktop">
         <icon-leftarrow />
       </button>
-      <button class="btn-carousel go-right">
+      <button class="btn-carousel go-right" :disabled="btnDisable" @click="() => handleChangeSlide(true, true)"
+        v-if="isDesktop">
         <icon-leftarrow />
       </button>
     </div>
@@ -37,12 +26,23 @@
 </template>
 
 <script>
+import EmblaCarousel from 'embla-carousel'
+import EnterpriseSlideshowSkeleton from './EnterpriseSlideshowSkeleton.vue'
+import { useBreakpoints } from '@vueuse/core'
+import { breakpoints } from '@/consts/breakpoints.js'
+
+const definedBreakpoint = useBreakpoints(breakpoints)
+var interval
+
 export default {
+  components: {
+    EnterpriseSlideshowSkeleton
+  },
   data() {
     return {
-      index: 0,
-      transitionDuration: 0,
-      interval: undefined
+      btnDisable: false,
+      emblaApi: null,
+      isDesktop: definedBreakpoint.greater('lg')
     }
   },
   computed: {
@@ -57,27 +57,30 @@ export default {
       }
     }
   },
+  mounted() {
+    const emblaRef = this.$refs['emblaRef']
+    this.emblaApi = EmblaCarousel(emblaRef, { loop: true, align: 'start', duration: 40 })
+  },
   async created() {
     await this.$store.dispatch('enterprises/getPinnedEnterprise')
-    this.index = this.enterpriseList.length
-    this.interval = this.intevalSilder()
+    interval = this.intevalSilder(true)
   },
   methods: {
-    intevalSilder() {
+    intevalSilder(goNext) {
       return setInterval(() => {
-        this.transitionDuration = 1000
-        this.index++
-        setTimeout(() => {
-          this.transitionDuration = 0
-          if (this.index >= (this.enterpriseList.length * 2)) this.index = this.enterpriseList.length
-        }, 1000)
+        this.handleChangeSlide(goNext)
       }, 3000)
     },
+    handleChangeSlide(goNext, pressButton) {
+      if (pressButton) clearInterval(interval)
+      if (this.emblaApi) goNext ? this.emblaApi.scrollNext() : this.emblaApi.scrollPrev()
+      if (pressButton) interval = this.intevalSilder(true)
+    },
     handlePauseInterval() {
-      clearInterval(this.interval)
+      clearInterval(interval)
     },
     handleResumeInterval() {
-      this.interval = this.intevalSilder()
+      interval = this.intevalSilder(true)
     }
   }
 }
@@ -92,6 +95,11 @@ h2 {
   color: #2C2C2C;
   display: block;
   margin: 0 0 8px 0;
+
+  @include responsive(xs) {
+    font-size: 18px;
+    line-height: 28px;
+  }
 }
 
 .slider-wrapper {
@@ -103,6 +111,11 @@ h2 {
   position: relative;
   padding-top: 16px;
   padding-bottom: 20px;
+
+  @include responsive(xs) {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
 }
 
 .slider-card {
@@ -139,6 +152,27 @@ h2 {
 
     &:hover {
       filter: grayscale(0%);
+    }
+  }
+
+  @include responsive(lg) {
+    width: 158px !important;
+    margin-right: 32px;
+
+    img {
+      max-width: 92px;
+      max-height: 86px;
+    }
+  }
+
+  @include responsive(xs) {
+    width: 120px !important;
+    height: 66px;
+    margin-right: 8px;
+
+    img {
+      max-height: calc(100% - 16px);
+      max-width: calc(100% - 16px);
     }
   }
 }

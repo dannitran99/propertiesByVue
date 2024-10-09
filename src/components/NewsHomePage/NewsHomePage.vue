@@ -111,6 +111,7 @@ export default {
   margin-bottom: 24px;
   border-bottom: 1px solid #F2F2F2;
   max-width: 848px;
+  overflow: auto;
 
   @include responsive(lg) {
     max-width: 100%;
