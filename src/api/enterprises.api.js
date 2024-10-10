@@ -18,9 +18,24 @@ export const getAllEnterprise = async (payload) => {
       payload.query.city && query.push(`city=${payload.query.city}`)
       payload.query.district && query.push(`district=${payload.query.district}`)
       query.push(`p=${payload.query.p || 1}`)
-      query.push(`l=${payload.query.l || 10}`)
+      query.push(`l=${payload.query.l || 5}`)
     }
     const { data } = await HTTP.get(`/api/getAllEnterprise?${query.join('&')}`)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
+export const getEnterprisesDetail = async (payload) => {
+  let query = []
+  if (payload.query) {
+    query.push(`p=${payload.query.p || 1}`)
+    query.push(`l=${payload.query.l || 5}`)
+  }
+
+  try {
+    const { data } = await HTTP.get(`/api/enterprise/${payload.id}?${query.join('&')}`)
     return [null, data]
   } catch (error) {
     return [error]

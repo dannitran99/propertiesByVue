@@ -1,4 +1,4 @@
-import { createEnterprise, getAllEnterprise, setPinnedEnterprise, getPinnedEnterprise } from '@/api/enterprises.api'
+import { createEnterprise, getAllEnterprise, setPinnedEnterprise, getPinnedEnterprise, getEnterprisesDetail } from '@/api/enterprises.api'
 import router from '@/router'
 
 export default {
@@ -6,6 +6,7 @@ export default {
   state: {
     isLoading: false,
     enterpriseList: [],
+    enterpriseData: {},
     totalItem: 0,
     searchKeyword: '',
     type: { id: 0, label: 'Lĩnh vực' },
@@ -18,6 +19,9 @@ export default {
     },
     enterpriseList(state) {
       return state.enterpriseList
+    },
+    enterpriseData(state) {
+      return state.enterpriseData
     },
     totalItem (state) {
       return state.totalItem
@@ -58,6 +62,9 @@ export default {
     GET_PINNED_ENTERPRISES(state, payload) {
       state.enterpriseList = payload
     },
+    GET_ENTERPRISE_DATA(state, payload) {
+      state.enterpriseData = payload
+    },
     SUBMIT_FILTER(state, payload) {
       const query = {}
       state.searchKeyword && Object.assign(query, { k: state.searchKeyword })
@@ -77,6 +84,14 @@ export default {
       if (!error && response) {
         context.commit('LOADING_STATE', false)
         router.push('/quan-ly-doanh-nghiep')
+      }
+    },
+    async getEnterprisesDetail (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await getEnterprisesDetail(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
+        context.commit('GET_ENTERPRISE_DATA', response)
       }
     },
     searchChange (context, payload) {
