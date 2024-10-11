@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper-filter">
     <div class="search-box">
-      <p class="filter-title">TÌM KIẾM DOANH NGHIỆP</p>
+      <p class="filter-title">Tìm kiếm doanh nghiệp</p>
       <div class="search-wrapper">
         <input :value="searchKeyword" type="text" class="search-input" @input="handleSearchChange"
           placeholder="Nhập từ khóa tìm kiếm" @keyup.enter="handleSubmitFilter" />
@@ -149,6 +149,20 @@ export default {
   >:last-child {
     margin-left: 186px;
   }
+
+  @include responsive(sm) {
+    margin: 0;
+    padding: 24px 0px 8px;
+    border: none;
+
+    >:first-child {
+      margin-bottom: 0px;
+    }
+
+    >:last-child {
+      margin-left: 0px;
+    }
+  }
 }
 
 .search-box {
@@ -157,6 +171,11 @@ export default {
 
   >:nth-child(n) {
     flex-shrink: 0;
+  }
+
+  @include responsive(sm) {
+    flex-direction: column;
+    gap: 0;
   }
 }
 
@@ -170,6 +189,19 @@ export default {
   line-height: 32px;
   letter-spacing: -0.6px;
   flex-shrink: 0;
+  text-transform: uppercase;
+
+  @include responsive(sm) {
+    width: 100%;
+    text-align: center;
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 500;
+    letter-spacing: -.2px;
+    color: #2C2C2C;
+    text-transform: none;
+  }
 }
 
 .search-wrapper {
@@ -179,6 +211,10 @@ export default {
   border-radius: 4px;
   width: 596px;
   padding-right: 15px;
+
+  @include responsive(sm) {
+    display: none;
+  }
 }
 
 .search-wrapper svg {
@@ -199,6 +235,11 @@ export default {
 
 .sort-con {
   width: 193px !important;
+
+  @include responsive(sm) {
+    width: 100% !important;
+    margin-bottom: 16px;
+  }
 }
 
 .btn-submit {
@@ -214,6 +255,10 @@ export default {
   border-radius: 4px;
   opacity: 1;
   transition: all .3s ease;
+
+  @include responsive(sm) {
+    margin: 0 auto 16px;
+  }
 }
 
 .btn-submit:hover {

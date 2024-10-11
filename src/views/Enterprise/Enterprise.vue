@@ -45,7 +45,7 @@
             </li>
           </template>
         </ul>
-        <pagination :total="totalItem" />
+        <pagination :total="totalItem" :defaultLimit="10" />
       </template>
       <template v-else>
         <h1 class="broker-title-sm">
@@ -59,10 +59,10 @@
           </router-link>
           <ul class="list-enterprise">
             <template v-if="isLoading">
-              <enterprise-card-skeleton />
-              <enterprise-card-skeleton />
-              <enterprise-card-skeleton />
-              <enterprise-card-skeleton />
+              <enterprise-card-skeleton :isFilter="isMobile" />
+              <enterprise-card-skeleton :isFilter="isMobile" />
+              <enterprise-card-skeleton :isFilter="isMobile" />
+              <enterprise-card-skeleton :isFilter="isMobile" />
             </template>
             <template v-else>
               <li v-for="(subItem, subIdx) in item.list" :key="subIdx" class="enterprise-item">
@@ -71,9 +71,16 @@
                     <img :src="subItem.logo" alt="logo" />
                   </router-link>
                 </div>
-                <router-link :to="{ name: 'EnterpriseDetail', params: { enterpriseId: subItem.ID, } }">
-                  <h3>{{ subItem.name }}</h3>
-                </router-link>
+                <div>
+                  <router-link :to="{ name: 'EnterpriseDetail', params: { enterpriseId: subItem.ID, } }">
+                    <h3>{{ subItem.name }}</h3>
+                  </router-link>
+                  <p v-if="subItem.city">
+                    <icon-mappoint />{{ subItem.street && `${subItem.street}, ` }}{{ subItem.ward }}, {{
+                      subItem.district }},
+                    {{ subItem.city }}
+                  </p>
+                </div>
               </li>
             </template>
           </ul>
@@ -84,7 +91,11 @@
 </template>
 
 <script>
+import { useBreakpoints } from '@vueuse/core'
+import { breakpoints } from '@/consts/breakpoints.js'
 import EnterpriseCardSkeleton from './EnterpriseCardSkeleton.vue'
+
+const definedBreakpoint = useBreakpoints(breakpoints)
 export default {
   components: {
     EnterpriseCardSkeleton
@@ -93,7 +104,8 @@ export default {
     return {
       titleFilter: '',
       isFilter: false,
-      mainList: []
+      mainList: [],
+      isMobile: definedBreakpoint.smaller('sm')
     }
   },
   computed: {
@@ -243,6 +255,11 @@ export default {
   display: flex;
   gap: 14px;
   margin-bottom: 32px;
+
+  @include responsive(sm) {
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
 .enterprise-item {
@@ -267,6 +284,46 @@ export default {
       color: #999 !important;
     }
   }
+
+  p {
+    display: none;
+  }
+
+  @include responsive(sm) {
+    width: 100%;
+    display: flex;
+    border: none;
+    padding: 0px 0 12px;
+    border-top: 1px solid #F2F2F2;
+
+    h3 {
+      text-align: left;
+      font-family: 'Lexend-Medium', sans-serif;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 500;
+      letter-spacing: -.2px;
+      color: #2C2C2C;
+      margin-top: 12px;
+    }
+
+    p {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      color: #505050;
+      font-size: 12px;
+      line-height: 16px;
+      margin-bottom: 8px;
+
+      svg {
+        flex-shrink: 0;
+        margin-right: 8px;
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
 }
 
 .img-wrapper {
@@ -276,10 +333,23 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 
   img {
     max-width: 100%;
     max-height: 100%;
+  }
+
+  @include responsive(sm) {
+    width: 88px;
+    height: 88px;
+
+    img {
+      width: 76px;
+      height: 76px;
+      margin: 12px 12px 0 0;
+      object-fit: contain;
+    }
   }
 }
 

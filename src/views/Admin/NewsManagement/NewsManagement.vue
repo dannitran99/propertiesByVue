@@ -4,39 +4,26 @@
     <div class="main-area" :class="[{ 'hide': !drawer }]">
       <div class="header">
         <div class="content-main fl-bw">
-          <h2>Quản lý doanh nghiệp</h2>
+          <h2>Quản lý tin tức</h2>
           <div class="tool-div">
             <div class="input-search">
               <icon-magnify />
               <input v-model="search" type="text" placeholder="Tìm kiếm..." />
             </div>
-            <router-link class="btn-submit" to="/quan-ly-doanh-nghiep/tao-moi">Tạo mới</router-link>
+            <router-link class="btn-submit" to="/quan-ly-tin/tao-tin">Tạo tin</router-link>
           </div>
         </div>
       </div>
       <div class="content-main txt-format">
         <v-card flat>
-          <v-data-table :search="search" :items="enterpriseList" :headers="headers" hide-default-footer
+          <v-data-table :search="search" :items="news" :headers="headers" hide-default-footer
             no-data-text="Không có dữ liệu" :loading="isLoading" loading-text="Đang tải dữ liệu"
             no-results-text="Không có dữ liệu">
-            <template v-slot:[`item.logo`]="{ item }">
-              <v-img :src="item.logo" height="80" width="100px" style="margin: 4px;"></v-img>
-            </template>
-            <template v-slot:[`item.direction`]="{ item }">
-              {{ `${item.street}, ${item.ward}, ${item.district}, ${item.city}` }}
+            <template v-slot:[`item.thumbnail`]="{ item }">
+              <v-img :src="item.thumbnail" height="90" width="160px" style="margin: 4px;"></v-img>
             </template>
             <template v-slot:[`item.create`]="{ item }">
               {{ formatDateTime(item.createdAt) }}
-            </template>
-            <template v-slot:[`item.action`]="{ item }">
-              <div v-if="selectedEdit === item.ID" class="action-div">
-                <v-select placeholder="Chọn" dense outlined :items="businessFieldSelect" item-text="label"
-                  item-value="label" v-model="selected" hide-details @change="handlePinnedItem"></v-select>
-              </div>
-              <div class="action-div" v-else>
-                <p>{{ item.pinned || '--' }}</p>
-                <button @click="() => handleEdit(item)"><icon-edit /></button>
-              </div>
             </template>
           </v-data-table>
           <pagination :total="totalItem" class="py-5" :defaultLimit="10" />
@@ -54,15 +41,12 @@ export default {
   data() {
     return {
       search: '',
-      selectedEdit: '',
-      businessFieldSelect: [],
-      selected: '',
       headers: [
-        { text: 'Logo doanh nghiệp', value: 'logo', width: 200 },
-        { text: 'Tên doanh nghiệp', value: 'name', width: 300 },
-        { text: 'Địa chỉ', value: 'direction', width: 350 },
-        { text: 'Ngày tạo', value: 'create', width: 150 },
-        { text: 'Đã Ghim', value: 'action', width: 100 }
+        { text: 'Ảnh bài viết', value: 'thumbnail', width: 100 },
+        { text: 'Tiêu đề', value: 'title', width: 400 },
+        { text: 'Loại tin', value: 'category', width: 150 },
+        { text: 'Người tạo', value: 'user', width: 100 },
+        { text: 'Ngày tạo', value: 'create', width: 150 }
       ]
     }
   },
@@ -74,17 +58,17 @@ export default {
     },
     isLoading: {
       get() {
-        return this.$store.getters['enterprises/isLoading']
+        return this.$store.getters['news/isLoading']
       }
     },
     totalItem: {
       get() {
-        return this.$store.getters['enterprises/totalItem']
+        return this.$store.getters['news/totalItem']
       }
     },
-    enterpriseList: {
+    news: {
       get() {
-        return this.$store.getters['enterprises/enterpriseList']
+        return this.$store.getters['news/newsList']
       }
     }
   },
@@ -96,26 +80,14 @@ export default {
   created() {
     this.handleRequest()
   },
+  destroyed() {
+    this.$store.dispatch('news/returnInitData')
+  },
   methods: {
     formatDateTime,
     async handleRequest() {
-      await this.$store.dispatch('enterprises/getAllEnterprises', {
+      await this.$store.dispatch('news/getNewsList', {
         query: this.$route.query
-      })
-    },
-    handleEdit(item) {
-      this.selectedEdit = item.ID
-      this.selected = item.pinned
-      this.businessFieldSelect = [
-        { id: 0, label: '' },
-        { id: 1, label: item.businessField },
-        ...item.subBusiness.map((sub, idx) => ({ id: idx + 1, label: sub }))
-      ]
-    },
-    handlePinnedItem() {
-      this.$store.dispatch('enterprises/setPinnedEnterprise', {
-        id: this.selectedEdit,
-        pinned: this.selected
       })
     }
   }
@@ -131,10 +103,6 @@ h2 {
   display: flex;
 }
 
-.txt-format {
-  font-family: 'Roboto-Regular', sans-serif;
-}
-
 .main-area {
   background-color: rgb(249, 249, 249);
   width: calc(100vw - 256px);
@@ -145,6 +113,10 @@ h2 {
 
 .hide {
   width: 100vw;
+}
+
+.txt-format {
+  font-family: 'Roboto-Regular', sans-serif;
 }
 
 .header {
@@ -209,19 +181,5 @@ h2 {
 
 .btn-submit:hover {
   opacity: .7;
-}
-
-.action-div {
-  width: 200px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-
-  svg {
-    margin-top: 6px;
-    opacity: .7;
-    width: 18px;
-    height: 18px;
-  }
 }
 </style>

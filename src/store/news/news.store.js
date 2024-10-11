@@ -127,7 +127,7 @@ export default {
       const [error, response] = await postNews(payload)
       if (!error && response) {
         context.commit('LOADING_STATE', false)
-        router.push('/tin-tuc')
+        router.push('/quan-ly-tin')
       } else {
         console.error(error)
       }

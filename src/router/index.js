@@ -77,7 +77,15 @@ export default new Router({
       }
     },
     {
-      path: '/tao-tin',
+      path: '/quan-ly-tin',
+      name: 'NewsManagement',
+      component: () => import('@/views/Admin/NewsManagement'),
+      beforeEnter: (to, from, next) => {
+        beforeRouteEnter(['admin']) ? next() : next('/')
+      }
+    },
+    {
+      path: '/quan-ly-tin/tao-tin',
       name: 'PostNews',
       component: () => import('@/views/Admin/PostNews'),
       beforeEnter: (to, from, next) => {

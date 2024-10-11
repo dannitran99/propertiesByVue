@@ -18,7 +18,7 @@ export const getAllEnterprise = async (payload) => {
       payload.query.city && query.push(`city=${payload.query.city}`)
       payload.query.district && query.push(`district=${payload.query.district}`)
       query.push(`p=${payload.query.p || 1}`)
-      query.push(`l=${payload.query.l || 5}`)
+      query.push(`l=${payload.query.l || 10}`)
     }
     const { data } = await HTTP.get(`/api/getAllEnterprise?${query.join('&')}`)
     return [null, data]

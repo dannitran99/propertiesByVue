@@ -19,7 +19,7 @@
               <input accept="image/*,.heic" type="file" autocomplete="off" tabindex="-1" style="display: none;"
                 ref="fileInput" @change="onFileSelected">
               <div v-if="avatar" class="img-upload-place mt-2">
-                <img :src="avatar" alt="avatar" class="avatar-img">
+                <v-img :src="avatar" alt="avatar" class="avatar-img" />
                 <div class="close-btn" @click="handleDeleteAvatar">
                   <icon-closewb />
                 </div>
