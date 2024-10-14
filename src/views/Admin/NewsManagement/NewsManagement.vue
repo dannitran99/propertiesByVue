@@ -19,11 +19,21 @@
           <v-data-table :search="search" :items="news" :headers="headers" hide-default-footer
             no-data-text="Không có dữ liệu" :loading="isLoading" loading-text="Đang tải dữ liệu"
             no-results-text="Không có dữ liệu">
+            <template v-slot:[`item.pinned`]="{ item }">
+              <v-checkbox :input-value="item.pinned" :disabled="isLoading"
+                @change="(e) => handlePinItem(e, item.ID)"></v-checkbox>
+            </template>
             <template v-slot:[`item.thumbnail`]="{ item }">
               <v-img :src="item.thumbnail" height="90" width="160px" style="margin: 4px;"></v-img>
             </template>
             <template v-slot:[`item.create`]="{ item }">
               {{ formatDateTime(item.createdAt) }}
+            </template>
+            <template v-slot:[`item.category`]="{ item }">
+              {{ newsCategory.find(el => el.value === item.category).label }}
+            </template>
+            <template v-slot:[`item.tags`]="{ item }">
+              <v-chip v-for="(tag, idx) in item.tags" :key="idx">{{ tag }}</v-chip>
             </template>
           </v-data-table>
           <pagination :total="totalItem" class="py-5" :defaultLimit="10" />
@@ -36,16 +46,20 @@
 <script>
 import SideBar from '@/components/SideBar'
 import { formatDateTime } from '@/helpers/formater'
+import { NEWS_ITEM } from '@/consts/label'
 export default {
   components: { SideBar },
   data() {
     return {
+      newsCategory: NEWS_ITEM,
       search: '',
       headers: [
+        { text: 'Ghim', value: 'pinned', width: 80 },
         { text: 'Ảnh bài viết', value: 'thumbnail', width: 100 },
-        { text: 'Tiêu đề', value: 'title', width: 400 },
+        { text: 'Tiêu đề', value: 'title', width: 250 },
         { text: 'Loại tin', value: 'category', width: 150 },
-        { text: 'Người tạo', value: 'user', width: 100 },
+        { text: 'Thẻ', value: 'tags', width: 150 },
+        { text: 'Người tạo', value: 'user', width: 120 },
         { text: 'Ngày tạo', value: 'create', width: 150 }
       ]
     }
@@ -74,6 +88,7 @@ export default {
   },
   watch: {
     '$route'() {
+      this.$store.dispatch('news/returnInitData')
       this.handleRequest()
     }
   },
@@ -88,6 +103,11 @@ export default {
     async handleRequest() {
       await this.$store.dispatch('news/getNewsList', {
         query: this.$route.query
+      })
+    },
+    async handlePinItem(e, id) {
+      await this.$store.dispatch('news/setPinnedNews', {
+        id, value: e
       })
     }
   }

@@ -4,6 +4,7 @@ export const getNewsList = async (payload) => {
   try {
     let query = []
     payload.type && query.push(`type=${payload.type}`)
+    payload.pinned && query.push(`pinned=${payload.pinned}`)
     if (payload.query) {
       payload.query.k && query.push(`k=${payload.query.k}`)
       payload.query.tags && query.push(`tags=${payload.query.tags}`)
@@ -29,6 +30,15 @@ export const getNewById = async (newId) => {
 export const postNews = async (dataPost) => {
   try {
     const { data } = await HTTP.post('/api/postNews', dataPost)
+    return [null, data]
+  } catch (error) {
+    return [error]
+  }
+}
+
+export const setPinnedNews = async (dataPost) => {
+  try {
+    const { data } = await HTTP.post('/api/setPinnedNews', dataPost)
     return [null, data]
   } catch (error) {
     return [error]

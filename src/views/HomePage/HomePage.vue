@@ -8,6 +8,9 @@
       <properties-home-page class="component " />
     </div>
     <div class="component-wrapper">
+      <news-pinned class="component" />
+    </div>
+    <div class="component-wrapper">
       <enterprise-slideshow class="component" />
     </div>
   </div>

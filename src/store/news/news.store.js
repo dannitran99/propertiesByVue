@@ -1,12 +1,14 @@
-import { getNewsList, getNewById, postNews } from '@/api/news.api'
+import { getNewsList, getNewById, postNews, setPinnedNews } from '@/api/news.api'
 import router from '@/router'
 
 export default {
   namespaced: true,
   state: {
     isLoading: false,
+    isLoadingPinned: false,
     searchKeyword: '',
     newsList: [],
+    newsPinnedList: [],
     newsListMain: [],
     previewNewsItem: {},
     currentTab: 0,
@@ -17,11 +19,17 @@ export default {
     isLoading (state) {
       return state.isLoading
     },
+    isLoadingPinned (state) {
+      return state.isLoadingPinned
+    },
     searchKeyword (state) {
       return state.searchKeyword
     },
     newsList (state) {
       return state.newsList
+    },
+    newsPinnedList (state) {
+      return state.newsPinnedList
     },
     newsListMain (state) {
       return state.newsListMain
@@ -75,6 +83,12 @@ export default {
     LOADING_STATE (state, payload) {
       state.isLoading = payload
     },
+    LOADING_PINNED_STATE(state, payload) {
+      state.isLoadingPinned = payload
+    },
+    GET_PINNED_NEWS(state, payload) {
+      state.newsPinnedList = payload.Data
+    },
     SUBMIT_FILTER (state, payload) {
       const query = {}
       payload.query.category && Object.assign(query, { category: payload.query.category })
@@ -109,6 +123,14 @@ export default {
         console.error(error)
       }
     },
+    async getPinnedNews(context, payload) {
+      context.commit('LOADING_PINNED_STATE', true)
+      const [error, response] = await getNewsList(payload)
+      if (!error && response) {
+        context.commit('LOADING_PINNED_STATE', false)
+        context.commit('GET_PINNED_NEWS', response)
+      }
+    },
     async getNewById (context, payload) {
       const startRoute = router.history.current.fullPath
       context.commit('LOADING_STATE', true)
@@ -128,6 +150,15 @@ export default {
       if (!error && response) {
         context.commit('LOADING_STATE', false)
         router.push('/quan-ly-tin')
+      } else {
+        console.error(error)
+      }
+    },
+    async setPinnedNews (context, payload) {
+      context.commit('LOADING_STATE', true)
+      const [error, response] = await setPinnedNews(payload)
+      if (!error && response) {
+        context.commit('LOADING_STATE', false)
       } else {
         console.error(error)
       }

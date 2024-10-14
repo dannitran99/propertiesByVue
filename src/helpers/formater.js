@@ -30,3 +30,7 @@ export const formatDateTime = (input) => {
 export const formatDate = (input) => {
   return moment(input).format('DD/MM/YYYY')
 }
+
+export const formatNumberDigit = (d) => {
+  return (d < 10) ? '0' + d.toString() : d.toString()
+}
