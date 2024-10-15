@@ -52,6 +52,10 @@ import RentProperty from '@/components/icons/RentProperty.vue'
 import Finance from '@/components/icons/Finance.vue'
 import Planning from '@/components/icons/Planning.vue'
 import Interior from '@/components/icons/Interior.vue'
+import ForSale from '@/components/icons/ForSale.vue'
+import ForRent from '@/components/icons/ForRent.vue'
+import Project from '@/components/icons/Project.vue'
+import Wiki from '@/components/icons/Wiki.vue'
 import Zone from '@/components/icons/Zone.vue'
 import Statistic from '@/components/icons/Statistic.vue'
 import Video from '@/components/icons/Video.vue'
@@ -128,7 +132,11 @@ const iconElements = {
   Books,
   Chart,
   Contact,
-  Edit
+  Edit,
+  ForSale,
+  ForRent,
+  Project,
+  Wiki
 }
 
 export default {

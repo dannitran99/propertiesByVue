@@ -4,6 +4,7 @@ import LoginButton from '@/components/LoginButton'
 import NewsHomePage from '@/components/NewsHomePage'
 import PropertiesHomePage from '@/components/PropertiesHomePage'
 import EnterpriseSlideshow from '@/components/EnterpriseSlideshow'
+import HighlightContentMain from '@/components/HighlightContentMain'
 import NewsPinned from '@/components/NewsPinned'
 import BreadCrumb from '@/components/BreadCrumb'
 import BreadCrumbProperty from '@/components/BreadCrumbProperty'
@@ -24,6 +25,7 @@ const commonElements = {
   NewsHomePage,
   PropertiesHomePage,
   EnterpriseSlideshow,
+  HighlightContentMain,
   NewsPinned,
   BreadCrumb,
   BreadCrumbProperty,

@@ -639,3 +639,30 @@ export const MENU_ITEM = [
     ]
   }
 ]
+
+export const HIGHLIGHT_CONTENT_MAIN = [
+  {
+    id: 0,
+    icon: 'icon-forsale',
+    title: 'Bất động sản bán',
+    description: 'Bạn có thể tìm thấy ngôi nhà mơ ước hoặc cơ hội đầu tư hấp dẫn thông qua lượng tin rao lớn, uy tín về các loại hình bất động sản bán tại Việt Nam, bao gồm bán nhà riêng, bán nhà mặt tiền, bán căn hộ chung cư, bán biệt thự, bán đất, bán shophouse và các loại hình BĐS khác.'
+  },
+  {
+    id: 1,
+    icon: 'icon-forrent',
+    title: 'Bất động sản cho thuê',
+    description: 'Cập nhật thường xuyên và đầy đủ các loại hình bất động sản cho thuê như: thuê phòng trọ, nhà riêng, thuê biệt thự, văn phòng, kho xưởng hay thuê mặt bằng kinh doanh giúp bạn nhanh chóng tìm được bất động sản ưng ý.'
+  },
+  {
+    id: 2,
+    icon: 'icon-project',
+    title: 'Đánh giá dự án',
+    description: 'Các video đánh giá tổng quan dự án cung cấp góc nhìn khách quan của các chuyên gia về những dự án nổi bật tại Việt Nam, giúp bạn đưa ra quyết định đúng đắn cho nơi an cư lý tưởng hoặc cơ hội đầu tư sinh lời.'
+  },
+  {
+    id: 3,
+    icon: 'icon-wiki',
+    title: 'Wiki BĐS',
+    description: 'Ngoài cập nhật những biến động thị trường, chúng tôi còn cung cấp kiến ​​thức, kinh nghiệm về mua bán, cho thuê, đầu tư, vay mua nhà, phong thủy, thiết kế nhà, mọi thông tin cần thiết để dẫn lối người tìm nhà tìm thấy căn nhà mơ ước.'
+  }
+]

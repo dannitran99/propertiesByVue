@@ -13,6 +13,9 @@
     <div class="component-wrapper">
       <enterprise-slideshow class="component" />
     </div>
+    <div class="component-wrapper border-top">
+      <highlight-content-main class="component" />
+    </div>
   </div>
 </template>
 
@@ -46,5 +49,9 @@ export default {
 
 .bg-dark {
   background-color: #FAFAFA
+}
+
+.border-top {
+  border-top: 1px solid #F2F2F2;
 }
 </style>
