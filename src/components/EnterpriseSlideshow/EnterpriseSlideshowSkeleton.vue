@@ -18,13 +18,16 @@ export default {
 <style scoped lang="scss">
 .enterprise-skeleton-wrapper {
     display: flex;
+
+    >:not(:last-child) {
+        margin-right: 30px;
+    }
 }
 
 .enterprise-skeleton {
     flex-shrink: 0;
     height: 110px;
     width: 165px;
-    margin-right: 30px;
 
     @include responsive(lg) {
         width: 158px;

@@ -5,20 +5,19 @@
       <div class="slider-wrapper" ref="emblaRef">
         <enterprise-slideshow-skeleton v-if="isLoading" />
         <ul class="slider-card" v-else>
-          <li v-for="(item, idx) in enterpriseList" :key="idx" class="slider-item" @mouseenter="handlePauseInterval"
-            @mouseleave="handleResumeInterval">
+          <li v-for="(item, idx) in enterpriseList" :key="idx" class="slider-item"
+            @mouseenter="() => handleAutoplayCarousel(true)" @mouseleave="() => handleAutoplayCarousel(false)">
             <router-link :to="{ name: 'EnterpriseDetail', params: { enterpriseId: item.ID, } }">
               <img :src="item.logo" alt="logo" draggable="false">
             </router-link>
           </li>
         </ul>
       </div>
-      <button class="btn-carousel" :disabled="btnDisable" @click="() => handleChangeSlide(false, true)"
-        v-if="isDesktop">
+      <button class="btn-carousel" @click="() => emblaApi.scrollPrev()" v-if="isDesktop" :disabled="disableButton">
         <icon-leftarrow />
       </button>
-      <button class="btn-carousel go-right" :disabled="btnDisable" @click="() => handleChangeSlide(true, true)"
-        v-if="isDesktop">
+      <button class="btn-carousel go-right" @click="() => emblaApi.scrollNext()" v-if="isDesktop"
+        :disabled="disableButton">
         <icon-leftarrow />
       </button>
     </div>
@@ -27,12 +26,12 @@
 
 <script>
 import EmblaCarousel from 'embla-carousel'
+import Autoplay from 'embla-carousel-autoplay'
 import EnterpriseSlideshowSkeleton from './EnterpriseSlideshowSkeleton.vue'
 import { useBreakpoints } from '@vueuse/core'
 import { breakpoints } from '@/consts/breakpoints.js'
 
 const definedBreakpoint = useBreakpoints(breakpoints)
-var interval
 
 export default {
   components: {
@@ -40,9 +39,10 @@ export default {
   },
   data() {
     return {
-      btnDisable: false,
+      disableButton: false,
       emblaApi: null,
-      isDesktop: definedBreakpoint.greater('lg')
+      isDesktop: definedBreakpoint.greater('lg'),
+      isDragging: false
     }
   },
   computed: {
@@ -59,28 +59,33 @@ export default {
   },
   mounted() {
     const emblaRef = this.$refs['emblaRef']
-    this.emblaApi = EmblaCarousel(emblaRef, { loop: true, align: 'start', duration: 40 })
+    this.emblaApi = EmblaCarousel(emblaRef, { loop: true, align: 'start', duration: 40 },
+      [Autoplay({ playOnInit: true, delay: 3000 })]
+    )
+    const autoplay = this.emblaApi.plugins().autoplay
+    this.emblaApi.on('pointerDown', () => { this.isDragging = true })
+    this.emblaApi.on('pointerUp', () => {
+      this.isDragging = false
+      autoplay.play()
+    })
+
+    this.emblaApi.on('select', () => {
+      autoplay.reset()
+      this.disableButton = true
+      setTimeout(() => {
+        this.disableButton = false
+      }, 1000)
+    })
   },
   async created() {
     await this.$store.dispatch('enterprises/getPinnedEnterprise')
-    interval = this.intevalSilder(true)
   },
   methods: {
-    intevalSilder(goNext) {
-      return setInterval(() => {
-        this.handleChangeSlide(goNext)
-      }, 3000)
-    },
-    handleChangeSlide(goNext, pressButton) {
-      if (pressButton) clearInterval(interval)
-      if (this.emblaApi) goNext ? this.emblaApi.scrollNext() : this.emblaApi.scrollPrev()
-      if (pressButton) interval = this.intevalSilder(true)
-    },
-    handlePauseInterval() {
-      clearInterval(interval)
-    },
-    handleResumeInterval() {
-      interval = this.intevalSilder(true)
+    handleAutoplayCarousel(isMouseIn) {
+      const autoplay = this.emblaApi.plugins().autoplay
+      if (!autoplay) return
+      isMouseIn && autoplay.stop()
+      if (!isMouseIn && !this.isDragging) autoplay.play()
     }
   }
 }

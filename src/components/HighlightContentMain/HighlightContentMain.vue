@@ -7,29 +7,54 @@
         <p>{{ item.description }}</p>
       </li>
     </ul>
+    <div class="dot-indicator">
+      <button v-for="(_, idx) in list" :key="idx" class="swiper-pagination-bullet"
+        :class="[{ 'selected-dot': indexSelected === idx }]" role="button" @click="() => emblaApi.scrollTo(idx)"
+        :disabled="disableButton"></button>
+    </div>
   </div>
 </template>
 
 <script>
 import EmblaCarousel from 'embla-carousel'
+import Autoplay from 'embla-carousel-autoplay'
 import { HIGHLIGHT_CONTENT_MAIN } from '@/consts/label'
 import { xs } from '@/consts/breakpoints.js'
 
 export default {
   data() {
     return {
+      disableButton: false,
       emblaApi: null,
-      list: HIGHLIGHT_CONTENT_MAIN
+      list: HIGHLIGHT_CONTENT_MAIN,
+      indexSelected: 0
     }
   },
   mounted() {
     const emblaRef = this.$refs['highlightRef']
     this.emblaApi = EmblaCarousel(emblaRef, {
+      loop: true,
       align: 'start',
       duration: 40,
       breakpoints: {
         [`(min-width: ${xs}px)`]: { active: false }
       }
+    }, [Autoplay({ playOnInit: true, delay: 3000 })]
+    )
+    this.emblaApi.on('pointerUp', () => {
+      const autoplay = this.emblaApi.plugins().autoplay
+      if (!autoplay) return
+      autoplay.play()
+    })
+    this.emblaApi.on('select', () => {
+      const autoplay = this.emblaApi.plugins().autoplay
+      if (!autoplay) return
+      this.indexSelected = this.emblaApi.selectedScrollSnap()
+      autoplay.reset()
+      this.disableButton = true
+      setTimeout(() => {
+        this.disableButton = false
+      }, 1000)
     })
   }
 }
@@ -37,6 +62,8 @@ export default {
 
 <style scoped lang="scss">
 .list-highlight {
+  position: relative;
+
   @include responsive(xs) {
     overflow: hidden;
     padding: 0;
@@ -93,5 +120,33 @@ export default {
     flex-shrink: 0;
     padding: 24px 32px 48px;
   }
+}
+
+.dot-indicator {
+  display: none;
+
+  @include responsive(xs) {
+    position: absolute;
+    display: flex;
+    bottom: 18px;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.swiper-pagination-bullet {
+  background: #ccc;
+  margin: 0 4px;
+  cursor: pointer;
+  opacity: 0.6;
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  border-radius: 100%;
+}
+
+.selected-dot {
+  background: #2C2C2C;
+  opacity: 1;
 }
 </style>
