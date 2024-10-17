@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="properties-home-wrapper">
     <div class="title">
       <h2>Bất động sản dành cho bạn</h2>
       <div class="redirect-title">
@@ -75,6 +75,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.properties-home-wrapper {
+  @include responsive(xs) {
+    margin: 0;
+    padding: 0;
+  }
+}
+
 h2 {
   font-weight: normal;
   font-family: 'Lexend-Medium', sans-serif;
@@ -84,6 +91,11 @@ h2 {
   color: #2C2C2C;
   display: block;
   margin: 0;
+
+  @include responsive(xs) {
+    font-size: 18px;
+    line-height: 28px;
+  }
 }
 
 p {
@@ -98,6 +110,10 @@ p {
   display: flex;
   justify-content: space-between;
   margin: 0 0 24px 0;
+
+  @include responsive(xs) {
+    margin: 24px 16px 16px;
+  }
 }
 
 .redirect-title {
@@ -119,6 +135,11 @@ p {
   margin-top: 24px;
   display: flex;
   justify-content: center;
+
+  @include responsive(xs) {
+    margin: 17px 0 30px;
+    height: 32px;
+  }
 }
 
 .item-list {
@@ -144,6 +165,30 @@ p {
       width: calc((100% - 12px) / 2 - 2px);
     }
   }
+
+  @include responsive(xs) {
+    gap: 0;
+
+    .wrapper-item-property,
+    .skeleton-wrapper {
+      padding: 16px;
+      width: 100%;
+      height: unset;
+      border: none;
+      border-top: 1px solid #F2F2F2;
+      border-bottom: 4px solid #F2F2F2;
+      box-sizing: border-box;
+
+      >:first-child {
+        width: calc(100vw - 32px) !important;
+        height: calc((100vw - 32px)* 9 / 16) !important;
+      }
+
+      >:last-child {
+        margin: 12px 0 0;
+      }
+    }
+  }
 }
 
 .foot-btn button {
@@ -158,6 +203,12 @@ p {
   align-items: center;
   justify-content: center;
   gap: 5px;
+
+  @include responsive(xs) {
+    width: 115px;
+    font-size: 14px;
+    line-height: 19px;
+  }
 }
 
 .foot-btn button:hover {
