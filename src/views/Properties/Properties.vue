@@ -21,7 +21,7 @@
           <div class="background"></div>
           <p>Không có kết quả nào phù hợp</p>
         </div>
-        <pagination :total="totalItem" />
+        <pagination :total="totalItem" class="pagination-property" />
       </div>
     </div>
     <div class="filter" :style="{ 'min-height': `${minHeight}px` }">
@@ -241,6 +241,10 @@ export default {
     padding: 0 32px;
     width: 100%;
   }
+
+  @include responsive(xs) {
+    padding: 0;
+  }
 }
 
 .title-property {
@@ -249,6 +253,12 @@ export default {
   font-weight: 400;
   letter-spacing: -0.2px;
   color: #2C2C2C;
+
+  @include responsive(xs) {
+    margin: 0px 16px 4px;
+    font-size: 18px;
+    line-height: 28px;
+  }
 }
 
 .empty-list {
@@ -281,12 +291,20 @@ export default {
     width: 100%;
     margin-right: 0;
   }
+
+  @include responsive(xs) {
+    margin-top: 0;
+  }
 }
 
 .sort-filter {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 16px;
+
+  @include responsive(xs) {
+    margin: 0 16px 16px;
+  }
 }
 
 .filter {
@@ -314,6 +332,11 @@ export default {
 
 .content-breadcrumb {
   margin: 0 0 8px 0;
+
+  @include responsive(xs) {
+    margin: 0;
+    padding: 12px 16px 8px;
+  }
 }
 
 .subtitle {
@@ -323,18 +346,36 @@ export default {
   color: #2C2C2C;
   display: inline-block;
   margin: 6px 0 16px 0;
+
+  @include responsive(xs) {
+    margin: 6px 16px 16px;
+  }
 }
 
 .properties-list {
   margin-bottom: 24px;
+
+  @include responsive(xs) {
+    border-top: 1px solid #F2F2F2;
+  }
 }
 
 .properties-list>:not(:last-child) {
   margin-bottom: 16px;
+
+  @include responsive(xs) {
+    margin-bottom: 0;
+  }
 }
 
 .positionBot {
   position: absolute;
   bottom: 24px;
+}
+
+.pagination-property {
+  @include responsive(xs) {
+    margin-top: 16px;
+  }
 }
 </style>

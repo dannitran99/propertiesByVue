@@ -48,12 +48,12 @@
         <p class="txt-ct">{{ formatCurrency }}</p>
         <p>·</p>
         <p class="txt-ct">{{ formatArea }}</p>
-        <p>·</p>
-        <p>{{ formatAddress }}</p>
+        <p v-if="mobileResolution">·</p>
+        <p class="txt-address"><icon-mappoint v-if="!mobileResolution" />{{ formatAddress }}</p>
       </div>
       <p class="txt-description">{{ data.description }}</p>
     </div>
-    <v-divider></v-divider>
+    <v-divider class="divider-article"></v-divider>
     <div class="info-div" v-if="!hideInfo">
       <div class="info-user">
         <img :src="data.relatedUser && data.relatedUser[0].avatar" alt="avatar" class="avatar-img"
@@ -79,7 +79,11 @@
 </template>
 
 <script>
+import { useBreakpoints } from '@vueuse/core'
+import { breakpoints } from '@/consts/breakpoints.js'
 import { formatCurrency, formatTimeCalendar } from '@/helpers/formater'
+
+const definedBreakpoint = useBreakpoints(breakpoints)
 export default {
   props: {
     data: {
@@ -100,7 +104,8 @@ export default {
   },
   data() {
     return {
-      phoneReveal: false
+      phoneReveal: false,
+      mobileResolution: definedBreakpoint.greater('xs')
     }
   },
   computed: {
@@ -117,7 +122,7 @@ export default {
       return `${this.data.district}, ${this.data.city}`
     },
     phoneNumber: function () {
-      return `${this.data.phoneNumber.slice(0, -3)}*** Hiện số`
+      return `${this.data.phoneNumber.slice(0, -3)}*** ${this.mobileResolution ? 'Hiện số' : ''}`
     }
   },
   methods: {
@@ -138,10 +143,21 @@ export default {
   border: 1px solid #F2F2F2;
   border-radius: 10px;
   cursor: pointer;
+
+  @include responsive(xs) {
+    padding: 16px;
+    border: none;
+    border-radius: 0;
+    border-bottom: 4px solid #F2F2F2;
+  }
 }
 
 .wrapper-skeleton:hover {
   box-shadow: 0px 4px 16px 0px rgba(44, 44, 44, 0.08);
+
+  @include responsive(xs) {
+    box-shadow: none;
+  }
 }
 
 .img-gallery {
@@ -159,6 +175,10 @@ export default {
 
 .article {
   padding: 16px;
+
+  @include responsive(xs) {
+    padding: 12px 0 0 0;
+  }
 }
 
 .card-title {
@@ -174,6 +194,10 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+
+  @include responsive(xs) {
+    margin-bottom: 4px !important;
+  }
 }
 
 .info-txt {
@@ -181,12 +205,35 @@ export default {
   gap: 8px;
   align-items: center;
   overflow: hidden;
+
+  .txt-address {
+    font-size: 14px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  @include responsive(xs) {
+    flex-wrap: wrap;
+    row-gap: 4px;
+    margin-bottom: 16px;
+
+    .txt-address {
+      width: 100%;
+    }
+  }
 }
 
 .info-txt p {
+  flex-shrink: 0;
   margin-bottom: 8px;
   font-size: 16px;
   line-height: 26px;
+
+  @include responsive(xs) {
+    margin-bottom: 0;
+  }
 }
 
 .txt-ct {
@@ -203,6 +250,10 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+
+  @include responsive(xs) {
+    display: none;
+  }
 }
 
 .avt-text {
@@ -221,6 +272,10 @@ export default {
   padding: 16px;
   display: flex;
   justify-content: space-between;
+
+  @include responsive(xs) {
+    padding: 0
+  }
 }
 
 .info-user {
@@ -239,11 +294,21 @@ export default {
   font-weight: 600;
   color: #2C2C2C;
   margin-bottom: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .post-create {
   color: #999;
   margin-bottom: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .navigate-link {
@@ -268,6 +333,7 @@ export default {
   line-height: 20px;
   padding: 5px 11px;
   border-radius: 4px;
+  flex-shrink: 0;
 }
 
 .ico-heart {
@@ -280,6 +346,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.divider-article {
+  @include responsive(xs) {
+    display: none;
+  }
 }
 
 .hide {

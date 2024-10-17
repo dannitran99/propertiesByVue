@@ -62,6 +62,12 @@ export default {
   }
 }
 
+.img-gallery {
+  @include responsive(xs) {
+    padding: 16px 16px 0;
+  }
+}
+
 .img-gallery>* {
   padding: 2px !important;
 }

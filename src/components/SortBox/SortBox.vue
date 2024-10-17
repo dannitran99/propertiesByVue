@@ -79,7 +79,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
 * {
   font-family: 'Roboto-Regular', sans-serif;
 }
@@ -87,6 +87,15 @@ export default {
 .f-wrapper {
   display: flex;
   gap: 8px;
+
+  @include responsive(xs) {
+    flex-direction: column;
+    width: 100%;
+
+    >:nth-child(n) {
+      width: 100%;
+    }
+  }
 }
 
 .active-t {
@@ -96,6 +105,7 @@ export default {
 
 .switch-container {
   display: flex;
+  justify-content: space-between;
   border: 1px solid #ccc;
   align-items: center;
   border-radius: 4px;
@@ -129,6 +139,10 @@ export default {
   color: #999;
   padding: 5px 16px;
   cursor: pointer;
+
+  @include responsive(xs) {
+    width: 100%;
+  }
 }
 
 .wrapper-sort p {
