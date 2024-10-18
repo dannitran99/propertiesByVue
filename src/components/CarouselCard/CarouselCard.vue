@@ -3,36 +3,32 @@
     <div class="title-carousel-c">
       <slot></slot>
       <div class="button-container">
-        <button class="btn-carousel" :class="[{ 'disable-btn': page === 0 }]" :disabled="page === 0"
-          @click="() => handlePage(false)">
+        <button class="btn-carousel" :class="[{ 'disable-btn': !canScrollPrev }]" :disabled="!canScrollPrev"
+          @click="() => emblaApi.scrollPrev()">
           <icon-leftarrow />
         </button>
-        <button class="btn-carousel go-right" :class="[{ 'disable-btn': page + 1 === total }]"
-          :disabled="page + 1 === total" @click="() => handlePage(true)">
+        <button class="btn-carousel go-right" :class="[{ 'disable-btn': !canScrollNext }]" :disabled="!canScrollNext"
+          @click="() => emblaApi.scrollNext()">
           <icon-leftarrow />
         </button>
       </div>
     </div>
-    <div class="carousel-c-wrapper" ref="card-slider">
-      <div class="carousel-c-container" @mousemove="handleMouseMove" @mousedown="handleMouseDown"
-        @mouseup="handleMouseLeave" @mouseleave="handleMouseLeave">
-        <div class="carousel-c-gallery"
-          :style="{ transform: `translate3d(${-cardWidth * 3 * page + currentTranslateX + (page && page + 1 === total ? (sliderWidth - cardWidth * 3) + extra * cardWidth : 0)}px, 0px, 0px)`, transitionDuration: `${isTrans ? '300ms' : '0ms'}` }">
+    <div class="carousel-c-wrapper">
+      <div class="carousel-c-container" ref="card-slider">
+        <div class="carousel-c-gallery">
           <property-item v-for="item in data" :key="item.ID" :data="item" :small="true"
-            :class="[{ 'disable-link': preventAction }]" />
+            class="carousel-c-gallery--item" />
         </div>
       </div>
-      <div class="gradient-right" v-if="page + 1 !== total"></div>
+      <div class="gradient-right" v-if="canScrollNext"></div>
     </div>
   </div>
 </template>
 
 <script>
+import EmblaCarousel from 'embla-carousel'
 import PropertyItem from '@/components/PropertiesHomePage/PropertyItem'
-import { useBreakpoints } from '@vueuse/core'
-import { breakpoints } from '@/consts/breakpoints.js'
 
-const definedBreakpoint = useBreakpoints(breakpoints)
 export default {
   components: {
     'property-item': PropertyItem
@@ -44,67 +40,22 @@ export default {
   },
   data() {
     return {
-      isTrans: false,
-      page: 0,
-      isDragging: false,
-      startPosX: 0,
-      currentTranslateX: 0,
-      total: Math.ceil((this.data.length) / 3),
-      extra: this.data.length % 3 ? 3 - this.data.length % 3 : 0,
-      preventAction: false,
-      sliderWidth: undefined,
-      cardWidth: undefined
+      emblaApi: null,
+      canScrollNext: false,
+      canScrollPrev: false
     }
   },
   created() {
-    window.addEventListener('resize', this.handleResizeWindow)
   },
   mounted() {
-    this.handleResizeWindow()
-  },
-  methods: {
-    handleResizeWindow() {
-      this.sliderWidth = this.$refs['card-slider'] ? this.$refs['card-slider'].offsetWidth : undefined
-      switch (true) {
-        case definedBreakpoint.smaller('sm2').value:
-          this.cardWidth = 275
-          break
-        case definedBreakpoint.smaller('xl').value:
-          this.cardWidth = 227
-          break
-        default:
-          this.cardWidth = 235
-          break
-      }
-    },
-    handleMouseDown: function (e) {
-      this.isDragging = true
-      this.startPosX = e.clientX
-    },
-    handleMouseMove: function (e) {
-      if (!this.isDragging) return
-      this.currentTranslateX = e.clientX - this.startPosX
-      this.preventAction = !!this.currentTranslateX
-    },
-    handleMouseLeave: function () {
-      this.preventAction = false
-      if (!this.isDragging) return
-      this.isDragging = false
-      if (this.currentTranslateX > this.sliderWidth / 2 && this.page > 0) {
-        this.page--
-      }
-      if (this.currentTranslateX < -(this.sliderWidth / 2) && this.page + 1 < this.total) {
-        this.page++
-      }
-      this.currentTranslateX = 0
-      this.isTrans = true
-      setTimeout(() => { this.isTrans = false }, 300)
-    },
-    handlePage(goRight) {
-      goRight ? this.page++ : this.page--
-      this.isTrans = true
-      setTimeout(() => { this.isTrans = false }, 300)
-    }
+    const emblaRef = this.$refs['card-slider']
+    this.emblaApi = EmblaCarousel(emblaRef, { align: 'start', duration: 40, slidesToScroll: 'auto' })
+    this.canScrollNext = this.emblaApi.canScrollNext()
+    this.canScrollPrev = this.emblaApi.canScrollPrev()
+    this.emblaApi.on('select', () => {
+      this.canScrollNext = this.emblaApi.canScrollNext()
+      this.canScrollPrev = this.emblaApi.canScrollPrev()
+    })
   }
 }
 </script>
@@ -140,16 +91,15 @@ export default {
 .carousel-c-gallery {
   display: flex;
   gap: 15px;
-  width: fit-content;
   user-select: none;
+
+  &--item {
+    flex-shrink: 0;
+  }
 
   @include responsive(sm2) {
     gap: 24px;
   }
-}
-
-.disable-link {
-  pointer-events: none;
 }
 
 .title-carousel-c {
