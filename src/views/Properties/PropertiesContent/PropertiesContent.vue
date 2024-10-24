@@ -159,6 +159,11 @@ export default {
   line-height: 32px;
   letter-spacing: -0.2px;
   color: #2C2C2C;
+
+  @include responsive(xs) {
+    font-size: 18px;
+    line-height: 28px;
+  }
 }
 
 .breadcrumb-property {
@@ -210,7 +215,11 @@ export default {
 
 .main-content-property {
   @include responsive(sm2) {
-    padding: 32px;
+    padding: 12px 32px 32px;
+  }
+
+  @include responsive(xs) {
+    padding: 0 16px 16px;
   }
 }
 

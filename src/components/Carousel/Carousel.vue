@@ -1,9 +1,7 @@
 <template>
   <div>
-    <div class="wrapper-gallery" @mousemove="handleMouseMove" @mousedown="handleMouseDown" @mouseup="handleMouseLeave"
-      @mouseleave="handleMouseLeave" ref="gallery">
-      <ul
-        :style="{ transform: `translate3d(${-(imageWidth + 10) * currentIdx + gallery.currentTranslateX}px, 0px, 0px)`, transitionDuration: `${isTrans ? '300ms' : '0ms'}` }">
+    <div class="wrapper-gallery" ref="gallery">
+      <ul @click="handlePopup">
         <li v-for="item in imageList" :key="item.name">
           <div class="image-overlay">
             <img :src="item.url" alt="img" draggable="false" />
@@ -12,26 +10,28 @@
         </li>
       </ul>
       <div class="pagination">{{ `${currentIdx + 1} / ${imageList.length}` }}</div>
-      <button class="btn-nav go-right" @click="handleGoRight" v-if="currentIdx < imageList.length - 1">
+      <button class="btn-nav go-right" @click="() => emblaApiGallery.scrollNext()"
+        v-if="currentIdx < imageList.length - 1">
         <div>
           <icon-leftarrow />
         </div>
       </button>
-      <button class="btn-nav go-left" @click="handleGoLeft" v-if="currentIdx > 0">
+      <button class="btn-nav go-left" @click="() => emblaApiGallery.scrollPrev()" v-if="currentIdx > 0">
         <div>
           <icon-leftarrow />
         </div>
       </button>
     </div>
-    <div @mousedown="handleDownSlick" @mousemove="handleMoveSlick" @mouseup="handleSlickLeave"
-      @mouseleave="handleSlickLeave">
-      <ul class="slick" ref="slick">
-        <li v-for="(item, idx) in imageList" :key="item.name" @click="handleChangeSlide(idx)">
-          <img :src="item.url" alt="img" draggable="false" :class="[{ 'active': idx === currentIdx }]" />
-        </li>
-      </ul>
+    <div class="slick-wrapper">
+      <div ref="slick">
+        <ul class="slick">
+          <li v-for="(item, idx) in imageList" :key="item.name" @click="() => changeSlide(idx)">
+            <img :src="item.url" alt="img" draggable="false" :class="[{ 'active': idx === currentIdx }]" />
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="popup" v-if="popup">
+    <div class="popup" :class="[{ 'show-popup': popup }]">
       <div class="navigate-btn">
         <div class="pagination-popup">{{ `${currentIdx + 1} / ${imageList.length}` }}</div>
         <div class="action-btn">
@@ -47,14 +47,14 @@
         </div>
       </div>
       <div class="content-popup">
-        <div class="popup-wrapper" @click="clickOutSide">
-          <div class="gallery-holder">
-            <ul class="gallery-popup"
-              :style="{ transform: `translate3d( calc(${100 * -currentIdx}% + ${galleryPopup.currentTranslateX}px), ${scale === 1 ? '0px' : `${galleryPopup.currentTranslateY}px`}, 0px)`, transitionDuration: `${isTrans ? '600ms' : '0ms'}` }">
-              <li v-for="(item, idx) in imageList" :key="item.name">
+        <div class="popup-wrapper" @click="popup = false">
+          <div class="gallery-holder" ref="gallery-popup">
+            <ul class="gallery-popup">
+              <li v-for="(item, idx) in imageList" :key="item.name"
+                :style="[scale > 1 && idx === currentIdx && { 'transform': `translate3d(${currentTranslateX}px, ${currentTranslateY}px, 0)` }]">
                 <img :src="item.url" alt="img" draggable="false" v-if="scale === 1 || idx === currentIdx"
-                  @click="clickImage" @mousemove="handleMouseMovePopup" @mousedown="handleMouseDownPopup"
-                  @mouseup="handleMouseLeavePopup" @mouseleave="handleMouseLeavePopup"
+                  @click="clickImage" @mousedown="handleMouseDown" @mousemove="handleMouseMove"
+                  @mouseup="handleMouseLeave" @mouseleave="handleMouseLeave"
                   :style="{ transform: `scale3d(${idx === currentIdx ? scale : 1}, ${idx === currentIdx ? scale : 1}, 1)` }" />
               </li>
             </ul>
@@ -66,10 +66,9 @@
             <icon-leftarrow />
           </button>
         </div>
-        <div class="slick-popup fade-animation" @mousedown="handleDownSlickPopup" @mousemove="handleMoveSlickPopup"
-          @mouseup="handleSlickLeavePopup" @mouseleave="handleSlickLeavePopup">
-          <ul class="slick slick-popup-gallery" ref="slick-popup">
-            <li v-for="(item, idx) in imageList" :key="item.name" @click="handleChangeSlide(idx)">
+        <div class="slick-popup fade-animation" ref="slick-popup">
+          <ul class="slick slick-popup-gallery">
+            <li v-for="(item, idx) in imageList" :key="item.name" @click="() => changeSlidePopup(idx)">
               <img :src="item.url" alt="img" draggable="false" :class="[{ 'active-popup': idx === currentIdx }]" />
             </li>
           </ul>
@@ -80,10 +79,7 @@
 </template>
 
 <script>
-import { useBreakpoints } from '@vueuse/core'
-import { breakpoints } from '@/consts/breakpoints.js'
-
-const definedBreakpoint = useBreakpoints(breakpoints)
+import EmblaCarousel from 'embla-carousel'
 export default {
   props: {
     imageList: {
@@ -92,174 +88,95 @@ export default {
   },
   data() {
     return {
+      emblaApiGallery: null,
+      emblaApiSlick: null,
+      emblaApiGalleryPopup: null,
+      emblaApiSlickPopup: null,
       popup: false,
-      isTrans: false,
       currentIdx: 0,
       scale: 1,
-      gallery: {
-        isDragging: false,
-        startPosX: 0,
-        currentTranslateX: 0
-      },
-      galleryPopup: {
-        isDragging: false,
-        startPosX: 0,
-        currentTranslateX: 0,
-        startPosY: 0,
-        currentTranslateY: 0
-      },
-      slick: {
-        slickTrans: false,
-        startSlickPos: 0,
-        startSlickScroll: 0
-      },
-      slickPopup: {
-        slickTrans: false,
-        startSlickPos: 0,
-        startSlickScroll: 0
-      },
-      imageWidth: undefined
+      isDragging: false,
+      startPosX: 0,
+      startPosY: 0,
+      currentTranslateX: 0,
+      currentTranslateY: 0
     }
   },
-  created() {
-    window.addEventListener('resize', this.handleResizeWindow)
-  },
   mounted() {
-    this.handleResizeWindow()
+    const emblaRefGallery = this.$refs['gallery']
+    this.emblaApiGallery = EmblaCarousel(emblaRefGallery, { align: 'start', duration: 40 })
+    const emblaRefSlick = this.$refs['slick']
+    this.emblaApiSlick = EmblaCarousel(emblaRefSlick, { align: 'start', duration: 40 })
+    const emblaRefSlickPopup = this.$refs['slick-popup']
+    this.emblaApiSlickPopup = EmblaCarousel(emblaRefSlickPopup, { align: 'start', duration: 40 })
+    const emblaRefGalleryPopup = this.$refs['gallery-popup']
+    this.emblaApiGalleryPopup = EmblaCarousel(emblaRefGalleryPopup, { align: 'start', duration: 40 })
+    this.emblaApiGalleryPopup.on('select', () => {
+      this.scale = 1
+      this.currentIdx = this.emblaApiGalleryPopup.selectedScrollSnap()
+      this.emblaApiGallery.scrollTo(this.currentIdx, true)
+    })
+    this.emblaApiGallery.on('select', () => {
+      this.currentIdx = this.emblaApiGallery.selectedScrollSnap()
+      this.emblaApiGalleryPopup.scrollTo(this.currentIdx)
+    })
+  },
+  watch: {
+    scale() {
+      if (this.scale === 1) {
+        this.emblaApiGalleryPopup.reInit({ watchDrag: true })
+        this.currentTranslateX = 0
+        this.currentTranslateY = 0
+      } else {
+        this.emblaApiGalleryPopup.reInit({ watchDrag: false })
+      }
+    }
   },
   methods: {
-    handleResizeWindow() {
-      switch (true) {
-        case definedBreakpoint.smaller('sm2').value:
-          this.imageWidth = this.$refs['gallery'] ? this.$refs['gallery'].offsetWidth : 666
-          break
-        case definedBreakpoint.smaller('xl').value:
-          this.imageWidth = 696
-          break
-        default:
-          this.imageWidth = 848
-          break
-      }
-    },
     handleGoRight: function (e) {
       e.stopPropagation()
-      this.currentIdx++
-      this.isTrans = true
-      this.scale = 1
-      this.galleryPopup.currentTranslateX = 0
-      this.galleryPopup.currentTranslateY = 0
-      setTimeout(() => { this.isTrans = false }, 300)
+      this.emblaApiGalleryPopup.scrollNext()
     },
     handleGoLeft: function (e) {
       e.stopPropagation()
-      this.currentIdx--
-      this.isTrans = true
+      this.emblaApiGalleryPopup.scrollPrev()
+    },
+    changeSlide(idx) {
+      this.emblaApiGallery.scrollTo(idx)
+      this.emblaApiGalleryPopup.scrollTo(idx)
+    },
+    changeSlidePopup(idx) {
       this.scale = 1
-      this.galleryPopup.currentTranslateX = 0
-      this.galleryPopup.currentTranslateY = 0
-      setTimeout(() => { this.isTrans = false }, 300)
-    },
-    handleMouseDown: function (e) {
-      this.gallery.isDragging = true
-      this.gallery.startPosX = e.clientX
-    },
-    handleMouseMove: function (e) {
-      if (!this.gallery.isDragging) return
-      this.gallery.currentTranslateX = e.clientX - this.gallery.startPosX
-    },
-    handleMouseLeave: function (e) {
-      if (!this.gallery.isDragging) return
-      const pos = this.gallery.startPosX - this.$refs.gallery.getBoundingClientRect().left
-      this.gallery.isDragging = false
-      if (this.gallery.currentTranslateX === 0 && pos > 51 && pos < (this.imageWidth - 51)) {
-        this.popup = true
-        this.scale = 1
-        this.galleryPopup.currentTranslateX = 0
-        this.galleryPopup.currentTranslateY = 0
-        return
-      }
-      if (this.gallery.currentTranslateX > ((this.imageWidth + 10) / 2) && this.currentIdx > 0) {
-        this.currentIdx--
-      }
-      if (this.gallery.currentTranslateX < -((this.imageWidth + 10) / 2) && this.currentIdx < this.imageList.length - 1) {
-        this.currentIdx++
-      }
-      this.gallery.currentTranslateX = 0
-      this.isTrans = true
-      setTimeout(() => { this.isTrans = false }, 300)
-    },
-    handleMouseDownPopup: function (e) {
-      this.galleryPopup.isDragging = true
-      this.galleryPopup.startPosX = e.clientX - this.galleryPopup.currentTranslateX
-      this.galleryPopup.startPosY = e.clientY - this.galleryPopup.currentTranslateY
-    },
-    handleMouseMovePopup: function (e) {
-      if (!this.galleryPopup.isDragging) return
-      this.galleryPopup.currentTranslateX = e.clientX - this.galleryPopup.startPosX
-      this.galleryPopup.currentTranslateY = e.clientY - this.galleryPopup.startPosY
-    },
-    handleMouseLeavePopup: function (e) {
-      if (!this.galleryPopup.isDragging) return
-      this.galleryPopup.isDragging = false
-      if (this.scale === 1) {
-        if (this.galleryPopup.currentTranslateX > ((this.imageWidth + 10) / 2) && this.currentIdx > 0) {
-          this.currentIdx--
-        }
-        if (this.galleryPopup.currentTranslateX < -((this.imageWidth + 10) / 2) && this.currentIdx < this.imageList.length - 1) {
-          this.currentIdx++
-        }
-        this.galleryPopup.currentTranslateX = 0
-        this.galleryPopup.currentTranslateY = 0
-        this.isTrans = true
-        setTimeout(() => { this.isTrans = false }, 300)
-      }
-    },
-    handleChangeSlide: function (idx) {
-      this.currentIdx = idx
-      this.isTrans = true
-      this.scale = 1
-      this.galleryPopup.currentTranslateX = 0
-      this.galleryPopup.currentTranslateY = 0
-      setTimeout(() => { this.isTrans = false }, 300)
-    },
-    handleDownSlick: function (e) {
-      this.slick.slickTrans = true
-      this.slick.startSlickPos = e.clientX
-      this.slick.startSlickScroll = this.$refs.slick.scrollLeft
-    },
-    handleMoveSlick: function (e) {
-      if (!this.slick.slickTrans) return
-      this.$refs.slick.scrollLeft = this.slick.startSlickScroll - (e.clientX - this.slick.startSlickPos)
-    },
-    handleSlickLeave: function () {
-      if (!this.slick.slickTrans) return
-      this.slick.slickTrans = false
-    },
-    handleDownSlickPopup: function (e) {
-      this.slickPopup.slickTrans = true
-      this.slickPopup.startSlickPos = e.clientX
-      this.slickPopup.startSlickScroll = this.$refs['slick-popup'].scrollLeft
-    },
-    handleMoveSlickPopup: function (e) {
-      if (!this.slickPopup.slickTrans) return
-      this.$refs['slick-popup'].scrollLeft = this.slickPopup.startSlickScroll - (e.clientX - this.slickPopup.startSlickPos)
-    },
-    handleSlickLeavePopup: function () {
-      if (!this.slickPopup.slickTrans) return
-      this.slickPopup.slickTrans = false
-    },
-    clickOutSide: function () {
-      this.popup = false
+      this.emblaApiGallery.scrollTo(idx)
+      this.emblaApiGalleryPopup.scrollTo(idx)
     },
     clickImage: function (e) {
       e.stopPropagation()
     },
     handleZoomOut: function () {
       this.scale > 1 && this.scale--
-      if (this.scale === 1) {
-        this.galleryPopup.currentTranslateX = 0
-        this.galleryPopup.currentTranslateY = 0
-      }
+    },
+    handlePopup() {
+      this.popup = true
+      this.scale = 1
+      setTimeout(() => {
+        this.emblaApiGalleryPopup.scrollTo(this.currentIdx, true)
+      }, 100)
+    },
+    handleMouseDown(e) {
+      if (this.scale === 1) return
+      this.isDragging = true
+      this.startPosX = e.clientX - this.currentTranslateX
+      this.startPosY = e.clientY - this.currentTranslateY
+    },
+    handleMouseMove(e) {
+      if (this.scale === 1) return
+      if (!this.isDragging) return
+      this.currentTranslateX = e.clientX - this.startPosX
+      this.currentTranslateY = e.clientY - this.startPosY
+    },
+    handleMouseLeave() {
+      this.isDragging = false
     }
   }
 }
@@ -290,6 +207,11 @@ export default {
     height: calc(848px* 472 / 840);
     aspect-ratio: 472 / 840;
     border-radius: 0px;
+  }
+
+  @include responsive(xs) {
+    height: calc(100vw* 210 / 360);
+    aspect-ratio: unset;
   }
 }
 
@@ -409,7 +331,6 @@ export default {
 
 .slick {
   height: 80px;
-  overflow: hidden;
   padding: 0;
   list-style: none;
   display: flex;
@@ -451,6 +372,7 @@ export default {
 }
 
 .popup {
+  display: none;
   z-index: 1000;
   position: fixed;
   width: 100%;
@@ -458,6 +380,10 @@ export default {
   background: #000;
   top: 0;
   left: 0;
+}
+
+.show-popup {
+  display: block;
 }
 
 .navigate-btn {
@@ -538,6 +464,14 @@ export default {
   height: auto !important;
   cursor: grab;
   transition: all .2s ease;
+}
+
+.slick-wrapper {
+  overflow: hidden;
+
+  @include responsive(xs) {
+    display: none;
+  }
 }
 
 .slick-popup {
