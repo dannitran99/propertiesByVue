@@ -1,6 +1,7 @@
 <template>
   <div class="body">
     <filter-home />
+    <filter-mobile />
     <div class="component-wrapper">
       <news-home-page class="component" />
     </div>

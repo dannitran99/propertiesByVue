@@ -304,6 +304,10 @@ export default {
   left: 0;
   background-color: #fff;
   box-shadow: 0 4px 10px hsla(0, 0%, 71%, .18);
+
+  @include responsive(xs) {
+    box-shadow: none;
+  }
 }
 
 .nav-header {

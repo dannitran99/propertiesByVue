@@ -14,6 +14,7 @@ import Carousel from '@/components/Carousel'
 import ScrollToTop from '@/components/ScrollToTop'
 import NewsCardSkeleton from '@/components/News/NewsCard/NewsCardSkeleton.vue'
 import FilterHome from '@/components/FilterHome'
+import FilterMobile from '@/components/FilterMobile'
 import Pagination from '@/components/Pagination'
 import SortBox from '@/components/SortBox'
 import {FilterContact, FilterEnterprise} from '@/components/FilterPage'
@@ -35,6 +36,7 @@ const commonElements = {
   NewsCardSkeleton,
   ScrollToTop,
   FilterHome,
+  FilterMobile,
   Pagination,
   SortBox,
   FilterContact,

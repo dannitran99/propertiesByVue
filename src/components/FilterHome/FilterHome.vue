@@ -84,6 +84,10 @@ export default {
   @include responsive(sm1) {
     width: calc(100% - 64px);
   }
+
+  @include responsive(xs) {
+    display: none;
+  }
 }
 
 .filter-option {
